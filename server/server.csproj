@@ -13,4 +13,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Quokka.RISCV.Integration\Quokka.RISCV.Integration.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="run.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
