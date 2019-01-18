@@ -62,5 +62,42 @@ namespace Quokka.RISCV.Docker.Server.Tests
 
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+        public async Task ClientTest_Docker_TinyFPGA()
+        {
+            if (!Debugger.IsAttached)
+                Assert.Inconclusive("Run local service and debug the this test");
+
+            var testDataRoot = Path.Combine(Directory.GetCurrentDirectory(), "client", "TinyFPGA-BX");
+
+            var context = new RISCVIntegrationClientContext()
+                .WithPort(15000)
+                .WithExtensionClasses(
+                    new ExtensionClasses()
+                        .Text("sh")
+                        .Text("")
+                        .Text("lds")
+                        .Text("s")
+                        .Text("c")
+                        .Binary("bin")
+                        .Binary("elf")
+                        .Text("map")
+                )
+                .WithRootFolder(testDataRoot)
+                .WithAllFiles()
+                .WithOperations(
+                    new BashInvocation("make firmware.bin")
+                )
+                .TakeModifiedFiles()
+                ;
+
+            var result = await RISCVIntegrationClient.Run(context);
+
+            Assert.IsNotNull(result);
+
+            var binFile = result.ResultSnapshot.Files.Find(f => f.Name == "firmware.bin");
+            Assert.IsNotNull(binFile);
+        }
     }
 }
