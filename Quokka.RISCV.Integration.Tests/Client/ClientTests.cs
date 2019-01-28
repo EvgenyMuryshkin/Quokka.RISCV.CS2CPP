@@ -116,6 +116,14 @@ namespace Quokka.RISCV.Docker.Server.Tests
             var externalData = new List<ExternalDataRecord>()
             {
                 new ExternalDataRecord() {
+                    Segment = 0x00,
+                    Width = 32,
+                    Depth = 512,
+                    SoftwareName = "l_mem",
+                    HardwareName = "l_mem",
+                    Template = "memory"
+                },
+                new ExternalDataRecord() {
                     Segment = 0x01,
                     Width = 32,
                     SoftwareName = "LED1",
@@ -173,27 +181,30 @@ namespace Quokka.RISCV.Docker.Server.Tests
             var hardwareTemplatePath = Path.Combine(templateRoot, "hardware.template.v");
             var hardwareTemplate = File.ReadAllText(hardwareTemplatePath);
 
-            // emory init file
+            // memory init file
             var binFile = (FSBinaryFile)result.ResultSnapshot.Files.Find(f => f.Name == "firmware.bin");
             Assert.IsNotNull(binFile);
 
+            var replacers = new Dictionary<string, string>();
+
             var words = ReadWords(binFile.Content).ToList();
-            var memInit = MemInit(words, "l_mem", 512);
-            hardwareTemplate = IntegrationGenerator.ReplaceToken(hardwareTemplate, "MEM_INIT", memInit);
+            var memInit = generator.MemInit(words, "l_mem", 512);
+
+            replacers["MEM_INIT"] = memInit;
 
             // data declarations
-            var dataDeclaration = generator.DataDeclaration(externalData);
-            hardwareTemplate = IntegrationGenerator.ReplaceToken(hardwareTemplate, "DATA_DECL", dataDeclaration);
+            replacers["DATA_DECL"] = generator.DataDeclaration(externalData);
 
             // data control signals
             var templates = new IntegrationTemplates();
             templates.Templates["memory"] = File.ReadAllText(Path.Combine(templateRoot, "memory.template.v"));
             templates.Templates["register"] = File.ReadAllText(Path.Combine(templateRoot, "register.template.v"));
 
-            var dataControl = generator.DataControl(externalData, templates);
-            hardwareTemplate = IntegrationGenerator.ReplaceToken(hardwareTemplate, "DATA_CTRL", dataControl);
+            replacers["DATA_CTRL"] = generator.DataControl(externalData, templates);
+            replacers["MEM_READY"] = generator.MemReady(externalData);
+            replacers["MEM_RDATA"] = generator.MemRData(externalData);
 
-            
+            hardwareTemplate = IntegrationGenerator.ReplaceToken(hardwareTemplate, replacers);
 
             File.WriteAllText(@"C:\code\picorv32\quartus\RVTest.v", hardwareTemplate);
         }
@@ -212,15 +223,6 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     }
                 }
             }
-        }
-
-        string MemInit(List<uint> words, string memName, int wordsCount)
-        {
-            var init = Enumerable
-                .Range(0, wordsCount)
-                .Select(idx => $"/*{(idx * 4).ToString("X4")}*/{memName}[{idx}] = 32'h{ (idx < words.Count ? words[idx] : 0).ToString("X8")};{Environment.NewLine}");
-
-            return string.Join("", init);
         }
     }
 }

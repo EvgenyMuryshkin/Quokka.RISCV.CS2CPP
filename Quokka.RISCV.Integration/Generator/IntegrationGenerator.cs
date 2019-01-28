@@ -106,5 +106,48 @@ namespace Quokka.RISCV.Integration.Generator
         {
             return string.Join("", externalData.Select(d => $"{DataControl(d, templates)}{Environment.NewLine}"));
         }
+
+        public string MemReady(List<ExternalDataRecord> externalData)
+        {
+            return string.Join(" || ", externalData.Select(d => $"{d.HardwareName}_ready"));
+        }
+
+        public static string ReplaceToken(string hardwareTemplate, Dictionary<string, string> replacers)
+        {
+            // regex replace
+            foreach (var pair in replacers)
+            {
+                hardwareTemplate = ReplaceToken(hardwareTemplate, pair.Key, pair.Value);
+            }
+
+            // token replace
+            foreach (var pair in replacers)
+            {
+                var token = $"{{{pair.Key}}}";
+                hardwareTemplate = hardwareTemplate.Replace(token, pair.Value);
+            }
+
+            return hardwareTemplate;
+        }
+
+        public string MemRData(List<ExternalDataRecord> externalData)
+        {
+            if (!externalData.Any())
+                return "32'b0";
+
+            var first = externalData.First();
+            var source = first.Depth != 0 ? $"{first.HardwareName}_rdata" : first.HardwareName;
+
+            return $"{first.HardwareName}_ready ? {source} : {MemRData(externalData.Skip(1).ToList())}";
+        }
+
+        public string MemInit(List<uint> words, string memName, int wordsCount)
+        {
+            var init = Enumerable
+                .Range(0, wordsCount)
+                .Select(idx => $"/*{(idx * 4).ToString("X4")}*/{memName}[{idx}] = 32'h{ (idx < words.Count ? words[idx] : 0).ToString("X8")};{Environment.NewLine}");
+
+            return string.Join("", init);
+        }
     }
 }
