@@ -116,7 +116,7 @@ namespace Quokka.RISCV.Integration.Client
             return result;
         }
 
-        public RISCVIntegrationClientContext WithAllFiles()
+        public RISCVIntegrationClientContext WithAllRegisteredFiles()
         {
             var result = Clone();
 
@@ -124,6 +124,20 @@ namespace Quokka.RISCV.Integration.Client
             var allFiles = Directory
                 .EnumerateFiles(RootFolder, "*.*", SearchOption.AllDirectories)
                 .Where(file => ExtensionClasses.Contains(Path.GetExtension(file)))
+                ;
+
+            var snapshot = fs.LoadSnapshot(ExtensionClasses, allFiles);
+
+            return result.WithSourceSnapshot(snapshot);
+        }
+
+        public RISCVIntegrationClientContext WithAllFiles()
+        {
+            var result = Clone();
+
+            var fs = new FSManager(RootFolder);
+            var allFiles = Directory
+                .EnumerateFiles(RootFolder, "*.*", SearchOption.AllDirectories)
                 ;
 
             var snapshot = fs.LoadSnapshot(ExtensionClasses, allFiles);

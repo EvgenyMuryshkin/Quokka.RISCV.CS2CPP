@@ -54,14 +54,11 @@ namespace Quokka.RISCV.Integration.Engine
             ExtensionClasses classes, 
             IEnumerable<string> files)
         {
-            var lookup = (classes ?? new ExtensionClasses()).Lookup.ToDictionary(k => (k.Key.StartsWith(".") ? k.Key : $".{k.Key}").ToLower(), v => v.Value);
-
             var fs = new FSSnapshot();
 
             foreach (var file in files.Where(file => File.Exists(Path.Combine(_rootPath, file))))
             {
-                if (!lookup.TryGetValue(Path.GetExtension(file).ToLower(), out eExtensionClass cls))
-                    cls = eExtensionClass.Binary;
+                var cls = classes.GetClass(Path.GetExtension(file));
 
                 var fileName = Path.IsPathFullyQualified(file) ? file.Substring(_rootPath.Length) : file;
 

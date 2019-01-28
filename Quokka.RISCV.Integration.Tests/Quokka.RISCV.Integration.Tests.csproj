@@ -17,6 +17,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Client\Blinker\Source\custom_ops.S">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Source\Makefile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Source\sections.lds">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Source\start.S">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\firmware.template.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\hardware.template.v">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\memory.template.v">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\register.template.v">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Client\TestDataDocker\1.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

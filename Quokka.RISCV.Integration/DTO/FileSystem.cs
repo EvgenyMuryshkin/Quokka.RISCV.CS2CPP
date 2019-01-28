@@ -18,11 +18,21 @@ namespace Quokka.RISCV.Integration.DTO
     public class FSTextFile : FSFile
     {
         public string Content { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} = [{Content.Substring(0, 10)}]";
+        }
     }
 
     public class FSBinaryFile : FSFile
     {
         public byte[] Content { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} = [{Content.Length} bytes]";
+        }
     }
     /// <summary>
     /// Set of files in base64 encoding
@@ -58,6 +68,14 @@ namespace Quokka.RISCV.Integration.DTO
             Lookup[NormalizeExtension(extension)] = eExtensionClass.Binary;
 
             return this;
+        }
+
+        public eExtensionClass GetClass(string extension)
+        {
+            if (!Lookup.TryGetValue(NormalizeExtension(extension), out eExtensionClass cls))
+                cls = eExtensionClass.Binary;
+
+            return cls;
         }
     }
 }
