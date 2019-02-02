@@ -12,7 +12,11 @@ module RVTest (
 	output 			o_dbg_mem_valid,
 	output [31:0] 	o_dbg_mem_rdata,
 	output [31:0] 	o_dbg_mem_wdata,
-	output         	o_dbg_mem_we
+	output         	o_dbg_mem_we,
+	output         	o_dbg_data_access,
+	output         	o_dbg_mem_read,
+	output         	o_dbg_mem_write,
+	output [31:0]   o_dbg_tmp
 );
 
 	parameter [0:0] BARREL_SHIFTER = 1;
@@ -35,6 +39,11 @@ module RVTest (
 	wire [3:0] 	cpu_mem_wstrb;
 	wire [31:0] cpu_mem_rdata;
 	
+	wire		cpu_read_request;
+	wire		cpu_write_request;
+	assign cpu_read_request = cpu_mem_instr || cpu_mem_wstrb == 4'b0;
+	assign cpu_write_request = cpu_mem_wstrb != 4'b0;
+
 // BEGIN DATA_DECL
 // END DATA_DECL
 
@@ -78,10 +87,17 @@ module RVTest (
 	// connect debug and diagnostics
 			
 	assign o_dbg_mem_valid = l_mem_ready;
-	assign o_dbg_mem_rdata = l_mem_rdata;
-	assign o_dbg_mem_wdata = l_mem_wdata;
-	assign o_dbg_mem_we = l_mem_we;
+	//assign o_dbg_mem_rdata = l_mem_rdata;
+	//assign o_dbg_mem_wdata = l_mem_wdata;
+	//assign o_dbg_mem_we = l_mem_we;
+
+	assign o_dbg_mem_rdata = data_rdata_part;
+	assign o_dbg_mem_wdata = data_read_address_part;
+	assign o_dbg_mem_we = data_we;
 	
+	assign o_dbg_data_access = data_address_valid;
+	assign o_dbg_mem_read = cpu_read_request;
+	assign o_dbg_mem_write = cpu_write_request;
 	
 	initial
 	begin

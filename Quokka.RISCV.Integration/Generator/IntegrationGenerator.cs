@@ -21,7 +21,15 @@ namespace Quokka.RISCV.Integration.Generator
             foreach (var item in data)
             {
                 var address = item.Segment << 24;
-                content.AppendLine($"#define {item.SoftwareName} (*(volatile uint32_t*)0x{address.ToString("X8")})");
+                if (item.Depth == 0)
+                {
+                    content.AppendLine($"#define {item.SoftwareName} (*(volatile {item.CType}*)0x{address.ToString("X8")})");
+                }
+                else
+                {
+                    content.AppendLine($"#define {item.SoftwareName} ((volatile {item.CType}*)0x{address.ToString("X8")})");
+                    content.AppendLine($"#define {item.SoftwareName}_size {item.Depth.ToString()}");
+                }
             }
 
             return new FSTextFile()
@@ -88,6 +96,12 @@ namespace Quokka.RISCV.Integration.Generator
             var map = new Dictionary<string, string>();
             map["NAME"] = record.HardwareName;
             map["SEG"] = record.Segment.ToString("X2");
+            map["be_3"] = record.Width > 24 ? "" : "//";
+            map["be_2"] = record.Width > 16 ? "" : "//";
+            map["be_1"] = record.Width > 8 ? "" : "//";
+            map["be_0"] = record.Width > 0 ? "" : "//";
+            map["WIDTH"] = record.Width.ToString();
+            map["HIGH"] = (record.Width - 1).ToString();
 
             var template = templates.Templates[record.Template];
 

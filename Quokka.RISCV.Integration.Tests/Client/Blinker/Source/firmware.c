@@ -24,12 +24,12 @@ void main() {
         *dest++ = 0;
     }
 
-    // blink the user LED
-    uint32_t led_timer = 0;
+	
+    uint32_t counter = 0;
        
-    while (1) {
-        LED1 = 1;
-        LED2 = led_timer >> 4;
-        led_timer = led_timer + 1;
+    while (counter < data_size) {
+		data[counter] = counter;
+        counter = data[counter] + 1;
     } 
+
 }

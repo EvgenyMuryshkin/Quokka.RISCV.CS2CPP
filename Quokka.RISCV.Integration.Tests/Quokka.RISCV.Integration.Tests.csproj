@@ -35,7 +35,13 @@
     <None Update="Client\Blinker\Template\hardware.template.v">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Client\Blinker\Template\memory.template.v">
+    <None Update="Client\Blinker\Template\memory8.template.v">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\memory16.template.v">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\Blinker\Template\memory32.template.v">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Client\Blinker\Template\register.template.v">
