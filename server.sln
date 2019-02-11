@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.RISCV.Integration", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.RISCV.Integration.Tests", "Quokka.RISCV.Integration.Tests\Quokka.RISCV.Integration.Tests.csproj", "{244AB9DA-7920-423B-94B5-4A803ADE1BC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CModelGenerator", "CModelGenerator\CModelGenerator.csproj", "{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{244AB9DA-7920-423B-94B5-4A803ADE1BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244AB9DA-7920-423B-94B5-4A803ADE1BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244AB9DA-7920-423B-94B5-4A803ADE1BC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
