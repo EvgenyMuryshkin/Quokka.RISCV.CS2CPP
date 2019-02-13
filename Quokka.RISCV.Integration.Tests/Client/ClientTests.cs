@@ -83,6 +83,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                         .Text("lds")
                         .Text("s")
                         .Text("c")
+                        .Text("cpp")
                         .Binary("bin")
                         .Binary("elf")
                         .Text("map")
@@ -228,7 +229,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     Depth = 512,
                     SoftwareName = "l_mem",
                     HardwareName = "l_mem",
-                    Template = "memory"
+                    Template = "memory32"
                 },
                 new ExternalDataRecord() {
                     Segment = 0x01,
@@ -237,21 +238,6 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     HardwareName = "led1",
                     Template = "register"
                 },
-                new ExternalDataRecord() {
-                    Segment = 0x02,
-                    DataType = typeof(byte),
-                    SoftwareName = "LED2",
-                    HardwareName = "led2",
-                    Template = "register"
-                },
-                new ExternalDataRecord() {
-                    Segment = 0x03,
-                    DataType = typeof(byte),
-                    Depth = 64,
-                    SoftwareName = "UART_TX",
-                    HardwareName = "buff_uart_tx",
-                    Template = "memory"
-                },
             };
 
             var mainCode = @"
@@ -259,9 +245,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
     uint32_t led_timer = 0;
        
     while (1) {
-        //LED1 = 1;
-        //LED2 = led_timer;// >> 4;
-		UART_TX[led_timer] = led_timer;
+        LED1 = led_timer >> 16;
         led_timer = led_timer + 1;
     } 
 ";
@@ -284,6 +268,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                         .Text("lds")
                         .Text("s")
                         .Text("c")
+                        .Text("cpp")
                         .Text("h")
                         .Binary("bin")
                         .Binary("elf")
@@ -297,7 +282,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                 .TakeModifiedFiles()
                 ;
 
-            var firmwareTemplatePath = File.ReadAllText(Path.Combine(templateRoot, "firmware.template.c"));
+            var firmwareTemplatePath = File.ReadAllText(Path.Combine(templateRoot, "firmware.template.cpp"));
             var firmwareMap = new Dictionary<string, string>()
             {
                 { "MAIN_CODE", mainCode }

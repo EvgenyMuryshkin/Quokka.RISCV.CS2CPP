@@ -11,7 +11,7 @@ namespace Quokka.RISCV.Integration.Generator
         {
             return new FSTextFile()
             {
-                Name = "firmware.c",
+                Name = "firmware.cpp",
                 Content = templateContent
             };
         }
