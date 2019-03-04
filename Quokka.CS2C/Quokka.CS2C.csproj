@@ -10,4 +10,8 @@
     <PackageReference Include="System.Reactive" Version="4.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Quokka.RISCV.Integration\Quokka.RISCV.Integration.csproj" />
+  </ItemGroup>
+  
 </Project>

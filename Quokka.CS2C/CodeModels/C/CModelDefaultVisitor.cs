@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quokka.RISCV.Integration.Translator.CodeModels.C
+namespace Quokka.CS2C.CodeModels.C
 {
     public class CModelDefaultVisitor
     {

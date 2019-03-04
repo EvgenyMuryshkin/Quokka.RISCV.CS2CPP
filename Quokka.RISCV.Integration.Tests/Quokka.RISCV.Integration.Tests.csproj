@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Quokka.CS2C\Quokka.CS2C.csproj" />
     <ProjectReference Include="..\Quokka.RISCV.Integration\Quokka.RISCV.Integration.csproj" />
   </ItemGroup>
 

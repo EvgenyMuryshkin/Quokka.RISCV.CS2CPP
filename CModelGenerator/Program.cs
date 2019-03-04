@@ -27,12 +27,14 @@ namespace CModelGenerator
 
         static string Visitor(GeneratorContext context)
         {
-            var builder = new CSharpWriter();
+            var builder = new Generator();
+            builder.AppendLine($"// generated code, do not modify");
             builder.AppendLine("using System;");
             builder.AppendLine("using System.Collections.Generic;");
 
-            builder.AppendLine("namespace Quokka.RISCV.Integration.Translator.CodeModels.C");
+            builder.AppendLine("namespace Quokka.CS2C.CodeModels.C");
             builder.OpenBlock();
+
             foreach (var type in context.AllCModels)
             {
                 builder.DumpType(type);
@@ -77,7 +79,9 @@ namespace CModelGenerator
             };
 
             var visitor = Visitor(context);
-            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.RISCV.Integration\Translator\CodeModels\C\CModel.cs", visitor);
+            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2C\CodeModels\C\CModel.cs", visitor);
+
+            Console.WriteLine("Completed!");
         }
     }
 }
