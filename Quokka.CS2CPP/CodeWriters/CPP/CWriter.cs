@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quokka.CS2CPP.CodeWriters.C
+namespace Quokka.CS2CPP.CodeWriters.CPP
 {
     public class CWriter
     {

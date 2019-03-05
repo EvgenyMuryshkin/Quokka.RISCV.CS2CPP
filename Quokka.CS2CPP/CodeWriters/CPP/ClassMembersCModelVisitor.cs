@@ -1,7 +1,7 @@
 ﻿using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.CodeWriters.Tools;
 
-namespace Quokka.CS2CPP.CodeWriters.C
+namespace Quokka.CS2CPP.CodeWriters.CPP
 {
     public class ClassMembersCPPModelVisitor : BaseCPPModelVisitor
     {

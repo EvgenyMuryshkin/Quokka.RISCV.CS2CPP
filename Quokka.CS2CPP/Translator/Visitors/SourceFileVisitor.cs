@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Quokka.CS2CPP.CodeModels.CPP;
-using Quokka.CS2CPP.CodeWriters.C;
+using Quokka.CS2CPP.CodeWriters.CPP;
 using System;
 using System.Linq;
 using System.Text;

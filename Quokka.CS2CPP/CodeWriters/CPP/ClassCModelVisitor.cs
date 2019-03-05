@@ -3,7 +3,7 @@ using Quokka.CS2CPP.CodeWriters.Tools;
 using System;
 using System.Collections.Generic;
 
-namespace Quokka.CS2CPP.CodeWriters.C
+namespace Quokka.CS2CPP.CodeWriters.CPP
 {
 
     public class ClassCPPModelVisitor : BaseCPPModelVisitor
