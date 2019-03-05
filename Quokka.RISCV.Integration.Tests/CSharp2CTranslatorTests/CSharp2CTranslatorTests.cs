@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Quokka.CS2C.Translator;
+using Quokka.CS2CPP.Translator;
 using Quokka.RISCV.Integration.DTO;
 using Quokka.RISCV.Integration.Engine;
 using System.IO;
@@ -17,7 +17,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
         [TestMethod]
         public void BasicTest()
         {
-            var tx = new CSharp2CTranslator();
+            var tx = new CSharp2CPPTranslator();
             var source = new FSSnapshot();
             source.Files.Add(LoadSource("BasicTest.cs"));
 

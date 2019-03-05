@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.RISCV.Integration.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CModelGenerator", "CModelGenerator\CModelGenerator.csproj", "{D53FD685-4C9B-4EB3-BE11-F004B3BC5EBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quokka.CS2C", "Quokka.CS2C\Quokka.CS2C.csproj", "{4AB8740D-1661-4B4B-952B-4685972E5876}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quokka.CS2CPP", "Quokka.CS2CPP\Quokka.CS2CPP.csproj", "{4AB8740D-1661-4B4B-952B-4685972E5876}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

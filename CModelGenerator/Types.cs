@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace CModelGenerator
+namespace CPPModelGenerator
 {
     public static class Types
     {

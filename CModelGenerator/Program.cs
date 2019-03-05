@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace CModelGenerator
+namespace CPPModelGenerator
 {
     class GeneratorContext
     {
-        public List<Type> AllCModels { get; set; }
+        public List<Type> AllCPPModels { get; set; }
     }
 
     class Program
@@ -32,26 +32,26 @@ namespace CModelGenerator
             builder.AppendLine("using System;");
             builder.AppendLine("using System.Collections.Generic;");
 
-            builder.AppendLine("namespace Quokka.CS2C.CodeModels.C");
+            builder.AppendLine("namespace Quokka.CS2CPP.CodeModels.CPPPP");
             builder.OpenBlock();
 
-            foreach (var type in context.AllCModels)
+            foreach (var type in context.AllCPPModels)
             {
                 builder.DumpType(type);
             }
 
 
             // visitor
-            builder.AppendLine($"public abstract partial class CModelVisitor : CModelDefaultVisitor");
+            builder.AppendLine($"public abstract partial class CPPModelVisitor : CPPModelDefaultVisitor");
             builder.OpenBlock();
 
-            var classes = context.AllCModels.Where(c => c.IsClass && !c.IsAbstract);
+            var classes = context.AllCPPModels.Where(c => c.IsClass && !c.IsAbstract);
             foreach (var c in classes)
             {
                 builder.AppendLine($"public virtual void Visit{c.Name}({c.Name} model) => DefaultVisit(model);");
             }
 
-            builder.AppendLine($"public virtual void Visit(CModel model)");
+            builder.AppendLine($"public virtual void Visit(CPPModel model)");
             builder.OpenBlock();
             builder.AppendLine($"switch(model)");
             builder.OpenBlock();
@@ -72,14 +72,14 @@ namespace CModelGenerator
 
         static void Main(string[] args)
         {
-            var allCModels = Assembly.GetExecutingAssembly().ExportedTypes.Where(t => t.Namespace == "metadata");
+            var allCPPModels = Assembly.GetExecutingAssembly().ExportedTypes.Where(t => t.Namespace == "metadata");
             var context = new GeneratorContext()
             {
-                AllCModels = allCModels.ToList()
+                AllCPPModels = allCPPModels.ToList()
             };
 
             var visitor = Visitor(context);
-            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2C\CodeModels\C\CModel.cs", visitor);
+            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2C\CodeModels\C\CPPModel.cs", visitor);
 
             Console.WriteLine("Completed!");
         }
