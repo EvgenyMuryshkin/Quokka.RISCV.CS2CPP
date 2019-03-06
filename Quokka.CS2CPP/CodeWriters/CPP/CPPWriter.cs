@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Quokka.CS2CPP.CodeWriters.CPP
 {
-    public class CWriter
+    public class CPPWriter
     {
         StringBuilder _builder = new StringBuilder();
         int Indent = 0;

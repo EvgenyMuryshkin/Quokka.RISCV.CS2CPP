@@ -32,7 +32,7 @@ namespace CPPModelGenerator
             builder.AppendLine("using System;");
             builder.AppendLine("using System.Collections.Generic;");
 
-            builder.AppendLine("namespace Quokka.CS2CPP.CodeModels.CPPPP");
+            builder.AppendLine("namespace Quokka.CS2CPP.CodeModels.CPP");
             builder.OpenBlock();
 
             foreach (var type in context.AllCPPModels)
@@ -79,7 +79,7 @@ namespace CPPModelGenerator
             };
 
             var visitor = Visitor(context);
-            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2C\CodeModels\C\CPPModel.cs", visitor);
+            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2CPP\CodeModels\CPP\CPPModel.cs", visitor);
 
             Console.WriteLine("Completed!");
         }

@@ -18,10 +18,9 @@ namespace Quokka.CS2CPP.Translator.Visitors
             _method.Modifiers.AccessType = node.Modifiers.ExtractAccessType();
             _method.Modifiers.InstanceType = node.Modifiers.ExtractInstanceType();
 
-
             using (Context.WithCodeContainer(_method))
             {
-
+                Invoke<MethodVisitor>(node);
             }
         }
     }

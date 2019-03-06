@@ -7,10 +7,7 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
     {
         public override void VisitMethodCPPModel(MethodCPPModel model)
         {
-            AppendLine($"{CPPModelTools.Modifiers(model.Modifiers)} {TypeLookup.LookupCPPTypeName(model.ReturnType)} {model.Name}()");
-            OpenBlock();
-            //Invoke<ClassMembersCPPModelVisitor>(model.Members);
-            CloseBlock();
+            Invoke<ClassMethodCModelVisitor>(model);
         }
     }
 }

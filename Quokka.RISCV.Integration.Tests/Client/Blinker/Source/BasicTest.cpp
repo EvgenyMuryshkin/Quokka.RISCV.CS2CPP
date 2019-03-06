@@ -6,6 +6,8 @@ namespace UnitTests
 	{
 		public: static void _main()
 		{
+			int counter = 0;
+			double tmp = 0.5;
 		}
 	}
 }

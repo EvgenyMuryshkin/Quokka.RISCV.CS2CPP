@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Quokka.CS2CPP.Translator.Tools;
 using Quokka.CS2CPP.Translator.Visitors;
 using System;
@@ -12,6 +13,14 @@ namespace Quokka.CS2CPP.Translator.Resolvers
     public class TypeResolver
     {
         public TranslationContext Context { get; set; }
+
+        public Type ResolveType(ExpressionSyntax node)
+        {
+            var symbolInfo = Context.SemanticModel.GetSymbolInfo(node);
+            var type = Type.GetType($"{symbolInfo.Symbol.ContainingNamespace}.{symbolInfo.Symbol.Name}");
+
+            return type;
+        }
 
         public MethodInfo ResolveMethodInfo(MethodDeclarationSyntax node)
         {

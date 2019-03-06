@@ -8,7 +8,15 @@ namespace Quokka.CS2CPP.CodeWriters.Tools
     {
         static Dictionary<Type, string> nativeTypes = new Dictionary<Type, string>()
         {
-            { typeof(void), "void" }
+            { typeof(void), "void" },
+            { typeof(int), "int" },
+            { typeof(uint), "unsigned int" },
+            { typeof(float), "float" },
+            { typeof(double), "double" },
+            { typeof(short), "short" },
+            { typeof(ushort), "unsigned short" },
+            { typeof(char), "char" },
+            { typeof(byte), "byte" },
         };
 
         public static string LookupCPPTypeName(Type type)

@@ -23,14 +23,13 @@ namespace Quokka.CS2CPP.Translator
             var builder = new AssemblyBuilder();
             var library = builder.Build(trees.Values);
 
-            // load assembly for type info
-
             // translate each source file
             foreach (var tree in trees)
             {
                 var context = new TranslationContext()
                 {
-                    Library = library
+                    Library = library,
+                    Root = tree.Value
                 };
 
                 var fileName = $"{Path.GetFileNameWithoutExtension(tree.Key)}.cpp";

@@ -9,9 +9,12 @@ namespace UnitTests
         public static void _main()
         {
             int counter = 0;
-            while(counter < 16)
+            var tmp = 0.5;
+
+            while(counter < 1024)
             {
                 counter = counter + 1;
+                tmp = tmp * 2;
             }
         }
     }

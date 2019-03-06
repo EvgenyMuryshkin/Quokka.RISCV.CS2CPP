@@ -19,17 +19,26 @@ namespace Quokka.CS2CPP.Translator.Visitors
             return new T() { Context = Context };
         }
 
-        protected void Invoke<T>(SyntaxNode node) where T : CSharp2CVisitor, new()
+        protected T Invoke<T>(SyntaxNode node) where T : CSharp2CVisitor, new()
         {
-            Resolve<T>().Visit(node);
+            var visitor = Resolve<T>();
+
+            if (node != null)
+                visitor.Visit(node);
+
+            return visitor;
         }
 
-        protected void Invoke<T>(IEnumerable<SyntaxNode> nodes) where T : CSharp2CVisitor, new()
+        protected List<T> Invoke<T>(IEnumerable<SyntaxNode> nodes) where T : CSharp2CVisitor, new()
         {
+            var result = new List<T>();
+
             foreach (var node in nodes)
             {
-                Invoke<T>(node);
+                result.Add(Invoke<T>(node));
             }
+
+            return result;
         }
 
         protected void EnsureNullOrEmpty(SyntaxNode node, string message)
@@ -42,7 +51,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
         {
             var exceptionMessage = $"{message ?? ""}{Environment.NewLine}{node.CallerStackDump()}";
 
-            throw new Exception($"Unsupported node: {exceptionMessage}");
+            throw new Exception($"{GetType().Name}: Unsupported node: {exceptionMessage}");
         }
 
         protected void VisitChildren(IEnumerable<SyntaxNode> children)
@@ -56,7 +65,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
 
         public override void DefaultVisit(SyntaxNode node)
         {
-            throw new Exception($"Unsupported node type {node.GetType().Name}: {node}");
+            throw new Exception($"{GetType().Name}: Unsupported node type {node.GetType().Name}: {node}");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Quokka.CS2CPP.CodeModels.CPP;
+﻿using Microsoft.CodeAnalysis;
+using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.Translator.Tools;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace Quokka.CS2CPP.Translator.Visitors
     public class TranslationContext
     {
         public ComponentsLibrary Library;
+        public SyntaxTree Root;
+        public SemanticModel SemanticModel => Library.SemanticModels[Root];
+
         public List<CPPModel> Models = new List<CPPModel>();
 
         public Stack<List<string>> UsingsStack = new Stack<List<string>>();

@@ -65,15 +65,44 @@ namespace metadata
         public string Name { get; set; }
     }
 
+    public abstract class ExpressionCPPModel : CPPModel
+    {
+
+    }
+
+    public class LiteralExpressionCPPModel : ExpressionCPPModel
+    {
+        public string Value { get; set; }
+    }
+
+    public enum ExpressionTypeCPPModel
+    {
+        Equal,
+        NotEqual,
+        Less,
+        LessOrEqual,
+        Greater,
+        GreaterOrEqual
+    }
+
+    public class BinaryExpressionCPPModel : ExpressionCPPModel
+    {
+        public ExpressionTypeCPPModel Type { get; set; }
+        public ExpressionCPPModel Left { get; set; }
+        public ExpressionCPPModel Right { get; set; }
+    }
+
     public class FieldCPPModel : MemberCPPModel
     {
         public ModifiersCPPModel Modifiers { get; set; }
         public Type FieldType { get; set; }
+        public ExpressionCPPModel Initializer { get; set; }
     }
 
     public class DataCPPModel : MemberCPPModel
     {
         public Type DataType { get; set; }
+        public ExpressionCPPModel Initializer { get; set; }
     }
 
     public class ArgumentCPPModel : MemberCPPModel
@@ -99,6 +128,25 @@ namespace metadata
     {
         public string Namespace { get; set; }
         public List<CPPModel> Members { get; set; }
+    }
+
+    public abstract class LoopCPPModel : CPPModel, IMembersContainerCPPModel
+    {
+        public List<CPPModel> Members { get; set; }
+    }
+
+    public class WhileLoopCPPModel : LoopCPPModel
+    {
+        public ExpressionCPPModel Condition { get; set; }
+    }
+
+    public class DoLoopCPPModel : LoopCPPModel
+    {
+        public ExpressionCPPModel Condition { get; set; }
+    }
+
+    public class ForLoopCPPModel : LoopCPPModel
+    {
     }
 
     public class FileCPPModel : CPPModel, IMembersContainerCPPModel

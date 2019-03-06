@@ -8,7 +8,7 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
 {
     public class BaseCPPModelVisitor : CPPModelVisitor
     {
-        protected CWriter _writer = new CWriter();
+        protected CPPWriter _writer = new CPPWriter();
         public void OpenBlock() => _writer.OpenBlock();
         public void CloseBlock() => _writer.CloseBlock();
         public void AppendLine(string value) => _writer.AppendLine(value);
@@ -32,17 +32,26 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
             return new T() { _writer = _writer };
         }
 
-        protected void Invoke<T>(CPPModel model) where T : BaseCPPModelVisitor, new()
+        protected T Invoke<T>(CPPModel model) where T : BaseCPPModelVisitor, new()
         {
-            Resolve<T>().Visit(model);
+            var result = Resolve<T>();
+
+            if (model != null)
+                result.Visit(model);
+
+            return result;
         }
 
-        protected void Invoke<T>(IEnumerable<CPPModel> models) where T : BaseCPPModelVisitor, new()
+        protected List<T> Invoke<T>(IEnumerable<CPPModel> models) where T : BaseCPPModelVisitor, new()
         {
+            var result = new List<T>();
+
             foreach (var model in models)
             {
-                Invoke<T>(model);
+                result.Add(Invoke<T>(model));
             }
+
+            return result;
         }
     }
 }
