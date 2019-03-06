@@ -20,6 +20,14 @@ namespace Quokka.CS2CPP.Translator.Visitors
             };
         }
 
+        public override void VisitIdentifierName(IdentifierNameSyntax node)
+        {
+            Expression = new IdentifierExpressionCPPModel()
+            {
+                Identifier = node.Identifier.ToString()
+            };
+        }
+
         static Dictionary<string, ExpressionTypeCPPModel> _lookup = new Dictionary<string, ExpressionTypeCPPModel>()
         {
             { "==",  ExpressionTypeCPPModel.Equal },
@@ -28,6 +36,10 @@ namespace Quokka.CS2CPP.Translator.Visitors
             { "<=",  ExpressionTypeCPPModel.LessOrEqual },
             { ">",  ExpressionTypeCPPModel.Greater },
             { ">=",  ExpressionTypeCPPModel.GreaterOrEqual },
+            { "+",  ExpressionTypeCPPModel.Add },
+            { "-",  ExpressionTypeCPPModel.Sub },
+            { "*",  ExpressionTypeCPPModel.Mult },
+            { "/",  ExpressionTypeCPPModel.Div },
         };
 
         ExpressionTypeCPPModel ToExpressionType(SyntaxNode node, string op)

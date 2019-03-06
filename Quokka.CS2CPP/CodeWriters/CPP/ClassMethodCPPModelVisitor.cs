@@ -25,5 +25,21 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
                 AppendLine($"{TypeLookup.LookupCPPTypeName(model.DataType)} {model.Name};");
             }
         }
+
+        public override void VisitAssignmentExpressionCPPModel(AssignmentExpressionCPPModel model)
+        {
+            var left = Invoke<ExpressionBuilder>(model.Left).Expression;
+            var right = Invoke<ExpressionBuilder>(model.Right).Expression;
+            AppendLine($"{left} = {right};");
+        }
+
+        public override void VisitWhileLoopCPPModel(WhileLoopCPPModel model)
+        {
+            var condition = Invoke<ExpressionBuilder>(model.Condition).Expression;
+            AppendLine($"while({condition})");
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+        }
     }
 }

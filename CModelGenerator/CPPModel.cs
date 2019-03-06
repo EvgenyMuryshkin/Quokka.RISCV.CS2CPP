@@ -75,6 +75,17 @@ namespace metadata
         public string Value { get; set; }
     }
 
+    public class IdentifierExpressionCPPModel : ExpressionCPPModel
+    {
+        public string Identifier { get; set; }
+    }
+
+    public class AssignmentExpressionCPPModel : ExpressionCPPModel
+    {
+        public ExpressionCPPModel Left { get; set; }
+        public ExpressionCPPModel Right { get; set; }
+    }
+
     public enum ExpressionTypeCPPModel
     {
         Equal,
@@ -82,7 +93,11 @@ namespace metadata
         Less,
         LessOrEqual,
         Greater,
-        GreaterOrEqual
+        GreaterOrEqual,
+        Add,
+        Sub,
+        Mult,
+        Div
     }
 
     public class BinaryExpressionCPPModel : ExpressionCPPModel

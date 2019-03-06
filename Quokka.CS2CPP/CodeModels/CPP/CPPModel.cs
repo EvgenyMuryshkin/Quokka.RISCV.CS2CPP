@@ -95,6 +95,26 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		}
 		public String Value { get; set; } = "";
 	}
+	// generated class, do not modify
+	public partial class IdentifierExpressionCPPModel : ExpressionCPPModel
+	{
+		public IdentifierExpressionCPPModel(String Identifier = "")
+		{
+			this.Identifier = Identifier ?? "";
+		}
+		public String Identifier { get; set; } = "";
+	}
+	// generated class, do not modify
+	public partial class AssignmentExpressionCPPModel : ExpressionCPPModel
+	{
+		public AssignmentExpressionCPPModel(ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
+		{
+			this.Left = Left ?? null;
+			this.Right = Right ?? null;
+		}
+		public ExpressionCPPModel Left { get; set; } = null;
+		public ExpressionCPPModel Right { get; set; } = null;
+	}
 	public enum ExpressionTypeCPPModel
 	{
 		Equal = 0,
@@ -103,6 +123,10 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		LessOrEqual = 3,
 		Greater = 4,
 		GreaterOrEqual = 5,
+		Add = 6,
+		Sub = 7,
+		Mult = 8,
+		Div = 9,
 	}
 	// generated class, do not modify
 	public partial class BinaryExpressionCPPModel : ExpressionCPPModel
@@ -233,6 +257,8 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public virtual void VisitIncludeCPPModel(IncludeCPPModel model) => DefaultVisit(model);
 		public virtual void VisitModifiersCPPModel(ModifiersCPPModel model) => DefaultVisit(model);
 		public virtual void VisitLiteralExpressionCPPModel(LiteralExpressionCPPModel model) => DefaultVisit(model);
+		public virtual void VisitIdentifierExpressionCPPModel(IdentifierExpressionCPPModel model) => DefaultVisit(model);
+		public virtual void VisitAssignmentExpressionCPPModel(AssignmentExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitBinaryExpressionCPPModel(BinaryExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFieldCPPModel(FieldCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDataCPPModel(DataCPPModel model) => DefaultVisit(model);
@@ -251,6 +277,8 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 				case IncludeCPPModel m: VisitIncludeCPPModel(m); break;
 				case ModifiersCPPModel m: VisitModifiersCPPModel(m); break;
 				case LiteralExpressionCPPModel m: VisitLiteralExpressionCPPModel(m); break;
+				case IdentifierExpressionCPPModel m: VisitIdentifierExpressionCPPModel(m); break;
+				case AssignmentExpressionCPPModel m: VisitAssignmentExpressionCPPModel(m); break;
 				case BinaryExpressionCPPModel m: VisitBinaryExpressionCPPModel(m); break;
 				case FieldCPPModel m: VisitFieldCPPModel(m); break;
 				case DataCPPModel m: VisitDataCPPModel(m); break;

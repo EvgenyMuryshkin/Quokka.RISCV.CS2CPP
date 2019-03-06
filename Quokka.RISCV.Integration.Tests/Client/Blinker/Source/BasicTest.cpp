@@ -8,6 +8,11 @@ namespace UnitTests
 		{
 			int counter = 0;
 			double tmp = 0.5;
+			while((counter < 1024))
+			{
+				counter = (counter + 1);
+				tmp = (tmp * 2);
+			}
 		}
 	}
 }

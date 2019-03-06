@@ -16,7 +16,7 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
 
         public override void DefaultVisit(CPPModel model)
         {
-            throw new Exception($"Unsupported node type: {model.GetType().Name}: {model.ToString()}");
+            throw new Exception($"{GetType().Name}: Unsupported node type: {model.GetType().Name}: {model.ToString()}");
         }
 
         protected void VisitChildren(IEnumerable<CPPModel> children)

@@ -30,5 +30,19 @@ namespace Quokka.CS2CPP.Translator.Visitors
                 Visit(node.Statement);
             }
         }
+
+        public override void VisitExpressionStatement(ExpressionStatementSyntax node)
+        {
+            Visit(node.Expression);
+        }
+
+        public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
+        {
+            Context.MembersContainer.Members.Add(new AssignmentExpressionCPPModel()
+            {
+                Left = Invoke<ExpressionVisitor>(node.Left).Expression,
+                Right = Invoke<ExpressionVisitor>(node.Right).Expression
+            });
+        }
     }
 }
