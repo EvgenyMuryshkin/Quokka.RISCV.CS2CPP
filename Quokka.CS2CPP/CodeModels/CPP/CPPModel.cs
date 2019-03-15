@@ -115,7 +115,7 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public ExpressionCPPModel Left { get; set; } = null;
 		public ExpressionCPPModel Right { get; set; } = null;
 	}
-	public enum ExpressionTypeCPPModel
+	public enum BinaryExpressionTypeCPPModel
 	{
 		Equal = 0,
 		NotEqual = 1,
@@ -131,15 +131,54 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	// generated class, do not modify
 	public partial class BinaryExpressionCPPModel : ExpressionCPPModel
 	{
-		public BinaryExpressionCPPModel(ExpressionTypeCPPModel Type = 0, ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
+		public BinaryExpressionCPPModel(BinaryExpressionTypeCPPModel Type = 0, ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
 		{
 			this.Type = Type;
 			this.Left = Left ?? null;
 			this.Right = Right ?? null;
 		}
-		public ExpressionTypeCPPModel Type { get; set; } = 0;
+		public BinaryExpressionTypeCPPModel Type { get; set; } = 0;
 		public ExpressionCPPModel Left { get; set; } = null;
 		public ExpressionCPPModel Right { get; set; } = null;
+	}
+	public enum UnaryExpressionTypeCPPModel
+	{
+		Inclement = 0,
+		Decrement = 1,
+	}
+	// generated class, do not modify
+	public abstract partial class UnaryExpressionCPPModel : ExpressionCPPModel
+	{
+		public UnaryExpressionCPPModel(UnaryExpressionTypeCPPModel Type = 0, ExpressionCPPModel Operand = null)
+		{
+			this.Type = Type;
+			this.Operand = Operand ?? null;
+		}
+		public UnaryExpressionTypeCPPModel Type { get; set; } = 0;
+		public ExpressionCPPModel Operand { get; set; } = null;
+	}
+	// generated class, do not modify
+	public partial class PrefixUnaryExpressionCPPModel : UnaryExpressionCPPModel
+	{
+		public PrefixUnaryExpressionCPPModel()
+		{
+		}
+	}
+	// generated class, do not modify
+	public partial class PostfixUnaryExpressionCPPModel : UnaryExpressionCPPModel
+	{
+		public PostfixUnaryExpressionCPPModel()
+		{
+		}
+	}
+	// generated class, do not modify
+	public partial class ReturnExpresionCPPModel : ExpressionCPPModel
+	{
+		public ReturnExpresionCPPModel(ExpressionCPPModel Expression = null)
+		{
+			this.Expression = Expression ?? null;
+		}
+		public ExpressionCPPModel Expression { get; set; } = null;
 	}
 	// generated class, do not modify
 	public partial class FieldCPPModel : MemberCPPModel
@@ -165,26 +204,36 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public Type DataType { get; set; } = null;
 		public ExpressionCPPModel Initializer { get; set; } = null;
 	}
-	// generated class, do not modify
-	public partial class ArgumentCPPModel : MemberCPPModel
+	public enum ArgumentPassCPPModel
 	{
-		public ArgumentCPPModel()
+		Raw = 0,
+		Ref = 1,
+		Pointer = 2,
+	}
+	// generated class, do not modify
+	public partial class ParameterCPPModel : MemberCPPModel
+	{
+		public ParameterCPPModel(ArgumentPassCPPModel Pass = 0, Type ParameterType = null)
 		{
+			this.Pass = Pass;
+			this.ParameterType = ParameterType ?? null;
 		}
+		public ArgumentPassCPPModel Pass { get; set; } = 0;
+		public Type ParameterType { get; set; } = null;
 	}
 	// generated class, do not modify
 	public partial class MethodCPPModel : MemberCPPModel, IMembersContainerCPPModel
 	{
-		public MethodCPPModel(Type ReturnType = null, ModifiersCPPModel Modifiers = null, List<ArgumentCPPModel> Arguments = null, List<CPPModel> Members = null)
+		public MethodCPPModel(Type ReturnType = null, ModifiersCPPModel Modifiers = null, List<ParameterCPPModel> Parameters = null, List<CPPModel> Members = null)
 		{
 			this.ReturnType = ReturnType ?? null;
 			this.Modifiers = Modifiers ?? null;
-			this.Arguments = Arguments ?? new List<ArgumentCPPModel>();
+			this.Parameters = Parameters ?? new List<ParameterCPPModel>();
 			this.Members = Members ?? new List<CPPModel>();
 		}
 		public Type ReturnType { get; set; } = null;
 		public ModifiersCPPModel Modifiers { get; set; } = null;
-		public List<ArgumentCPPModel> Arguments { get; set; } = new List<ArgumentCPPModel>();
+		public List<ParameterCPPModel> Parameters { get; set; } = new List<ParameterCPPModel>();
 		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
 	}
 	// generated class, do not modify
@@ -244,6 +293,33 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		}
 	}
 	// generated class, do not modify
+	public partial class ArgumentCPPModel : CPPModel
+	{
+		public ArgumentCPPModel(ExpressionCPPModel Expression = null)
+		{
+			this.Expression = Expression ?? null;
+		}
+		public ExpressionCPPModel Expression { get; set; } = null;
+	}
+	// generated class, do not modify
+	public abstract partial class InvocationCPPModel : ExpressionCPPModel
+	{
+		public InvocationCPPModel(List<ArgumentCPPModel> Arguments = null)
+		{
+			this.Arguments = Arguments ?? new List<ArgumentCPPModel>();
+		}
+		public List<ArgumentCPPModel> Arguments { get; set; } = new List<ArgumentCPPModel>();
+	}
+	// generated class, do not modify
+	public partial class LocalInvocationCPPModel : InvocationCPPModel
+	{
+		public LocalInvocationCPPModel(String Method = "")
+		{
+			this.Method = Method ?? "";
+		}
+		public String Method { get; set; } = "";
+	}
+	// generated class, do not modify
 	public partial class FileCPPModel : CPPModel, IMembersContainerCPPModel
 	{
 		public FileCPPModel(List<CPPModel> Members = null)
@@ -260,15 +336,20 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public virtual void VisitIdentifierExpressionCPPModel(IdentifierExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitAssignmentExpressionCPPModel(AssignmentExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitBinaryExpressionCPPModel(BinaryExpressionCPPModel model) => DefaultVisit(model);
+		public virtual void VisitPrefixUnaryExpressionCPPModel(PrefixUnaryExpressionCPPModel model) => DefaultVisit(model);
+		public virtual void VisitPostfixUnaryExpressionCPPModel(PostfixUnaryExpressionCPPModel model) => DefaultVisit(model);
+		public virtual void VisitReturnExpresionCPPModel(ReturnExpresionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFieldCPPModel(FieldCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDataCPPModel(DataCPPModel model) => DefaultVisit(model);
-		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
+		public virtual void VisitParameterCPPModel(ParameterCPPModel model) => DefaultVisit(model);
 		public virtual void VisitMethodCPPModel(MethodCPPModel model) => DefaultVisit(model);
 		public virtual void VisitClassCPPModel(ClassCPPModel model) => DefaultVisit(model);
 		public virtual void VisitNamespaceCPPModel(NamespaceCPPModel model) => DefaultVisit(model);
 		public virtual void VisitWhileLoopCPPModel(WhileLoopCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDoLoopCPPModel(DoLoopCPPModel model) => DefaultVisit(model);
 		public virtual void VisitForLoopCPPModel(ForLoopCPPModel model) => DefaultVisit(model);
+		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
+		public virtual void VisitLocalInvocationCPPModel(LocalInvocationCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFileCPPModel(FileCPPModel model) => DefaultVisit(model);
 		public virtual void Visit(CPPModel model)
 		{
@@ -280,15 +361,20 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 				case IdentifierExpressionCPPModel m: VisitIdentifierExpressionCPPModel(m); break;
 				case AssignmentExpressionCPPModel m: VisitAssignmentExpressionCPPModel(m); break;
 				case BinaryExpressionCPPModel m: VisitBinaryExpressionCPPModel(m); break;
+				case PrefixUnaryExpressionCPPModel m: VisitPrefixUnaryExpressionCPPModel(m); break;
+				case PostfixUnaryExpressionCPPModel m: VisitPostfixUnaryExpressionCPPModel(m); break;
+				case ReturnExpresionCPPModel m: VisitReturnExpresionCPPModel(m); break;
 				case FieldCPPModel m: VisitFieldCPPModel(m); break;
 				case DataCPPModel m: VisitDataCPPModel(m); break;
-				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;
+				case ParameterCPPModel m: VisitParameterCPPModel(m); break;
 				case MethodCPPModel m: VisitMethodCPPModel(m); break;
 				case ClassCPPModel m: VisitClassCPPModel(m); break;
 				case NamespaceCPPModel m: VisitNamespaceCPPModel(m); break;
 				case WhileLoopCPPModel m: VisitWhileLoopCPPModel(m); break;
 				case DoLoopCPPModel m: VisitDoLoopCPPModel(m); break;
 				case ForLoopCPPModel m: VisitForLoopCPPModel(m); break;
+				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;
+				case LocalInvocationCPPModel m: VisitLocalInvocationCPPModel(m); break;
 				case FileCPPModel m: VisitFileCPPModel(m); break;
 			}
 		}

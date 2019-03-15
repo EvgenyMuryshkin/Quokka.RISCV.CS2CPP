@@ -23,6 +23,12 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
             AppendLine("}");
         }
 
+        public void CloseBlockWithSemicolon()
+        {
+            Indent--;
+            AppendLine("};");
+        }
+
         public void AppendLine(string value)
         {
             var lines = value.Split(Environment.NewLine);

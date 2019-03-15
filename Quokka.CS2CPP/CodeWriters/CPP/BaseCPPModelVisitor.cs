@@ -9,10 +9,15 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
     public class BaseCPPModelVisitor : CPPModelVisitor
     {
         protected CPPWriter _writer = new CPPWriter();
+
+        // CPP Writer wrappers
         public void OpenBlock() => _writer.OpenBlock();
         public void CloseBlock() => _writer.CloseBlock();
+        public void CloseBlockWithSemicolon() => _writer.CloseBlockWithSemicolon();
         public void AppendLine(string value) => _writer.AppendLine(value);
         public override string ToString() => _writer.ToString();
+
+        // Base boilerplate 
 
         public override void DefaultVisit(CPPModel model)
         {

@@ -22,6 +22,33 @@ namespace Quokka.CS2CPP.Translator.Resolvers
             return type;
         }
 
+        public MethodInfo ResolveMethodInfo(InvocationExpressionSyntax node)
+        {
+            if (!TryResolveMethodInfo(node, out MethodInfo result))
+                throw new Exception($"Failed to resolve MethodInfo: {node.Expression.ToString()}");
+
+            return result;
+        }
+
+        public bool TryResolveMethodInfo(
+            InvocationExpressionSyntax node,
+            out MethodInfo result)
+        {
+            result = null;
+
+            var resolver = new ResolveUsingsAndNamespacesVisitor();
+            resolver.Visit(node);
+
+            switch(node.Expression)
+            {
+                case IdentifierNameSyntax ins:
+                    // simple invocation like method() on current code block
+                    return Context.Library.TryResolveMethod(resolver.Namespaces.Concat(new[] { ins.Identifier.ValueText }), out result);
+            }
+
+            return false;
+        }
+
         public MethodInfo ResolveMethodInfo(MethodDeclarationSyntax node)
         {
             if (!TryResolveMethodInfo(node, out MethodInfo result))

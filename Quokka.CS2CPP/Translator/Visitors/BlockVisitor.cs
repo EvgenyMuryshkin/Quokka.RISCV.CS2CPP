@@ -31,9 +31,27 @@ namespace Quokka.CS2CPP.Translator.Visitors
             }
         }
 
+        public override void VisitReturnStatement(ReturnStatementSyntax node)
+        {
+            Context.MembersContainer.Members.Add(new ReturnExpresionCPPModel()
+            {
+                Expression = Invoke<ExpressionVisitor>(node.Expression).Expression,
+            });
+        }
+
         public override void VisitExpressionStatement(ExpressionStatementSyntax node)
         {
             Visit(node.Expression);
+        }
+
+        public override void VisitPostfixUnaryExpression(PostfixUnaryExpressionSyntax node)
+        {
+            Context.MembersContainer.Members.Add(Invoke<ExpressionVisitor>(node).Expression);
+        }
+
+        public override void VisitPrefixUnaryExpression(PrefixUnaryExpressionSyntax node)
+        {
+            Context.MembersContainer.Members.Add(Invoke<ExpressionVisitor>(node).Expression);
         }
 
         public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
@@ -43,6 +61,11 @@ namespace Quokka.CS2CPP.Translator.Visitors
                 Left = Invoke<ExpressionVisitor>(node.Left).Expression,
                 Right = Invoke<ExpressionVisitor>(node.Right).Expression
             });
+        }
+
+        public override void VisitInvocationExpression(InvocationExpressionSyntax node)
+        {
+            Context.MembersContainer.Members.Add(Invoke<ExpressionVisitor>(node).Expression);
         }
     }
 }

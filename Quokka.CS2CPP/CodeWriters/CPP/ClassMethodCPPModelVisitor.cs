@@ -1,5 +1,6 @@
 ﻿using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.CodeWriters.Tools;
+using System.Linq;
 
 namespace Quokka.CS2CPP.CodeWriters.CPP
 {
@@ -7,7 +8,25 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
     {
         public override void VisitMethodCPPModel(MethodCPPModel model)
         {
-            AppendLine($"{CPPModelTools.Modifiers(model.Modifiers)} {TypeLookup.LookupCPPTypeName(model.ReturnType)} {model.Name}()");
+            var pars = string.Join(", ", model.Parameters.Select(arg =>
+            {
+                var pass = "";
+                switch(arg.Pass)
+                {
+                    case ArgumentPassCPPModel.Ref:
+                        pass = " &";
+                        break;
+                    case ArgumentPassCPPModel.Pointer:
+                        pass = "* ";
+                        break;
+                    case ArgumentPassCPPModel.Raw:
+                        pass = " ";
+                        break;
+                }
+                return $"{TypeLookup.LookupCPPTypeName(arg.ParameterType)}{pass}{arg.Name}";
+            }));
+
+            AppendLine($"{CPPModelTools.Modifiers(model.Modifiers)} {TypeLookup.LookupCPPTypeName(model.ReturnType)} {model.Name}({pars})");
             OpenBlock();
             VisitChildren(model.Members);
             CloseBlock();
@@ -40,6 +59,30 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
             OpenBlock();
             VisitChildren(model.Members);
             CloseBlock();
+        }
+
+        public override void VisitPostfixUnaryExpressionCPPModel(PostfixUnaryExpressionCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model).Expression;
+            AppendLine($"{expression};");
+        }
+
+        public override void VisitPrefixUnaryExpressionCPPModel(PrefixUnaryExpressionCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model).Expression;
+            AppendLine($"{expression};");
+        }
+
+        public override void VisitReturnExpresionCPPModel(ReturnExpresionCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model.Expression).Expression;
+            AppendLine($"return {expression};");
+        }
+
+        public override void VisitLocalInvocationCPPModel(LocalInvocationCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model).Expression;
+            AppendLine($"{expression};");
         }
     }
 }

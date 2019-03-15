@@ -6,6 +6,16 @@ namespace UnitTests
 {
     public static class BasicTest
     {
+        public static int increment(int value)
+        {
+            return value + 1;
+        }
+
+        public static void incrementByRef(ref int value)
+        {
+            value++;
+        }
+
         public static void _main()
         {
             int counter = 0;
@@ -13,7 +23,8 @@ namespace UnitTests
 
             while(counter < 1024)
             {
-                counter = counter + 1;
+                counter = increment(counter);
+                incrementByRef(ref counter);
                 tmp = tmp * 2;
             }
         }

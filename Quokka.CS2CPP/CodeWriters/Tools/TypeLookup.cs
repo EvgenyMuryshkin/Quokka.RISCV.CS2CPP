@@ -24,7 +24,10 @@ namespace Quokka.CS2CPP.CodeWriters.Tools
             if (nativeTypes.ContainsKey(type))
                 return nativeTypes[type];
 
-            return type.Name;
+            if (type.IsClass || type.IsEnum)
+                return type.Name;
+
+            throw new Exception($"Unsupported type {type.Name}");
         }
     }
 }

@@ -6,19 +6,29 @@ using System.Text;
 
 namespace Quokka.CS2CPP.CodeWriters.Tools
 {
+    public enum ModifersFlag
+    {
+        AccessTypeCPPModel = 1,
+        InstanceTypeCPPModel = 2,
+        OverloadTypeCPPModel = 4,
+    }
+       
     public static class CPPModelTools
     {
-        public static string Modifiers(ModifiersCPPModel modifiers)
+        public static string Modifiers(
+            ModifiersCPPModel modifiers,
+            ModifersFlag flags = ModifersFlag.AccessTypeCPPModel | ModifersFlag.InstanceTypeCPPModel | ModifersFlag.OverloadTypeCPPModel)
         {
             var list = new List<string>();
+            Func<ModifersFlag, bool> hasFlag = (flag) => (flags & flag) == flag;
 
-            if (modifiers.AccessType != AccessTypeCPPModel.None)
+            if (hasFlag(ModifersFlag.AccessTypeCPPModel) && modifiers.AccessType != AccessTypeCPPModel.None)
                 list.Add($"{modifiers.AccessType.ToString().ToLower()}:");
 
-            if (modifiers.InstanceType == InstanceTypeCPPModel.Static)
+            if (hasFlag(ModifersFlag.InstanceTypeCPPModel) && modifiers.InstanceType == InstanceTypeCPPModel.Static)
                 list.Add("static");
 
-            if (modifiers.OverloadType != OverloadTypeCPPModel.None)
+            if (hasFlag(ModifersFlag.OverloadTypeCPPModel) && modifiers.OverloadType != OverloadTypeCPPModel.None)
             {
                 list.Add(modifiers.OverloadType.ToString().ToLower());
             }

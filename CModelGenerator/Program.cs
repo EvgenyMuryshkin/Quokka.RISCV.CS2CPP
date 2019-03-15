@@ -72,6 +72,8 @@ namespace CPPModelGenerator
 
         static void Main(string[] args)
         {
+            Console.WriteLine($"Running at {Directory.GetCurrentDirectory()}");
+
             var allCPPModels = Assembly.GetExecutingAssembly().ExportedTypes.Where(t => t.Namespace == "metadata");
             var context = new GeneratorContext()
             {
@@ -79,9 +81,12 @@ namespace CPPModelGenerator
             };
 
             var visitor = Visitor(context);
-            File.WriteAllText(@"C:\code\Quokka.RISCV.Docker.Server\Quokka.CS2CPP\CodeModels\CPP\CPPModel.cs", visitor);
+            var path = Path.GetFullPath(@"..\Quokka.CS2CPP\CodeModels\CPP\CPPModel.cs");
+            Console.WriteLine($"Writing {path}");
 
-            Console.WriteLine("Completed!");
+            File.WriteAllText(path, visitor);
+
+            Console.WriteLine("CS2CPP Completed!");
         }
     }
 }

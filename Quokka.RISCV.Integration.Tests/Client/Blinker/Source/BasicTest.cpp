@@ -1,18 +1,27 @@
-include <stdint>
-include <stdbool>
+#include <stdint.h>
+#include <stdbool.h>
 namespace UnitTests
 {
-	static class BasicTest
+	class BasicTest
 	{
+		public: static int increment(int value)
+		{
+			return (value + 1);
+		}
+		public: static void incrementByRef(int &value)
+		{
+			(value++);
+		}
 		public: static void _main()
 		{
 			int counter = 0;
 			double tmp = 0.5;
 			while((counter < 1024))
 			{
-				counter = (counter + 1);
+				counter = increment(counter);
+				incrementByRef(counter);
 				tmp = (tmp * 2);
 			}
 		}
-	}
+	};
 }

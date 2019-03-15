@@ -9,10 +9,10 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
             switch (model.Type)
             {
                 case IncludeTypeCPPModel.System:
-                    AppendLine($"include <{model.Name}>");
+                    AppendLine($"#include <{model.Name}.h>");
                     break;
                 case IncludeTypeCPPModel.User:
-                    AppendLine($"include \"{model.Name}\"");
+                    AppendLine($"#include \"{model.Name}\".h");
                     break;
             }
         }

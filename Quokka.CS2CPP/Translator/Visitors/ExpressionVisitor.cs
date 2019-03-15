@@ -5,6 +5,7 @@ using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.Translator.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Quokka.CS2CPP.Translator.Visitors
 {
@@ -28,26 +29,40 @@ namespace Quokka.CS2CPP.Translator.Visitors
             };
         }
 
-        static Dictionary<string, ExpressionTypeCPPModel> _lookup = new Dictionary<string, ExpressionTypeCPPModel>()
+        static Dictionary<string, BinaryExpressionTypeCPPModel> _binaryExpressionLookup = new Dictionary<string, BinaryExpressionTypeCPPModel>()
         {
-            { "==",  ExpressionTypeCPPModel.Equal },
-            { "!=",  ExpressionTypeCPPModel.NotEqual },
-            { "<",  ExpressionTypeCPPModel.Less },
-            { "<=",  ExpressionTypeCPPModel.LessOrEqual },
-            { ">",  ExpressionTypeCPPModel.Greater },
-            { ">=",  ExpressionTypeCPPModel.GreaterOrEqual },
-            { "+",  ExpressionTypeCPPModel.Add },
-            { "-",  ExpressionTypeCPPModel.Sub },
-            { "*",  ExpressionTypeCPPModel.Mult },
-            { "/",  ExpressionTypeCPPModel.Div },
+            { "==",  BinaryExpressionTypeCPPModel.Equal },
+            { "!=",  BinaryExpressionTypeCPPModel.NotEqual },
+            { "<",  BinaryExpressionTypeCPPModel.Less },
+            { "<=",  BinaryExpressionTypeCPPModel.LessOrEqual },
+            { ">",  BinaryExpressionTypeCPPModel.Greater },
+            { ">=",  BinaryExpressionTypeCPPModel.GreaterOrEqual },
+            { "+",  BinaryExpressionTypeCPPModel.Add },
+            { "-",  BinaryExpressionTypeCPPModel.Sub },
+            { "*",  BinaryExpressionTypeCPPModel.Mult },
+            { "/",  BinaryExpressionTypeCPPModel.Div },
         };
 
-        ExpressionTypeCPPModel ToExpressionType(SyntaxNode node, string op)
+        BinaryExpressionTypeCPPModel ToBinaryExpressionType(SyntaxNode node, string op)
         {
-            if (!_lookup.ContainsKey(op))
-                Unsupported(node, $"Unsupported operation type: {op}");
+            if (!_binaryExpressionLookup.ContainsKey(op))
+                Unsupported(node, $"Unsupported binary operation type: {op}");
 
-            return _lookup[op];
+            return _binaryExpressionLookup[op];
+        }
+
+        static Dictionary<string, UnaryExpressionTypeCPPModel> _unaryExpressionLookup = new Dictionary<string, UnaryExpressionTypeCPPModel>()
+        {
+            { "++",  UnaryExpressionTypeCPPModel.Inclement },
+            { "--",  UnaryExpressionTypeCPPModel.Decrement },
+        };
+
+        UnaryExpressionTypeCPPModel ToUnaryExpressionType(SyntaxNode node, string op)
+        {
+            if (!_unaryExpressionLookup.ContainsKey(op))
+                Unsupported(node, $"Unsupported unary operation type: {op}");
+
+            return _unaryExpressionLookup[op];
         }
 
         public override void VisitBinaryExpression(BinaryExpressionSyntax node)
@@ -56,7 +71,44 @@ namespace Quokka.CS2CPP.Translator.Visitors
             {
                 Left = Invoke<ExpressionVisitor>(node.Left).Expression,
                 Right = Invoke<ExpressionVisitor>(node.Right).Expression,
-                Type = ToExpressionType(node, node.OperatorToken.ToString())
+                Type = ToBinaryExpressionType(node, node.OperatorToken.ToString())
+            };
+        }
+
+        public override void VisitPrefixUnaryExpression(PrefixUnaryExpressionSyntax node)
+        {
+            Expression = new PrefixUnaryExpressionCPPModel()
+            {
+                Operand = Invoke<ExpressionVisitor>(node.Operand).Expression,
+                Type = ToUnaryExpressionType(node, node.OperatorToken.ToString())
+            };
+        }
+
+        public override void VisitPostfixUnaryExpression(PostfixUnaryExpressionSyntax node)
+        {
+            Expression = new PostfixUnaryExpressionCPPModel()
+            {
+                Operand = Invoke<ExpressionVisitor>(node.Operand).Expression,
+                Type = ToUnaryExpressionType(node, node.OperatorToken.ToString())
+            };
+        }
+
+        public override void VisitInvocationExpression(InvocationExpressionSyntax node)
+        {
+            var methodInfo = TypeResolver.ResolveMethodInfo(node);
+            Expression = new LocalInvocationCPPModel()
+            {
+                Method = methodInfo.Name,
+                Arguments = node
+                                .ArgumentList
+                                .Arguments
+                                .Select(arg => 
+                                    new ArgumentCPPModel()
+                                    {
+                                        Expression = Invoke<ExpressionVisitor>(arg.Expression).Expression
+                                    })
+                                .ToList()
+                
             };
         }
     }  

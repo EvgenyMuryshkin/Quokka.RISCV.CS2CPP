@@ -10,18 +10,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
     {
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var methodInfo = TypeResolver.ResolveMethodInfo(node);
-
-            var _method = new MethodCPPModel(Modifiers: new ModifiersCPPModel());
-            _method.Name = node.Identifier.ToString();
-            _method.ReturnType = methodInfo.ReturnType;
-            _method.Modifiers.AccessType = node.Modifiers.ExtractAccessType();
-            _method.Modifiers.InstanceType = node.Modifiers.ExtractInstanceType();
-
-            using (Context.WithCodeContainer(_method))
-            {
-                Invoke<MethodVisitor>(node);
-            }
+            Invoke<MethodVisitor>(node);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace metadata
         public ExpressionCPPModel Right { get; set; }
     }
 
-    public enum ExpressionTypeCPPModel
+    public enum BinaryExpressionTypeCPPModel
     {
         Equal,
         NotEqual,
@@ -102,9 +102,34 @@ namespace metadata
 
     public class BinaryExpressionCPPModel : ExpressionCPPModel
     {
-        public ExpressionTypeCPPModel Type { get; set; }
+        public BinaryExpressionTypeCPPModel Type { get; set; }
         public ExpressionCPPModel Left { get; set; }
         public ExpressionCPPModel Right { get; set; }
+    }
+
+    public enum UnaryExpressionTypeCPPModel
+    {
+        Inclement,
+        Decrement
+    }
+
+    public abstract class UnaryExpressionCPPModel : ExpressionCPPModel
+    {
+        public UnaryExpressionTypeCPPModel Type { get; set; }
+        public ExpressionCPPModel Operand { get; set; }
+    }
+
+    public class PrefixUnaryExpressionCPPModel : UnaryExpressionCPPModel
+    {
+    }
+
+    public class PostfixUnaryExpressionCPPModel : UnaryExpressionCPPModel
+    {
+    }
+
+    public class ReturnExpresionCPPModel : ExpressionCPPModel
+    {
+        public ExpressionCPPModel Expression { get; set; }
     }
 
     public class FieldCPPModel : MemberCPPModel
@@ -120,8 +145,17 @@ namespace metadata
         public ExpressionCPPModel Initializer { get; set; }
     }
 
-    public class ArgumentCPPModel : MemberCPPModel
+    public enum ArgumentPassCPPModel
     {
+        Raw,
+        Ref,
+        Pointer
+    }
+
+    public class ParameterCPPModel : MemberCPPModel
+    {
+        public ArgumentPassCPPModel Pass { get; set; }
+        public Type ParameterType { get; set; }
     }
 
     public class MethodCPPModel : MemberCPPModel, IMembersContainerCPPModel
@@ -129,7 +163,7 @@ namespace metadata
         public Type ReturnType { get; set; }
 
         public ModifiersCPPModel Modifiers { get; set; }
-        public List<ArgumentCPPModel> Arguments { get; set; }
+        public List<ParameterCPPModel> Parameters { get; set; }
         public List<CPPModel> Members { get; set; }
     }
 
@@ -162,6 +196,21 @@ namespace metadata
 
     public class ForLoopCPPModel : LoopCPPModel
     {
+    }
+    
+    public class ArgumentCPPModel : CPPModel
+    {
+        public ExpressionCPPModel Expression { get; set; }
+    }
+
+    public abstract class InvocationCPPModel : ExpressionCPPModel
+    {
+        public List<ArgumentCPPModel> Arguments { get; set; }
+    }
+
+    public class LocalInvocationCPPModel : InvocationCPPModel
+    {
+        public string Method { get; set; }
     }
 
     public class FileCPPModel : CPPModel, IMembersContainerCPPModel
