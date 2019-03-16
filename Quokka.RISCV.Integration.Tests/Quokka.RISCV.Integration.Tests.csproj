@@ -100,6 +100,8 @@
 
   <ItemGroup>
     <Folder Include="Client\TinyFPGA-BX\" />
+    <Folder Include="Intermediate\Firmware\" />
+    <Folder Include="Intermediate\Hardware\" />
   </ItemGroup>
 
 </Project>

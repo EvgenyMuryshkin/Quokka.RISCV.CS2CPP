@@ -48,6 +48,12 @@ namespace Quokka.CS2CPP.Translator.Visitors
 
                 Context.Models.AddRange(systemIncludes.Select(i => new IncludeCPPModel() { Name = i, Type = IncludeTypeCPPModel.System }));
 
+                var userIncludes = new[]
+                {
+                    "dma"
+                };
+                Context.Models.AddRange(userIncludes.Select(i => new IncludeCPPModel() { Name = i, Type = IncludeTypeCPPModel.User }));
+
                 VisitChildren(node);
             }
         }

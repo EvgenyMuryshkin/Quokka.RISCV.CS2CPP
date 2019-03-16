@@ -290,7 +290,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
             firmwareTemplatePath = IntegrationGenerator.ReplaceToken(firmwareTemplatePath, firmwareMap);
 
             var generator = new IntegrationGenerator();
-            context.SourceSnapshot.Files.Add(generator.ExtenalsImport(externalData));
+            context.SourceSnapshot.Files.Add(generator.DMAImport(externalData));
             context.SourceSnapshot.Files.Add(generator.Firmware(firmwareTemplatePath));
 
             new FSManager(sourceRoot).SaveSnapshot(context.SourceSnapshot);

@@ -12,7 +12,7 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
                     AppendLine($"#include <{model.Name}.h>");
                     break;
                 case IncludeTypeCPPModel.User:
-                    AppendLine($"#include \"{model.Name}\".h");
+                    AppendLine($"#include \"{model.Name}.h\"");
                     break;
             }
         }

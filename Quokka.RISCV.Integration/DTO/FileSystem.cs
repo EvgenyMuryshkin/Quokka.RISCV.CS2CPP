@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Quokka.RISCV.Integration.DTO
@@ -40,6 +41,37 @@ namespace Quokka.RISCV.Integration.DTO
     public class FSSnapshot
     {
         public List<FSFile> Files { get; set; } = new List<FSFile>();
+
+        public T Get<T>(string name)
+            where T : FSFile
+        {
+            return Files.Single(f => f.Name == name) as T;
+        }
+
+        public void Add(FSFile file)
+        {
+            Files.Add(file);
+        }
+
+        public void Add(string name, string content)
+        {
+            Add(new FSTextFile() { Name = name, Content = content });
+        }
+
+        public void Add(string name, byte[] content)
+        {
+            Add(new FSBinaryFile() { Name = name, Content = content });
+        }
+
+        public void Merge(FSSnapshot snapshot, Func<FSFile, bool> filter = null)
+        {
+            var newFiles = snapshot.Files.Where(f => filter == null || filter(f)).ToList();
+            var newFileNames = newFiles.Select(f => f.Name).ToHashSet();
+
+            Files = Files.Where(f => !newFileNames.Contains(f.Name)).ToList();
+
+            Files.AddRange(newFiles);
+        }
     }
 
     public class ExtensionClasses

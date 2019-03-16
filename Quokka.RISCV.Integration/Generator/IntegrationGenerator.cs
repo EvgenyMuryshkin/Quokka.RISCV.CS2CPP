@@ -15,7 +15,7 @@ namespace Quokka.RISCV.Integration.Generator
 
     public class IntegrationGenerator
     {
-        public FSTextFile ExtenalsImport(IEnumerable<ExternalDataRecord> data)
+        public FSTextFile DMAImport(IEnumerable<ExternalDataRecord> data)
         {
             var content = new StringBuilder();
             foreach (var item in data)
@@ -34,7 +34,7 @@ namespace Quokka.RISCV.Integration.Generator
 
             return new FSTextFile()
             {
-                Name = "externals.h",
+                Name = "dma.h",
                 Content = content.ToString()
             };
         }
