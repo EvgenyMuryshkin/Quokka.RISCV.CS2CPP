@@ -1,4 +1,5 @@
 ﻿using Quokka.CS2CPP.CodeModels.CPP;
+using Quokka.CS2CPP.CodeWriters.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
     public class BaseCPPModelVisitor : CPPModelVisitor
     {
         protected CPPWriter _writer = new CPPWriter();
+
+        public CodeWriterContext Context { get; set; }
 
         // CPP Writer wrappers
         public void OpenBlock() => _writer.OpenBlock();
@@ -34,7 +37,11 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
 
         protected T Resolve<T>() where T : BaseCPPModelVisitor, new()
         {
-            return new T() { _writer = _writer };
+            return new T()
+            {
+                _writer = _writer,
+                Context = Context
+            };
         }
 
         protected T Invoke<T>(CPPModel model) where T : BaseCPPModelVisitor, new()

@@ -10,6 +10,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
 {
     public class TranslationContext
     {
+        public string FileName;
         public ComponentsLibrary Library;
         public SyntaxTree Root;
         public SemanticModel SemanticModel => Library.SemanticModels[Root];

@@ -7,6 +7,7 @@ extern uint32_t sram;
 
 #include "plumbing.h"
 #include "dma.h"
+{FIRMWARE_INCLUDES}
 
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss,_heap_start;
 
@@ -18,5 +19,5 @@ void main() {
         *dest++ = 0;
     }
 
-	{MAIN_CODE}
+	{FIRMWARE_CODE}
 }

@@ -26,16 +26,19 @@ namespace Quokka.CS2CPP.Translator
             // translate each source file
             foreach (var tree in trees)
             {
+                var fileName = Path.GetFileNameWithoutExtension(tree.Key);
+
                 var context = new TranslationContext()
                 {
                     Library = library,
-                    Root = tree.Value
+                    Root = tree.Value,
+                    FileName = fileName,
                 };
 
-                var fileName = $"{Path.GetFileNameWithoutExtension(tree.Key)}.cpp";
                 var content = new SourceFileVisitor().Translate(context, tree.Value);
 
-                result.Files.Add(new FSTextFile() { Name = fileName, Content = content });
+                result.Files.Add(new FSTextFile() { Name = $"{fileName}.h", Content = content["h"] });
+                result.Files.Add(new FSTextFile() { Name = $"{fileName}.cpp", Content = content["cpp"] });
             }
 
             return result;

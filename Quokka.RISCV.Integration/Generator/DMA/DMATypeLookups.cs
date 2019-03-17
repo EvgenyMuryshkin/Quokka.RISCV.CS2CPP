@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Quokka.RISCV.Integration.Generator.ExternalDataMapping
+namespace Quokka.RISCV.Integration.Generator.DMA
 {
-    public class Lookups
+    public class DMATypeLookups
     {
         public static uint DataSize(Type data)
         {
@@ -41,18 +40,5 @@ namespace Quokka.RISCV.Integration.Generator.ExternalDataMapping
 
             return sizes[data];
         }
-    }
-
-    public class ExternalDataRecord
-    {
-        public string SoftwareName { get; set; }
-        public string HardwareName { get; set; }
-        public uint Segment { get; set; }
-        public uint Depth { get; set; }
-        public string Template { get; set; }
-        public Type DataType { get; set; }
-
-        public uint Width => Lookups.DataSize(DataType);
-        public string CType => Lookups.CType(DataType);
     }
 }

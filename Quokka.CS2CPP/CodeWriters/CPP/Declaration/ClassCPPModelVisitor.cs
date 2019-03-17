@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quokka.CS2CPP.CodeWriters.CPP
+namespace Quokka.CS2CPP.CodeWriters.CPP.Declaration
 {
-
     public class ClassCPPModelVisitor : BaseCPPModelVisitor
     {
         public override void VisitClassCPPModel(ClassCPPModel model)

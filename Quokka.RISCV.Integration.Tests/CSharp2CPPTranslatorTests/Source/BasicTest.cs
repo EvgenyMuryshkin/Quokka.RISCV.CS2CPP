@@ -16,16 +16,14 @@ namespace UnitTests
             value++;
         }
 
-        public static void _main()
+        public static void EntryPoint()
         {
             int counter = 0;
-            var tmp = 0.5;
 
             while(counter < 1024)
             {
                 counter = increment(counter);
                 incrementByRef(ref counter);
-                tmp = tmp * 2;
             }
         }
     }

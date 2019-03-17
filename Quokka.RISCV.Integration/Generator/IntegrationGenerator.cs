@@ -1,5 +1,5 @@
 ﻿using Quokka.RISCV.Integration.DTO;
-using Quokka.RISCV.Integration.Generator.ExternalDataMapping;
+using Quokka.RISCV.Integration.Generator.DMA;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,50 +15,12 @@ namespace Quokka.RISCV.Integration.Generator
 
     public class IntegrationGenerator
     {
-        public FSTextFile DMAImport(IEnumerable<ExternalDataRecord> data)
-        {
-            var content = new StringBuilder();
-            foreach (var item in data)
-            {
-                var address = item.Segment << 24;
-                if (item.Depth == 0)
-                {
-                    content.AppendLine($"#define {item.SoftwareName} (*(volatile {item.CType}*)0x{address.ToString("X8")})");
-                }
-                else
-                {
-                    content.AppendLine($"#define {item.SoftwareName} ((volatile {item.CType}*)0x{address.ToString("X8")})");
-                    content.AppendLine($"#define {item.SoftwareName}_size {item.Depth.ToString()}");
-                }
-            }
-
-            return new FSTextFile()
-            {
-                Name = "dma.h",
-                Content = content.ToString()
-            };
-        }
-
         public FSTextFile Firmware(string content)
         {
             return new FirmwareGenerator().FromTemplate(content);
         }
 
-        public static string ReplaceToken(
-            string content,
-            string token,
-            string replacement)
-        {
-            var modified = Regex.Replace(
-                content,
-                $"(// BEGIN {token})" + "(.*)" + $"(// END {token})",
-                $"$1{Environment.NewLine}{replacement}{Environment.NewLine}$3",
-                RegexOptions.Singleline);
-
-            return modified;
-        }
-
-        public string DataDeclaration(ExternalDataRecord record)
+        public string DataDeclaration(DMARecord record)
         {
             if (record.Depth == 0 )
             {
@@ -84,13 +46,13 @@ namespace Quokka.RISCV.Integration.Generator
             }
         }
 
-        public string DataDeclaration(List<ExternalDataRecord> externalData)
+        public string DataDeclaration(List<DMARecord> externalData)
         {
             return string.Join("", externalData.Select(d => $"{DataDeclaration(d)}{Environment.NewLine}"));
         }
 
         public string DataControl(
-            ExternalDataRecord record,
+            DMARecord record,
             IntegrationTemplates templates)
         {
             var map = new Dictionary<string, string>();
@@ -115,36 +77,18 @@ namespace Quokka.RISCV.Integration.Generator
         }
 
         public string DataControl(
-            List<ExternalDataRecord> externalData,
+            List<DMARecord> externalData,
             IntegrationTemplates templates)
         {
             return string.Join("", externalData.Select(d => $"{DataControl(d, templates)}{Environment.NewLine}"));
         }
 
-        public string MemReady(List<ExternalDataRecord> externalData)
+        public string MemReady(List<DMARecord> externalData)
         {
             return string.Join(" || ", externalData.Select(d => $"{d.HardwareName}_ready"));
         }
 
-        public static string ReplaceToken(string hardwareTemplate, Dictionary<string, string> replacers)
-        {
-            // regex replace
-            foreach (var pair in replacers)
-            {
-                hardwareTemplate = ReplaceToken(hardwareTemplate, pair.Key, pair.Value);
-            }
-
-            // token replace
-            foreach (var pair in replacers)
-            {
-                var token = $"{{{pair.Key}}}";
-                hardwareTemplate = hardwareTemplate.Replace(token, pair.Value);
-            }
-
-            return hardwareTemplate;
-        }
-
-        public string MemRData(List<ExternalDataRecord> externalData)
+        public string MemRData(List<DMARecord> externalData)
         {
             if (!externalData.Any())
                 return "32'b0";

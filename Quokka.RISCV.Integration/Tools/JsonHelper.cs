@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quokka.RISCV.Integration.Client
+namespace Quokka.RISCV.Integration.Tools
 {
     public class JsonHelper
     {

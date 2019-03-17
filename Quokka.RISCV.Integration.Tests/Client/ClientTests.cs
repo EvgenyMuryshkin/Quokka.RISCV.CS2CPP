@@ -3,7 +3,8 @@ using Quokka.RISCV.Integration.Client;
 using Quokka.RISCV.Integration.DTO;
 using Quokka.RISCV.Integration.Engine;
 using Quokka.RISCV.Integration.Generator;
-using Quokka.RISCV.Integration.Generator.ExternalDataMapping;
+using Quokka.RISCV.Integration.Generator.DMA;
+using Quokka.RISCV.Integration.Tests.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +26,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
 
             var testDataRoot = Path.Combine(Directory.GetCurrentDirectory(), "client", "TestDataWindows");
 
-            var context = new RISCVIntegrationClientContext()
+            var context = new RISCVIntegrationContext()
                 .WithPort(15001)
                 .WithExtensionClasses(new ExtensionClasses().Text("cmd"))
                 .WithRootFolder(testDataRoot)
@@ -47,7 +48,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
 
             var testDataRoot = Path.Combine(Directory.GetCurrentDirectory(), "client", "TestDataDocker");
 
-            var context = new RISCVIntegrationClientContext()
+            var context = new RISCVIntegrationContext()
                 .WithPort(15000)
                 .WithExtensionClasses(new ExtensionClasses().Text("sh"))
                 .WithRootFolder(testDataRoot)
@@ -74,7 +75,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
 
             var testDataRoot = Path.Combine(Directory.GetCurrentDirectory(), "client", "TinyFPGA-BX");
 
-            var context = new RISCVIntegrationClientContext()
+            var context = new RISCVIntegrationContext()
                 .WithPort(15000)
                 .WithExtensionClasses(
                     new ExtensionClasses()
@@ -116,9 +117,9 @@ namespace Quokka.RISCV.Docker.Server.Tests
         [TestMethod]
         public async Task RISCV_Memory_UInt()
         {
-            var externalData = new List<ExternalDataRecord>()
+            var externalData = new List<DMARecord>()
             {
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x00,
                     DataType = typeof(uint),
                     Depth = 512,
@@ -126,7 +127,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     HardwareName = "l_mem",
                     Template = "memory32"
                 },
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x01,
                     DataType = typeof(uint),
                     Depth = 16,
@@ -150,9 +151,9 @@ namespace Quokka.RISCV.Docker.Server.Tests
         [TestMethod]
         public async Task RISCV_Memory_UShort()
         {
-            var externalData = new List<ExternalDataRecord>()
+            var externalData = new List<DMARecord>()
             {
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x00,
                     DataType = typeof(uint),
                     Depth = 512,
@@ -160,7 +161,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     HardwareName = "l_mem",
                     Template = "memory32"
                 },
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x01,
                     DataType = typeof(ushort),
                     Depth = 16,
@@ -184,9 +185,9 @@ namespace Quokka.RISCV.Docker.Server.Tests
         [TestMethod]
         public async Task RISCV_Memory_Byte()
         {
-            var externalData = new List<ExternalDataRecord>()
+            var externalData = new List<DMARecord>()
             {
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x00,
                     DataType = typeof(uint),
                     Depth = 512,
@@ -194,7 +195,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     HardwareName = "l_mem",
                     Template = "memory32"
                 },
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x01,
                     DataType = typeof(byte),
                     Depth = 16,
@@ -221,9 +222,9 @@ namespace Quokka.RISCV.Docker.Server.Tests
             //if (!Debugger.IsAttached)
             //    Assert.Inconclusive("Run local service and debug this test");
 
-            var externalData = new List<ExternalDataRecord>()
+            var externalData = new List<DMARecord>()
             {
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x00,
                     DataType = typeof(uint),
                     Depth = 512,
@@ -231,7 +232,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
                     HardwareName = "l_mem",
                     Template = "memory32"
                 },
-                new ExternalDataRecord() {
+                new DMARecord() {
                     Segment = 0x01,
                     DataType = typeof(uint),
                     SoftwareName = "LED1",
@@ -254,13 +255,15 @@ namespace Quokka.RISCV.Docker.Server.Tests
         }
 
         async Task RunWithData(
-            List<ExternalDataRecord> externalData,
+            List<DMARecord> externalData,
             string mainCode)
         {
+            var textReplacer = new TextReplacer();
+
             var templateRoot = TemplatesPath(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
             var sourceRoot = @"C:\code\Quokka.RISCV.Docker.Server\Quokka.RISCV.Integration.Tests\Client\Blinker\Source";
 
-            var context = new RISCVIntegrationClientContext()
+            var context = new RISCVIntegrationContext()
                 .WithPort(15000)
                 .WithExtensionClasses(
                     new ExtensionClasses()
@@ -287,10 +290,12 @@ namespace Quokka.RISCV.Docker.Server.Tests
             {
                 { "MAIN_CODE", mainCode }
             };
-            firmwareTemplatePath = IntegrationGenerator.ReplaceToken(firmwareTemplatePath, firmwareMap);
+            firmwareTemplatePath = textReplacer.ReplaceToken(firmwareTemplatePath, firmwareMap);
+
+            var dmaGenerator = new DMAGenerator();
+            context.SourceSnapshot.Files.Add(dmaGenerator.DMAImport(externalData));
 
             var generator = new IntegrationGenerator();
-            context.SourceSnapshot.Files.Add(generator.DMAImport(externalData));
             context.SourceSnapshot.Files.Add(generator.Firmware(firmwareTemplatePath));
 
             new FSManager(sourceRoot).SaveSnapshot(context.SourceSnapshot);
@@ -307,7 +312,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
 
             var replacers = new Dictionary<string, string>();
 
-            var words = ReadWords(binFile.Content).ToList();
+            var words = TestTools.ReadWords(binFile.Content).ToList();
             var memInit = generator.MemInit(words, "l_mem", 512);
 
             replacers["MEM_INIT"] = memInit;
@@ -327,25 +332,9 @@ namespace Quokka.RISCV.Docker.Server.Tests
             replacers["MEM_READY"] = generator.MemReady(externalData);
             replacers["MEM_RDATA"] = generator.MemRData(externalData);
 
-            hardwareTemplate = IntegrationGenerator.ReplaceToken(hardwareTemplate, replacers);
+            hardwareTemplate = textReplacer.ReplaceToken(hardwareTemplate, replacers);
 
             File.WriteAllText(@"C:\code\picorv32\quartus\RVTest.v", hardwareTemplate);
-        }
-
-        IEnumerable<uint> ReadWords(byte[] data)
-        {
-            using (var ms = new MemoryStream())
-            {
-                ms.Write(data, 0, data.Length);
-                ms.Seek(0, SeekOrigin.Begin);
-                using (var r = new BinaryReader(ms))
-                {
-                    while(r.BaseStream.Position != r.BaseStream.Length)
-                    {
-                        yield return r.ReadUInt32();
-                    }
-                }
-            }
         }
     }
 }

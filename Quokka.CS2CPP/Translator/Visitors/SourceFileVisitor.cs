@@ -3,9 +3,15 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.CodeWriters.CPP;
+using Quokka.CS2CPP.CodeWriters.Tools;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using Declaration = Quokka.CS2CPP.CodeWriters.CPP.Declaration;
+using Implementation = Quokka.CS2CPP.CodeWriters.CPP.Implementation;
+
 
 namespace Quokka.CS2CPP.Translator.Visitors
 {
@@ -58,10 +64,12 @@ namespace Quokka.CS2CPP.Translator.Visitors
             }
         }
 
-        public string Translate(
+        public Dictionary<string, string> Translate(
             TranslationContext context,
             SyntaxTree sourceFile)
         {
+            var result = new Dictionary<string, string>();
+
             Context = context;
 
             var csTree = (CSharpSyntaxTree)sourceFile;
@@ -69,7 +77,27 @@ namespace Quokka.CS2CPP.Translator.Visitors
 
             Visit(csRoot);
 
-            return FileCPPModelVisitor.Translate(new FileCPPModel() { Members = Context.Models });
+            result["h"] = Declaration
+                .FileCPPModelVisitor
+                .Translate(
+                    new CodeWriterContext()
+                    {
+                        FileName = Context.FileName,
+                    }, 
+                    new FileCPPModel() { Members = Context.Models }
+                );
+
+            result["cpp"] = Implementation
+                .FileCPPModelVisitor
+                .Translate(
+                    new CodeWriterContext()
+                    {
+                        FileName = Context.FileName,
+                    },
+                    new FileCPPModel() { Members = Context.Models }
+                );
+
+            return result;
         }
     }
 }

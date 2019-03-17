@@ -1,6 +1,6 @@
 ﻿using Quokka.CS2CPP.CodeModels.CPP;
 
-namespace Quokka.CS2CPP.CodeWriters.CPP
+namespace Quokka.CS2CPP.CodeWriters.CPP.Implementation
 {
     public class NamespaceMembersCPPModelVisitor : BaseCPPModelVisitor
     {

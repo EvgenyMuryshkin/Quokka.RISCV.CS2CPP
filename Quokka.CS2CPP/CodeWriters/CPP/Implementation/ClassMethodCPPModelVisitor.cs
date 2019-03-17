@@ -2,12 +2,14 @@
 using Quokka.CS2CPP.CodeWriters.Tools;
 using System.Linq;
 
-namespace Quokka.CS2CPP.CodeWriters.CPP
+namespace Quokka.CS2CPP.CodeWriters.CPP.Implementation
 {
     public class ClassMethodCModelVisitor : BaseCPPModelVisitor
     {
         public override void VisitMethodCPPModel(MethodCPPModel model)
         {
+            Context.Method = model;
+
             var pars = string.Join(", ", model.Parameters.Select(arg =>
             {
                 var pass = "";
@@ -26,7 +28,7 @@ namespace Quokka.CS2CPP.CodeWriters.CPP
                 return $"{TypeLookup.LookupCPPTypeName(arg.ParameterType)}{pass}{arg.Name}";
             }));
 
-            AppendLine($"{CPPModelTools.Modifiers(model.Modifiers)} {TypeLookup.LookupCPPTypeName(model.ReturnType)} {model.Name}({pars})");
+            AppendLine($"{TypeLookup.LookupCPPTypeName(model.ReturnType)} {Context.Class.Name}::{model.Name}({pars})");
             OpenBlock();
             VisitChildren(model.Members);
             CloseBlock();

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quokka.CS2CPP.CodeWriters.CPP
+namespace Quokka.CS2CPP.CodeWriters.CPP.Implementation
 {
     public class ExpressionBuilder : BaseCPPModelVisitor
     {
