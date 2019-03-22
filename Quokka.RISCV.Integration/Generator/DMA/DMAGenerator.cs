@@ -12,7 +12,8 @@ namespace Quokka.RISCV.Integration.Generator.DMA
             var content = new StringBuilder();
             foreach (var item in data)
             {
-                var address = item.Segment << 24;
+                var address = 0x80000000 | (item.Segment << (32 - item.SegmentBits));
+
                 if (item.Depth == 0)
                 {
                     content.AppendLine($"#define {item.SoftwareName} (*(volatile {item.CType}*)0x{address.ToString("X8")})");

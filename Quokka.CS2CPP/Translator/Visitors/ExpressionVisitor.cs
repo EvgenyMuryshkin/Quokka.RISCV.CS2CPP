@@ -111,5 +111,41 @@ namespace Quokka.CS2CPP.Translator.Visitors
                 
             };
         }
+
+        public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
+        {
+            // check if access to DMA property
+            var identifiers = FlatIdentifiers(node);
+
+            if (identifiers.Any() && identifiers[0].ToString() == "DMA")
+            {
+                var dmaType = TypeResolver.ResolveType(identifiers[0]);
+
+                return;
+            }
+
+            Unsupported(node, "Unsupported member access expression");
+        }
+
+        List<IdentifierNameSyntax> FlatIdentifiers(SyntaxNode node)
+        {
+            switch(node)
+            {
+                case MemberAccessExpressionSyntax maes:
+                    switch (maes.Name)
+                    {
+                        case IdentifierNameSyntax ins:
+                            return FlatIdentifiers(maes.Expression).Concat(new[] { ins }).ToList();
+                        default:
+                            Unsupported(node, "Unsupported node name in flat identifiers");
+                            return null;
+                    }
+                case IdentifierNameSyntax ins:
+                    return new List<IdentifierNameSyntax>() { ins };
+                default:
+                    Unsupported(node, "Unsupoprted node type in flat identifiers");
+                    return null;
+            }
+        }
     }  
 }

@@ -17,9 +17,32 @@ namespace Quokka.CS2CPP.Translator.Resolvers
         public Type ResolveType(ExpressionSyntax node)
         {
             var symbolInfo = Context.SemanticModel.GetSymbolInfo(node);
-            var type = Type.GetType($"{symbolInfo.Symbol.ContainingNamespace}.{symbolInfo.Symbol.Name}");
+            var fullName = $"{symbolInfo.Symbol.ContainingNamespace}.{symbolInfo.Symbol.Name}";
+            var type = Type.GetType(fullName);
+
+            if (type == null)
+            {
+                type = Context.Library.ProjectAssembly.ExportedTypes.SingleOrDefault(t => t.FullName == fullName);
+            }
+            return type;
+        }
+
+        public Type ResolveType(TypeDeclarationSyntax node)
+        {
+            var ns = node.RecursizeParent<NamespaceDeclarationSyntax>().Name;
+            var fullName = $"{ns}.{node.Identifier}";
+
+            var type = Context.Library.ProjectAssembly.ExportedTypes.SingleOrDefault(t => t.FullName == fullName);
 
             return type;
+        }
+
+        public PropertyInfo ResolvePropertyInfo(PropertyDeclarationSyntax node)
+        {
+            if (!TryResolvePropertyInfo(node, out PropertyInfo result))
+                throw new Exception($"Failed to resolve PropertyInfo: {node.ToString()}");
+
+            return result;
         }
 
         public MethodInfo ResolveMethodInfo(InvocationExpressionSyntax node)
@@ -28,6 +51,18 @@ namespace Quokka.CS2CPP.Translator.Resolvers
                 throw new Exception($"Failed to resolve MethodInfo: {node.Expression.ToString()}");
 
             return result;
+        }
+
+        public bool TryResolvePropertyInfo(
+            PropertyDeclarationSyntax node,
+            out PropertyInfo result)
+        {
+            var classNode = node.RecursizeParent<ClassDeclarationSyntax>();
+            var classType = ResolveType(classNode);
+
+            result = classType.GetProperties().FirstOrDefault(p => p.Name == node.Identifier.ToString());
+
+            return result != null;
         }
 
         public bool TryResolveMethodInfo(

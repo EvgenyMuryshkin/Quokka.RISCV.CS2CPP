@@ -45,7 +45,7 @@ namespace CPPModelGenerator
                 return $"new {ResolveTypeName(t)}()";
             }
 
-            return "null";
+            return $"default({t.Name})";
         }
 
         public static string DefaultCtorValue(Type t)

@@ -109,11 +109,11 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	{
 		public AssignmentExpressionCPPModel(ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
 		{
-			this.Left = Left ?? null;
-			this.Right = Right ?? null;
+			this.Left = Left ?? default(ExpressionCPPModel);
+			this.Right = Right ?? default(ExpressionCPPModel);
 		}
-		public ExpressionCPPModel Left { get; set; } = null;
-		public ExpressionCPPModel Right { get; set; } = null;
+		public ExpressionCPPModel Left { get; set; } = default(ExpressionCPPModel);
+		public ExpressionCPPModel Right { get; set; } = default(ExpressionCPPModel);
 	}
 	public enum BinaryExpressionTypeCPPModel
 	{
@@ -134,12 +134,12 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public BinaryExpressionCPPModel(BinaryExpressionTypeCPPModel Type = 0, ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
 		{
 			this.Type = Type;
-			this.Left = Left ?? null;
-			this.Right = Right ?? null;
+			this.Left = Left ?? default(ExpressionCPPModel);
+			this.Right = Right ?? default(ExpressionCPPModel);
 		}
 		public BinaryExpressionTypeCPPModel Type { get; set; } = 0;
-		public ExpressionCPPModel Left { get; set; } = null;
-		public ExpressionCPPModel Right { get; set; } = null;
+		public ExpressionCPPModel Left { get; set; } = default(ExpressionCPPModel);
+		public ExpressionCPPModel Right { get; set; } = default(ExpressionCPPModel);
 	}
 	public enum UnaryExpressionTypeCPPModel
 	{
@@ -152,10 +152,10 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public UnaryExpressionCPPModel(UnaryExpressionTypeCPPModel Type = 0, ExpressionCPPModel Operand = null)
 		{
 			this.Type = Type;
-			this.Operand = Operand ?? null;
+			this.Operand = Operand ?? default(ExpressionCPPModel);
 		}
 		public UnaryExpressionTypeCPPModel Type { get; set; } = 0;
-		public ExpressionCPPModel Operand { get; set; } = null;
+		public ExpressionCPPModel Operand { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public partial class PrefixUnaryExpressionCPPModel : UnaryExpressionCPPModel
@@ -176,33 +176,33 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	{
 		public ReturnExpresionCPPModel(ExpressionCPPModel Expression = null)
 		{
-			this.Expression = Expression ?? null;
+			this.Expression = Expression ?? default(ExpressionCPPModel);
 		}
-		public ExpressionCPPModel Expression { get; set; } = null;
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public partial class FieldCPPModel : MemberCPPModel
 	{
 		public FieldCPPModel(ModifiersCPPModel Modifiers = null, Type FieldType = null, ExpressionCPPModel Initializer = null)
 		{
-			this.Modifiers = Modifiers ?? null;
-			this.FieldType = FieldType ?? null;
-			this.Initializer = Initializer ?? null;
+			this.Modifiers = Modifiers ?? default(ModifiersCPPModel);
+			this.FieldType = FieldType ?? default(Type);
+			this.Initializer = Initializer ?? default(ExpressionCPPModel);
 		}
-		public ModifiersCPPModel Modifiers { get; set; } = null;
-		public Type FieldType { get; set; } = null;
-		public ExpressionCPPModel Initializer { get; set; } = null;
+		public ModifiersCPPModel Modifiers { get; set; } = default(ModifiersCPPModel);
+		public Type FieldType { get; set; } = default(Type);
+		public ExpressionCPPModel Initializer { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public partial class DataCPPModel : MemberCPPModel
 	{
 		public DataCPPModel(Type DataType = null, ExpressionCPPModel Initializer = null)
 		{
-			this.DataType = DataType ?? null;
-			this.Initializer = Initializer ?? null;
+			this.DataType = DataType ?? default(Type);
+			this.Initializer = Initializer ?? default(ExpressionCPPModel);
 		}
-		public Type DataType { get; set; } = null;
-		public ExpressionCPPModel Initializer { get; set; } = null;
+		public Type DataType { get; set; } = default(Type);
+		public ExpressionCPPModel Initializer { get; set; } = default(ExpressionCPPModel);
 	}
 	public enum ArgumentPassCPPModel
 	{
@@ -216,23 +216,23 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public ParameterCPPModel(ArgumentPassCPPModel Pass = 0, Type ParameterType = null)
 		{
 			this.Pass = Pass;
-			this.ParameterType = ParameterType ?? null;
+			this.ParameterType = ParameterType ?? default(Type);
 		}
 		public ArgumentPassCPPModel Pass { get; set; } = 0;
-		public Type ParameterType { get; set; } = null;
+		public Type ParameterType { get; set; } = default(Type);
 	}
 	// generated class, do not modify
 	public partial class MethodCPPModel : MemberCPPModel, IMembersContainerCPPModel
 	{
 		public MethodCPPModel(Type ReturnType = null, ModifiersCPPModel Modifiers = null, List<ParameterCPPModel> Parameters = null, List<CPPModel> Members = null)
 		{
-			this.ReturnType = ReturnType ?? null;
-			this.Modifiers = Modifiers ?? null;
+			this.ReturnType = ReturnType ?? default(Type);
+			this.Modifiers = Modifiers ?? default(ModifiersCPPModel);
 			this.Parameters = Parameters ?? new List<ParameterCPPModel>();
 			this.Members = Members ?? new List<CPPModel>();
 		}
-		public Type ReturnType { get; set; } = null;
-		public ModifiersCPPModel Modifiers { get; set; } = null;
+		public Type ReturnType { get; set; } = default(Type);
+		public ModifiersCPPModel Modifiers { get; set; } = default(ModifiersCPPModel);
 		public List<ParameterCPPModel> Parameters { get; set; } = new List<ParameterCPPModel>();
 		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
 	}
@@ -241,10 +241,10 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	{
 		public ClassCPPModel(ModifiersCPPModel Modifiers = null, List<CPPModel> Members = null)
 		{
-			this.Modifiers = Modifiers ?? null;
+			this.Modifiers = Modifiers ?? default(ModifiersCPPModel);
 			this.Members = Members ?? new List<CPPModel>();
 		}
-		public ModifiersCPPModel Modifiers { get; set; } = null;
+		public ModifiersCPPModel Modifiers { get; set; } = default(ModifiersCPPModel);
 		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
 	}
 	// generated class, do not modify
@@ -272,18 +272,18 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	{
 		public WhileLoopCPPModel(ExpressionCPPModel Condition = null)
 		{
-			this.Condition = Condition ?? null;
+			this.Condition = Condition ?? default(ExpressionCPPModel);
 		}
-		public ExpressionCPPModel Condition { get; set; } = null;
+		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public partial class DoLoopCPPModel : LoopCPPModel, IMembersContainerCPPModel
 	{
 		public DoLoopCPPModel(ExpressionCPPModel Condition = null)
 		{
-			this.Condition = Condition ?? null;
+			this.Condition = Condition ?? default(ExpressionCPPModel);
 		}
-		public ExpressionCPPModel Condition { get; set; } = null;
+		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public partial class ForLoopCPPModel : LoopCPPModel, IMembersContainerCPPModel
@@ -297,9 +297,9 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	{
 		public ArgumentCPPModel(ExpressionCPPModel Expression = null)
 		{
-			this.Expression = Expression ?? null;
+			this.Expression = Expression ?? default(ExpressionCPPModel);
 		}
-		public ExpressionCPPModel Expression { get; set; } = null;
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
 	public abstract partial class InvocationCPPModel : ExpressionCPPModel
@@ -328,6 +328,21 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		}
 		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
 	}
+	// generated class, do not modify
+	public partial class DMACPPModel : CPPModel
+	{
+		public DMACPPModel(UInt32 Address = 0, String Name = "", Type Type = null, Int32 Length = 0)
+		{
+			this.Address = Address;
+			this.Name = Name ?? "";
+			this.Type = Type ?? default(Type);
+			this.Length = Length;
+		}
+		public UInt32 Address { get; set; } = default(UInt32);
+		public String Name { get; set; } = "";
+		public Type Type { get; set; } = default(Type);
+		public Int32 Length { get; set; } = default(Int32);
+	}
 	public abstract partial class CPPModelVisitor : CPPModelDefaultVisitor
 	{
 		public virtual void VisitIncludeCPPModel(IncludeCPPModel model) => DefaultVisit(model);
@@ -351,6 +366,7 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
 		public virtual void VisitLocalInvocationCPPModel(LocalInvocationCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFileCPPModel(FileCPPModel model) => DefaultVisit(model);
+		public virtual void VisitDMACPPModel(DMACPPModel model) => DefaultVisit(model);
 		public virtual void Visit(CPPModel model)
 		{
 			switch(model)
@@ -376,6 +392,7 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;
 				case LocalInvocationCPPModel m: VisitLocalInvocationCPPModel(m); break;
 				case FileCPPModel m: VisitFileCPPModel(m); break;
+				case DMACPPModel m: VisitDMACPPModel(m); break;
 			}
 		}
 	}

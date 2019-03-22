@@ -44,5 +44,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
 
             return Disposable.Create(() => MembersContainers.Pop());
         }
+
+        public List<DMACPPModel> DMAModels { get; set; } = new List<DMACPPModel>();
     }
 }

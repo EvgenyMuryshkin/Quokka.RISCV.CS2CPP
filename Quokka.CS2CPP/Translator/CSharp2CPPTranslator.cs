@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
+using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.Translator.Tools;
 using Quokka.CS2CPP.Translator.Visitors;
 using Quokka.RISCV.Integration.DTO;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,9 +11,11 @@ namespace Quokka.CS2CPP.Translator
 {
     public class CSharp2CPPTranslator
     {
-        public FSSnapshot Run(FSSnapshot source)
+        public FSSnapshot Result = new FSSnapshot();
+        public List<DMACPPModel> DMA = new List<DMACPPModel>();
+
+        public void Run(FSSnapshot source)
         {
-            var result = new FSSnapshot();
             // create syntax tree
             var trees = source
                 .Files
@@ -37,11 +41,11 @@ namespace Quokka.CS2CPP.Translator
 
                 var content = new SourceFileVisitor().Translate(context, tree.Value);
 
-                result.Files.Add(new FSTextFile() { Name = $"{fileName}.h", Content = content["h"] });
-                result.Files.Add(new FSTextFile() { Name = $"{fileName}.cpp", Content = content["cpp"] });
-            }
+                Result.Files.Add(new FSTextFile() { Name = $"{fileName}.h", Content = content["h"] });
+                Result.Files.Add(new FSTextFile() { Name = $"{fileName}.cpp", Content = content["cpp"] });
 
-            return result;
+                DMA.AddRange(context.DMAModels);
+            }
         }
     }
 }

@@ -8,6 +8,12 @@ namespace Quokka.CS2CPP.Translator.Visitors
     {
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
+            if (node.Identifier.ToString() == "DMA")
+            {
+                Invoke<DMAClassVisitor>(node);
+                return;
+            }
+
             var _class = new ClassCPPModel(Modifiers: new ModifiersCPPModel());
 
             _class.Name = node.Identifier.ToString();

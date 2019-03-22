@@ -217,4 +217,12 @@ namespace metadata
     {
         public List<CPPModel> Members { get; set; }
     }
+
+    public class DMACPPModel : CPPModel
+    {
+        public uint Address { get; set; }
+        public string Name { get; set; }
+        public Type Type { get; set; }
+        public int Length { get; set; }
+    }
 }

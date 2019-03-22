@@ -47,15 +47,54 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             var source = new FSSnapshot();
             source.Files.AddRange(files);
 
-            var result = tx.Run(source);
+            tx.Run(source);
+
+            var result = tx.Result;
+
+            var dmaGenerator = new DMAGenerator();
+            var dmaRecords = new List<DMARecord>();
+
+            // default code block
+            dmaRecords.Add(new DMARecord()
+            {
+                DataType = typeof(uint),
+                SegmentBits = 12,
+                HardwareName = "l_mem",
+                SoftwareName = "l_mem",
+                Segment = 0,
+                Depth = 512,
+            });
+
+            uint seg = 1;
+
+            foreach (var d in tx.DMA)
+            {
+                var segment = d.Address;
+                if (segment == 0)
+                {
+                    segment = seg;
+                    seg++;
+                }
+
+                var rec = new DMARecord()
+                {
+                    SegmentBits = 12,
+                    SoftwareName = d.Name,
+                    HardwareName = d.Name,
+                    DataType = d.Type,
+                    Depth = (uint)d.Length,
+                    Segment = segment
+                };
+
+                dmaRecords.Add(rec);
+            }
+
+            result.Add(dmaGenerator.DMAImport(dmaRecords));
 
             var generatedSourceFiles = result.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".cpp").ToList();
             var generatedHeaderFiles = result.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".h").ToList();
 
             result.Merge(firmwareTemplates, f => !f.Name.Contains("template"));
-
-            var dmaGenerator = new DMAGenerator();
-            result.Add(dmaGenerator.DMAImport(Enumerable.Empty<DMARecord>()));
 
             var firmwareTemplate = firmwareTemplates.Get<FSTextFile>("firmware.template.cpp");
             var firmwareMap = new Dictionary<string, string>()
@@ -92,7 +131,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                 {
                     LoadSource("BasicTest.cs")
                 },
-                UnitTests.BasicTest.EntryPoint
+                BasicTestSource.Firmware.EntryPoint
                 );
         }
     }
