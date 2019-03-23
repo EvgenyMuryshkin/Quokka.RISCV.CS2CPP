@@ -120,6 +120,10 @@ namespace Quokka.CS2CPP.Translator.Visitors
             if (identifiers.Any() && identifiers[0].ToString() == "DMA")
             {
                 var dmaType = TypeResolver.ResolveType(identifiers[0]);
+                Expression = new IdentifierExpressionCPPModel()
+                {
+                    Identifier = $"{dmaType.Namespace}_{dmaType.Name}_{identifiers.Last().Identifier}"
+                };
 
                 return;
             }

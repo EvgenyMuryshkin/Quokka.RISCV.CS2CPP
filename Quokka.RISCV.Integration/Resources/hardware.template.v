@@ -87,15 +87,15 @@ module RVTest (
 	// connect debug and diagnostics
 			
 	assign o_dbg_mem_valid = l_mem_ready;
-	//assign o_dbg_mem_rdata = l_mem_rdata;
-	//assign o_dbg_mem_wdata = l_mem_wdata;
-	//assign o_dbg_mem_we = l_mem_we;
+	assign o_dbg_mem_rdata = l_mem_rdata;
+	assign o_dbg_mem_wdata = l_mem_wdata;
+	assign o_dbg_mem_we = l_mem_we;
 
-	assign o_dbg_mem_rdata = data_rdata_part;
-	assign o_dbg_mem_wdata = data_read_address_part;
-	assign o_dbg_mem_we = data_we;
+	//assign o_dbg_mem_rdata = data_rdata_part;
+	//assign o_dbg_mem_wdata = data_read_address_part;
+	//assign o_dbg_mem_we = data_we;
 	
-	assign o_dbg_data_access = data_address_valid;
+	//assign o_dbg_data_access = data_address_valid;
 	assign o_dbg_mem_read = cpu_read_request;
 	assign o_dbg_mem_write = cpu_write_request;
 	

@@ -9,7 +9,7 @@
 	reg  [1:0] 		{NAME}_write_state = 2'b0;
 	wire 			{NAME}_address_valid;
 
-	assign {NAME}_address_valid = cpu_mem_addr[31:24] == 8'h{SEG};
+	assign {NAME}_address_valid = cpu_mem_addr[31:{SEG_END}] == {SEG_WIDTH}'h{SEG};
 	assign {NAME}_ready = {NAME}_read_ready || {NAME}_write_ready;
 	
 	assign {NAME}_wdata = {

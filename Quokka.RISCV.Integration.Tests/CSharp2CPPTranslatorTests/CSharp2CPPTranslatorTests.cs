@@ -22,14 +22,14 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
     {
         FSTextFile LoadSource(string path) => new FSTextFile() { Name = path, Content = File.ReadAllText(Path.Combine(TestPath.SourcePath, path)) };
 
-        async Task CompileFromIntermediate()
+        async Task<FSSnapshot> CompileFromIntermediate()
         {
             var context = RISCVIntegration.DefaultContext(TestPath.FirmwareSourceFolder);
 
             var result = await RISCVIntegrationClient.Run(context);
             Assert.IsNotNull(result);
 
-            IntermediateData.SaveFirmwareOutput(result.ResultSnapshot);
+            return result.ResultSnapshot;
         }
 
         async Task TranslateSourceFiles(
@@ -49,7 +49,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
 
             tx.Run(source);
 
-            var result = tx.Result;
+            var firmwareSource = tx.Result;
 
             var dmaGenerator = new DMAGenerator();
             var dmaRecords = new List<DMARecord>();
@@ -63,9 +63,10 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                 SoftwareName = "l_mem",
                 Segment = 0,
                 Depth = 512,
+                Template = "memory32"
             });
 
-            uint seg = 1;
+            uint seg = 0x800;
 
             foreach (var d in tx.DMA)
             {
@@ -76,6 +77,23 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                     seg++;
                 }
 
+                var templatesMap = new Dictionary<Type, string>()
+                {
+                    { typeof(byte), "memory8" },
+                    { typeof(sbyte), "memory8" },
+                    { typeof(ushort), "memory16" },
+                    { typeof(short), "memory16" },
+                    { typeof(int), "memory32" },
+                    { typeof(uint), "memory32" },
+                };
+                
+                if (d.Length > 0 && !templatesMap.ContainsKey(d.Type))
+                {
+                    throw new Exception($"No template found for {d.Type}");
+                }
+
+                var template = d.Length > 0 ? templatesMap[d.Type] : "register";
+
                 var rec = new DMARecord()
                 {
                     SegmentBits = 12,
@@ -83,18 +101,19 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                     HardwareName = d.Name,
                     DataType = d.Type,
                     Depth = (uint)d.Length,
-                    Segment = segment
+                    Segment = segment,
+                    Template = template,
                 };
 
                 dmaRecords.Add(rec);
             }
 
-            result.Add(dmaGenerator.DMAImport(dmaRecords));
+            firmwareSource.Add(dmaGenerator.DMAImport(dmaRecords));
 
-            var generatedSourceFiles = result.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".cpp").ToList();
-            var generatedHeaderFiles = result.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".h").ToList();
+            var generatedSourceFiles = firmwareSource.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".cpp").ToList();
+            var generatedHeaderFiles = firmwareSource.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".h").ToList();
 
-            result.Merge(firmwareTemplates, f => !f.Name.Contains("template"));
+            firmwareSource.Merge(firmwareTemplates, f => !f.Name.Contains("template"));
 
             var firmwareTemplate = firmwareTemplates.Get<FSTextFile>("firmware.template.cpp");
             var firmwareMap = new Dictionary<string, string>()
@@ -102,25 +121,65 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                 { "FIRMWARE_INCLUDES", string.Join(Environment.NewLine, generatedHeaderFiles.Select(f => $"#include \"{f.Name}\""))},
                 { "FIRMWARE_CODE", $"{entryPoint.Method.DeclaringType.Namespace}::{entryPoint.Method.DeclaringType.Name}::{entryPoint.Method.Name}();" },
             };
-            result.Add("firmware.cpp", textReplacer.ReplaceToken(firmwareTemplate.Content, firmwareMap));
+            firmwareSource.Add("firmware.cpp", textReplacer.ReplaceToken(firmwareTemplate.Content, firmwareMap));
 
             var makefileTemplate = firmwareTemplates.Get<FSTextFile>("Makefile.template");
             var makefileMap = new Dictionary<string, string>()
             {
                 { "SOURCES_LIST", string.Join(" ", generatedSourceFiles.Select(f => f.Name)) }
             };
-            result.Add("Makefile", textReplacer.ReplaceToken(makefileTemplate.Content, makefileMap));
+            firmwareSource.Add("Makefile", textReplacer.ReplaceToken(makefileTemplate.Content, makefileMap));
 
-            IntermediateData.SaveFirmwareSource(result);
+            IntermediateData.SaveFirmwareSource(firmwareSource);
 
-            await CompileFromIntermediate();
+            var firmwareOutput = await CompileFromIntermediate();
+
+            IntermediateData.SaveFirmwareOutput(firmwareOutput);
+
+            // generat verilog
+
+            var hardwareTemplate = hardwareTemplates.Get<FSTextFile>("hardware.template.v").Content;
+
+            // memory init file
+            var binFile = firmwareOutput.Get<FSBinaryFile>("firmware.bin");
+            Assert.IsNotNull(binFile);
+
+            var replacers = new Dictionary<string, string>();
+
+            var words = TestTools.ReadWords(binFile.Content).ToList();
+            var memInit = generator.MemInit(words, "l_mem", 512);
+
+            replacers["MEM_INIT"] = memInit;
+
+            // data declarations
+            replacers["DATA_DECL"] = generator.DataDeclaration(dmaRecords);
+
+            // data control signals
+            var templates = new IntegrationTemplates();
+            foreach (var t in hardwareTemplates.Files.OfType<FSTextFile>())
+            {
+                templates.Templates[t.Name] = t.Content;
+            }
+
+            replacers["DATA_CTRL"] = generator.DataControl(dmaRecords, templates);
+            replacers["MEM_READY"] = generator.MemReady(dmaRecords);
+            replacers["MEM_RDATA"] = generator.MemRData(dmaRecords);
+
+            hardwareTemplate = textReplacer.ReplaceToken(hardwareTemplate, replacers);
+
+            var hardwareSource = new FSSnapshot();
+            hardwareSource.Add("hardware.v", hardwareTemplate);
+
+            IntermediateData.SaveHardwareSource(hardwareSource);
         }
 
 
         [TestMethod]
         public async Task CompileFromIntermediateTest()
         {
-            await CompileFromIntermediate();
+            var firmwareSnapshot = await CompileFromIntermediate();
+
+            IntermediateData.SaveFirmwareOutput(firmwareSnapshot);
         }
 
         [TestMethod]

@@ -22,7 +22,7 @@ namespace Quokka.RISCV.Integration.Generator
 
         public string DataDeclaration(DMARecord record)
         {
-            if (record.Depth == 0 )
+            if (record.Depth == 0)
             {
                 if (record.Width == 1)
                 {
@@ -55,6 +55,16 @@ namespace Quokka.RISCV.Integration.Generator
             DMARecord record,
             IntegrationTemplates templates)
         {
+            if (string.IsNullOrWhiteSpace(record.Template))
+            {
+                throw new Exception($"No hardware template specified for '{record.HardwareName}'");
+            }
+
+            if (!templates.Templates.ContainsKey(record.Template))
+            {
+                throw new Exception($"Template '{record.Template}' was not provided");
+            }
+
             var map = new Dictionary<string, string>();
             map["NAME"] = record.HardwareName;
             map["SEG"] = record.Segment.ToString("X2");
@@ -64,6 +74,8 @@ namespace Quokka.RISCV.Integration.Generator
             map["be_0"] = record.Width > 0 ? "" : "//";
             map["WIDTH"] = record.Width.ToString();
             map["HIGH"] = (record.Width - 1).ToString();
+            map["SEG_WIDTH"] = record.SegmentBits.ToString();
+            map["SEG_END"] = (32 - record.SegmentBits).ToString();
 
             var template = templates.Templates[record.Template];
 

@@ -12,7 +12,7 @@ namespace Quokka.RISCV.Integration.Generator.DMA
             var content = new StringBuilder();
             foreach (var item in data)
             {
-                var address = 0x80000000 | (item.Segment << (32 - item.SegmentBits));
+                var address = item.Segment << (32 - item.SegmentBits);
 
                 if (item.Depth == 0)
                 {

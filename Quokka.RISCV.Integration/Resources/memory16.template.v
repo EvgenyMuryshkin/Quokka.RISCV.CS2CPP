@@ -15,7 +15,7 @@
 
 	assign o_dbg_tmp = {NAME}_rdata;
 
-	assign {NAME}_address_valid = cpu_mem_addr[31:24] == 8'h{SEG};
+	assign {NAME}_address_valid = cpu_mem_addr[31:{SEG_END}] == {SEG_WIDTH}'h{SEG};
 	assign {NAME}_ready = {NAME}_read_ready || {NAME}_write_ready;
 	
 	// could it be wrong? sure it can, but will deal later

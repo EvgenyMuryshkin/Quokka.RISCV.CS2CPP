@@ -14,10 +14,10 @@ namespace Quokka.RISCV.Integration.Generator
                 var result = new FSSnapshot();
 
                 result.Add("hardware.template.v", Resources.hardware_template);
-                result.Add("memory32.template.v", Resources.memory32_template);
-                result.Add("memory16.template.v", Resources.memory16_template);
-                result.Add("memory8.template.v", Resources.memory8_template);
-                result.Add("register.v", Resources.register_template);
+                result.Add("memory32", Resources.memory32_template);
+                result.Add("memory16", Resources.memory16_template);
+                result.Add("memory8", Resources.memory8_template);
+                result.Add("register", Resources.register_template);
 
                 return result;
             }

@@ -10,7 +10,7 @@
 		{be_0}cpu_mem_wstrb[0] ? cpu_mem_wdata[7:0]   : {NAME}[7:0]
 	};
 	
-	assign {NAME}_ready = cpu_mem_addr[31:24] == 8'h{SEG};
+	assign {NAME}_ready = cpu_mem_addr[31:{SEG_END}] == {SEG_WIDTH}'h{SEG};
 	assign {NAME}_we = {NAME}_ready && !cpu_mem_instr;
 	
 	// memory logic
