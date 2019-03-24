@@ -313,7 +313,7 @@ namespace Quokka.RISCV.Docker.Server.Tests
             var replacers = new Dictionary<string, string>();
 
             var words = TestTools.ReadWords(binFile.Content).ToList();
-            var memInit = generator.MemInit(words, "l_mem", 512);
+            var memInit = generator.MemInit(words, "l_mem", 512, 4);
 
             replacers["MEM_INIT"] = memInit;
 

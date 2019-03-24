@@ -87,5 +87,46 @@ namespace Quokka.CS2CPP.CodeWriters.CPP.Implementation
             var argsList = string.Join(", ", args);
             Expression = $"{model.Method}({argsList})";
         }
+
+        public override void VisitDataCPPModel(DataCPPModel model)
+        {
+            var initializers = model.Initializers.Select(i => Invoke<ExpressionBuilder>(i).Expression);
+
+            Expression = $"{TypeLookup.LookupCPPTypeName(model.DataType)} {string.Join(", ", initializers)}";
+        }
+
+        public override void VisitDataInitializerCPPModel(DataInitializerCPPModel model)
+        {
+            if (model.Initializer != null)
+            {
+                Expression = $"{model.Name} = {Invoke<ExpressionBuilder>(model.Initializer).Expression}";
+            }
+            else
+            {
+                Expression = $"{model.Name}";
+            }
+        }
+
+        public override void VisitElementAccessCPPModel(ElementAccessCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model.Expression).Expression;
+            var args = model.Arguments.Select(arg => $"[{Invoke<ExpressionBuilder>(arg).Expression}]");
+
+            Expression = $"{expression}{string.Join("", args)}";
+        }
+
+        public override void VisitCastCPPModel(CastCPPModel model)
+        {
+            var type = TypeLookup.LookupCPPTypeName(model.Type);
+            var expression = Invoke<ExpressionBuilder>(model.Expression).Expression;
+
+            Expression = $"({type}){expression}";
+        }
+
+        public override void VisitParenthesizedExpressionCPPModel(ParenthesizedExpressionCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model.Expression).Expression;
+            Expression = $"({expression})";
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Quokka.RISCV.Integration.DTO
         public T Get<T>(string name)
             where T : FSFile
         {
-            return Files.Single(f => f.Name == name) as T;
+            return Files.SingleOrDefault(f => f.Name == name) as T;
         }
 
         public void Add(FSFile file)

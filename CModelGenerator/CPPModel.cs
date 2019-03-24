@@ -139,10 +139,15 @@ namespace metadata
         public ExpressionCPPModel Initializer { get; set; }
     }
 
-    public class DataCPPModel : MemberCPPModel
+    public class DataInitializerCPPModel : MemberCPPModel
+    {
+        public ExpressionCPPModel Initializer { get; set; }
+    }
+
+    public class DataCPPModel : CPPModel
     {
         public Type DataType { get; set; }
-        public ExpressionCPPModel Initializer { get; set; }
+        public List<DataInitializerCPPModel> Initializers { get; set; }
     }
 
     public enum ArgumentPassCPPModel
@@ -196,8 +201,12 @@ namespace metadata
 
     public class ForLoopCPPModel : LoopCPPModel
     {
+        public DataCPPModel Declaration { get; set; }
+        public List<DataInitializerCPPModel> Initializers { get; set; }
+        public ExpressionCPPModel Condition { get; set; }
+        public List<ExpressionCPPModel> Incrementors { get; set; }
     }
-    
+
     public class ArgumentCPPModel : CPPModel
     {
         public ExpressionCPPModel Expression { get; set; }
@@ -216,6 +225,23 @@ namespace metadata
     public class FileCPPModel : CPPModel, IMembersContainerCPPModel
     {
         public List<CPPModel> Members { get; set; }
+    }
+
+    public class ElementAccessCPPModel : ExpressionCPPModel
+    {
+        public ExpressionCPPModel Expression { get; set; }
+        public List<ExpressionCPPModel> Arguments { get; set; }
+    }
+
+    public class CastCPPModel : ExpressionCPPModel
+    {
+        public Type Type { get; set; }
+        public ExpressionCPPModel Expression { get; set; }
+    }
+
+    public class ParenthesizedExpressionCPPModel : ExpressionCPPModel
+    {
+        public ExpressionCPPModel Expression { get; set; }
     }
 
     public class DMACPPModel : CPPModel

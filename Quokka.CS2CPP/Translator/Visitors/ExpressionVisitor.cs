@@ -115,7 +115,7 @@ namespace Quokka.CS2CPP.Translator.Visitors
         public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
         {
             // check if access to DMA property
-            var identifiers = FlatIdentifiers(node);
+            var identifiers = node.RecursiveFlatIdentifiers();
 
             if (identifiers.Any() && identifiers[0].ToString() == "DMA")
             {
@@ -131,25 +131,33 @@ namespace Quokka.CS2CPP.Translator.Visitors
             Unsupported(node, "Unsupported member access expression");
         }
 
-        List<IdentifierNameSyntax> FlatIdentifiers(SyntaxNode node)
+        public override void VisitElementAccessExpression(ElementAccessExpressionSyntax node)
         {
-            switch(node)
+            var member = Invoke<ExpressionVisitor>(node.Expression);
+            var access = node.ArgumentList.Arguments.Select(arg => Invoke<ExpressionVisitor>(arg).Expression);
+
+            Expression = new ElementAccessCPPModel()
             {
-                case MemberAccessExpressionSyntax maes:
-                    switch (maes.Name)
-                    {
-                        case IdentifierNameSyntax ins:
-                            return FlatIdentifiers(maes.Expression).Concat(new[] { ins }).ToList();
-                        default:
-                            Unsupported(node, "Unsupported node name in flat identifiers");
-                            return null;
-                    }
-                case IdentifierNameSyntax ins:
-                    return new List<IdentifierNameSyntax>() { ins };
-                default:
-                    Unsupported(node, "Unsupoprted node type in flat identifiers");
-                    return null;
-            }
+                Expression = Invoke<ExpressionVisitor>(node.Expression).Expression,
+                Arguments = node.ArgumentList.Arguments.Select(arg => Invoke<ExpressionVisitor>(arg.Expression).Expression).ToList()
+            };
+        }
+
+        public override void VisitCastExpression(CastExpressionSyntax node)
+        {
+            Expression = new CastCPPModel()
+            {
+                Type = TypeResolver.ResolveType(node.Type),
+                Expression = Invoke<ExpressionVisitor>(node.Expression).Expression,
+            };
+        }
+
+        public override void VisitParenthesizedExpression(ParenthesizedExpressionSyntax node)
+        {
+            Expression = new ParenthesizedExpressionCPPModel()
+            {
+                Expression = Invoke<ExpressionVisitor>(node.Expression).Expression,
+            };
         }
     }  
 }

@@ -86,10 +86,10 @@ module RVTest (
 	
 	// connect debug and diagnostics
 			
-	assign o_dbg_mem_valid = l_mem_ready;
-	assign o_dbg_mem_rdata = l_mem_rdata;
-	assign o_dbg_mem_wdata = l_mem_wdata;
-	assign o_dbg_mem_we = l_mem_we;
+	assign o_dbg_mem_valid = firmware_ready;
+	assign o_dbg_mem_rdata = firmware_rdata;
+	assign o_dbg_mem_wdata = firmware_wdata;
+	assign o_dbg_mem_we = firmware_we;
 
 	//assign o_dbg_mem_rdata = data_rdata_part;
 	//assign o_dbg_mem_wdata = data_read_address_part;

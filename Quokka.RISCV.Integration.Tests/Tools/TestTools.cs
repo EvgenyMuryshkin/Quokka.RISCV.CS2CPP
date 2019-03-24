@@ -7,7 +7,7 @@ namespace Quokka.RISCV.Integration.Tests.Tools
 {
     class TestTools
     {
-        public static IEnumerable<uint> ReadWords(byte[] data)
+        public static IEnumerable<ulong> ReadWords(byte[] data)
         {
             using (var ms = new MemoryStream())
             {

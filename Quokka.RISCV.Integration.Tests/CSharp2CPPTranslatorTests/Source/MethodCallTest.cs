@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BasicTestSource
+namespace MethodCallTestSource
 {
     public class DMA
     {

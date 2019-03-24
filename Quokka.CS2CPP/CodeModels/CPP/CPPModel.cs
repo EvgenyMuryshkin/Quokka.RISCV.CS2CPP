@@ -194,15 +194,24 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public ExpressionCPPModel Initializer { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
-	public partial class DataCPPModel : MemberCPPModel
+	public partial class DataInitializerCPPModel : MemberCPPModel
 	{
-		public DataCPPModel(Type DataType = null, ExpressionCPPModel Initializer = null)
+		public DataInitializerCPPModel(ExpressionCPPModel Initializer = null)
 		{
-			this.DataType = DataType ?? default(Type);
 			this.Initializer = Initializer ?? default(ExpressionCPPModel);
 		}
-		public Type DataType { get; set; } = default(Type);
 		public ExpressionCPPModel Initializer { get; set; } = default(ExpressionCPPModel);
+	}
+	// generated class, do not modify
+	public partial class DataCPPModel : CPPModel
+	{
+		public DataCPPModel(Type DataType = null, List<DataInitializerCPPModel> Initializers = null)
+		{
+			this.DataType = DataType ?? default(Type);
+			this.Initializers = Initializers ?? new List<DataInitializerCPPModel>();
+		}
+		public Type DataType { get; set; } = default(Type);
+		public List<DataInitializerCPPModel> Initializers { get; set; } = new List<DataInitializerCPPModel>();
 	}
 	public enum ArgumentPassCPPModel
 	{
@@ -288,9 +297,17 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 	// generated class, do not modify
 	public partial class ForLoopCPPModel : LoopCPPModel, IMembersContainerCPPModel
 	{
-		public ForLoopCPPModel()
+		public ForLoopCPPModel(DataCPPModel Declaration = null, List<DataInitializerCPPModel> Initializers = null, ExpressionCPPModel Condition = null, List<ExpressionCPPModel> Incrementors = null)
 		{
+			this.Declaration = Declaration ?? default(DataCPPModel);
+			this.Initializers = Initializers ?? new List<DataInitializerCPPModel>();
+			this.Condition = Condition ?? default(ExpressionCPPModel);
+			this.Incrementors = Incrementors ?? new List<ExpressionCPPModel>();
 		}
+		public DataCPPModel Declaration { get; set; } = default(DataCPPModel);
+		public List<DataInitializerCPPModel> Initializers { get; set; } = new List<DataInitializerCPPModel>();
+		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
+		public List<ExpressionCPPModel> Incrementors { get; set; } = new List<ExpressionCPPModel>();
 	}
 	// generated class, do not modify
 	public partial class ArgumentCPPModel : CPPModel
@@ -329,6 +346,37 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
 	}
 	// generated class, do not modify
+	public partial class ElementAccessCPPModel : ExpressionCPPModel
+	{
+		public ElementAccessCPPModel(ExpressionCPPModel Expression = null, List<ExpressionCPPModel> Arguments = null)
+		{
+			this.Expression = Expression ?? default(ExpressionCPPModel);
+			this.Arguments = Arguments ?? new List<ExpressionCPPModel>();
+		}
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
+		public List<ExpressionCPPModel> Arguments { get; set; } = new List<ExpressionCPPModel>();
+	}
+	// generated class, do not modify
+	public partial class CastCPPModel : ExpressionCPPModel
+	{
+		public CastCPPModel(Type Type = null, ExpressionCPPModel Expression = null)
+		{
+			this.Type = Type ?? default(Type);
+			this.Expression = Expression ?? default(ExpressionCPPModel);
+		}
+		public Type Type { get; set; } = default(Type);
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
+	}
+	// generated class, do not modify
+	public partial class ParenthesizedExpressionCPPModel : ExpressionCPPModel
+	{
+		public ParenthesizedExpressionCPPModel(ExpressionCPPModel Expression = null)
+		{
+			this.Expression = Expression ?? default(ExpressionCPPModel);
+		}
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
+	}
+	// generated class, do not modify
 	public partial class DMACPPModel : CPPModel
 	{
 		public DMACPPModel(UInt32 Address = 0, String Name = "", Type Type = null, Int32 Length = 0)
@@ -355,6 +403,7 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public virtual void VisitPostfixUnaryExpressionCPPModel(PostfixUnaryExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitReturnExpresionCPPModel(ReturnExpresionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFieldCPPModel(FieldCPPModel model) => DefaultVisit(model);
+		public virtual void VisitDataInitializerCPPModel(DataInitializerCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDataCPPModel(DataCPPModel model) => DefaultVisit(model);
 		public virtual void VisitParameterCPPModel(ParameterCPPModel model) => DefaultVisit(model);
 		public virtual void VisitMethodCPPModel(MethodCPPModel model) => DefaultVisit(model);
@@ -366,6 +415,9 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
 		public virtual void VisitLocalInvocationCPPModel(LocalInvocationCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFileCPPModel(FileCPPModel model) => DefaultVisit(model);
+		public virtual void VisitElementAccessCPPModel(ElementAccessCPPModel model) => DefaultVisit(model);
+		public virtual void VisitCastCPPModel(CastCPPModel model) => DefaultVisit(model);
+		public virtual void VisitParenthesizedExpressionCPPModel(ParenthesizedExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDMACPPModel(DMACPPModel model) => DefaultVisit(model);
 		public virtual void Visit(CPPModel model)
 		{
@@ -381,6 +433,7 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 				case PostfixUnaryExpressionCPPModel m: VisitPostfixUnaryExpressionCPPModel(m); break;
 				case ReturnExpresionCPPModel m: VisitReturnExpresionCPPModel(m); break;
 				case FieldCPPModel m: VisitFieldCPPModel(m); break;
+				case DataInitializerCPPModel m: VisitDataInitializerCPPModel(m); break;
 				case DataCPPModel m: VisitDataCPPModel(m); break;
 				case ParameterCPPModel m: VisitParameterCPPModel(m); break;
 				case MethodCPPModel m: VisitMethodCPPModel(m); break;
@@ -392,6 +445,9 @@ namespace Quokka.CS2CPP.CodeModels.CPP
 				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;
 				case LocalInvocationCPPModel m: VisitLocalInvocationCPPModel(m); break;
 				case FileCPPModel m: VisitFileCPPModel(m); break;
+				case ElementAccessCPPModel m: VisitElementAccessCPPModel(m); break;
+				case CastCPPModel m: VisitCastCPPModel(m); break;
+				case ParenthesizedExpressionCPPModel m: VisitParenthesizedExpressionCPPModel(m); break;
 				case DMACPPModel m: VisitDMACPPModel(m); break;
 			}
 		}

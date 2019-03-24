@@ -32,6 +32,24 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             return result.ResultSnapshot;
         }
 
+        int SizeOfType(Type t)
+        {
+            var sizeOfMap = new Dictionary<Type, int>()
+                {
+                    { typeof(byte), sizeof(byte) },
+                    { typeof(sbyte), sizeof(sbyte) },
+                    { typeof(ushort), sizeof(ushort) },
+                    { typeof(short), sizeof(short) },
+                    { typeof(int), sizeof(int) },
+                    { typeof(uint), sizeof(uint) },
+                };
+
+            if (!sizeOfMap.ContainsKey(t))
+                throw new Exception($"SizeOf {t.Name} not registered");
+
+            return sizeOfMap[t];
+        }
+
         async Task TranslateSourceFiles(
             IEnumerable<FSTextFile> files,
             Action entryPoint
@@ -59,8 +77,8 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             {
                 DataType = typeof(uint),
                 SegmentBits = 12,
-                HardwareName = "l_mem",
-                SoftwareName = "l_mem",
+                HardwareName = "firmware",
+                SoftwareName = "firmware",
                 Segment = 0,
                 Depth = 512,
                 Template = "memory32"
@@ -139,17 +157,27 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             // generat verilog
 
             var hardwareTemplate = hardwareTemplates.Get<FSTextFile>("hardware.template.v").Content;
-
-            // memory init file
-            var binFile = firmwareOutput.Get<FSBinaryFile>("firmware.bin");
-            Assert.IsNotNull(binFile);
-
             var replacers = new Dictionary<string, string>();
 
-            var words = TestTools.ReadWords(binFile.Content).ToList();
-            var memInit = generator.MemInit(words, "l_mem", 512);
+            // memory init file
+            replacers["MEM_INIT"] = "";
+            foreach (var dma in dmaRecords)
+            {
+                var binFile = firmwareOutput.Get<FSBinaryFile>($"{dma.HardwareName}.bin");
+                if(binFile != null)
+                {
+                    var words = TestTools.ReadWords(binFile.Content).ToList();
+                    var memInit = generator.MemInit(words, dma.HardwareName, (int)dma.Depth, SizeOfType(dma.DataType));
 
-            replacers["MEM_INIT"] = memInit;
+                    replacers["MEM_INIT"] += memInit;
+                }
+                else
+                {
+                    var memInit = generator.MemInit(Enumerable.Range(0, (int)dma.Depth).Select(idx => 0UL).ToList(), dma.HardwareName, (int)dma.Depth, SizeOfType(dma.DataType));
+
+                    replacers["MEM_INIT"] += memInit;
+                }
+            }
 
             // data declarations
             replacers["DATA_DECL"] = generator.DataDeclaration(dmaRecords);
@@ -182,15 +210,52 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             IntermediateData.SaveFirmwareOutput(firmwareSnapshot);
         }
 
+        
         [TestMethod]
-        public async Task BasicTest()
+        public async Task DataDeclarationTest()
+        {
+            await TranslateSourceFiles(
+                new[]
+                {
+                    LoadSource("DataDeclarationTest.cs")
+                },
+                DataDeclarationTestSource.Firmware.EntryPoint
+                );
+        }
+
+        [TestMethod]
+        public async Task MethodCallTest()
         {
             await TranslateSourceFiles(
                 new []
                 {
-                    LoadSource("BasicTest.cs")
+                    LoadSource("MethodCallTest.cs")
                 },
-                BasicTestSource.Firmware.EntryPoint
+                MethodCallTestSource.Firmware.EntryPoint
+                );
+        }
+
+        [TestMethod]
+        public async Task DMA_ArrayTest()
+        {
+            await TranslateSourceFiles(
+                new[]
+                {
+                    LoadSource("DMA_ArrayTest.cs")
+                },
+                DMA_ArrayTestSource.Firmware.EntryPoint
+                );
+        }
+
+        [TestMethod]
+        public async Task DMA_Register()
+        {
+            await TranslateSourceFiles(
+                new[]
+                {
+                    LoadSource("DMA_RegisterTest.cs")
+                },
+                DMA_RegisterTestSource.Firmware.EntryPoint
                 );
         }
     }

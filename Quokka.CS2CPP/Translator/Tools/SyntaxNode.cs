@@ -149,5 +149,24 @@ namespace Microsoft.CodeAnalysis
         {
             return SelfWithChildren(node).OfType<T>().FirstOrDefault();
         }
+
+        public static List<IdentifierNameSyntax> RecursiveFlatIdentifiers(this SyntaxNode node)
+        {
+            switch (node)
+            {
+                case MemberAccessExpressionSyntax maes:
+                    switch (maes.Name)
+                    {
+                        case IdentifierNameSyntax ins:
+                            return RecursiveFlatIdentifiers(maes.Expression).Concat(new[] { ins }).ToList();
+                        default:
+                            throw new Exception($"Unsupported node name in flat identifiers: {node}");
+                    }
+                case IdentifierNameSyntax ins:
+                    return new List<IdentifierNameSyntax>() { ins };
+                default:
+                    throw new Exception("Unsupported node type in flat identifiers: {node}");
+            }
+        }
     }
 }

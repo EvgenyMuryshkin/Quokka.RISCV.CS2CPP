@@ -16,7 +16,7 @@ namespace Quokka.CS2CPP.CodeWriters.Tools
             { typeof(short), "short" },
             { typeof(ushort), "unsigned short" },
             { typeof(char), "char" },
-            { typeof(byte), "byte" },
+            { typeof(byte), "unsigned char" },
         };
 
         public static string LookupCPPTypeName(Type type)

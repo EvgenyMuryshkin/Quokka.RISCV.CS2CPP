@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Quokka.CS2CPP.CodeModels.CPP;
 using Quokka.CS2CPP.Translator.Tools;
 using System;
+using System.Linq;
 
 namespace Quokka.CS2CPP.Translator.Visitors
 {
@@ -15,7 +16,8 @@ namespace Quokka.CS2CPP.Translator.Visitors
 
         public override void VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
         {
-            Invoke<VariableDeclarationVisitor>(node.Declaration);
+            var data = Invoke<VariableDeclarationVisitor>(node.Declaration).Data;
+            Context.MembersContainer.Members.Add(data);
         }
 
         public override void VisitWhileStatement(WhileStatementSyntax node)
@@ -66,6 +68,22 @@ namespace Quokka.CS2CPP.Translator.Visitors
         public override void VisitInvocationExpression(InvocationExpressionSyntax node)
         {
             Context.MembersContainer.Members.Add(Invoke<ExpressionVisitor>(node).Expression);
+        }
+
+        public override void VisitForStatement(ForStatementSyntax node)
+        {
+            var forModel = new ForLoopCPPModel()
+            {
+                Declaration = Invoke<VariableDeclarationVisitor>(node.Declaration).Data,
+                Initializers = node.Initializers.Select(i => Invoke<VariableDeclaratorVisitor>(i).Initializer).ToList(),
+                Condition = Invoke<ExpressionVisitor>(node.Condition).Expression,
+                Incrementors = node.Incrementors.Select(i => Invoke<ExpressionVisitor>(i).Expression).ToList()
+            };
+
+            using (Context.WithCodeContainer(forModel))
+            {
+                Visit(node.Statement);
+            }
         }
     }
 }

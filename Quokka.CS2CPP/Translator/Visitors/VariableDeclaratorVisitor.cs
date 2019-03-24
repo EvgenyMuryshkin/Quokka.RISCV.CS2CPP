@@ -9,13 +9,15 @@ namespace Quokka.CS2CPP.Translator.Visitors
 {
     class VariableDeclaratorVisitor : CSharp2CVisitor
     {
+        public DataInitializerCPPModel Initializer;
+
         public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
         {
-            var data = new DataCPPModel();
-            data.DataType = TypeResolver.ResolveType(node.RecursizeParent<VariableDeclarationSyntax>().Type);
-            data.Name = node.Identifier.ToString();
-            data.Initializer = Invoke<ExpressionVisitor>(node.Initializer?.Value).Expression;
-            Context.MembersContainer.Members.Add(data);
+            Initializer = new DataInitializerCPPModel()
+            {
+                Name = node.Identifier.ToString(),
+                Initializer = Invoke<ExpressionVisitor>(node.Initializer?.Value).Expression
+            };
         }
     }  
 }

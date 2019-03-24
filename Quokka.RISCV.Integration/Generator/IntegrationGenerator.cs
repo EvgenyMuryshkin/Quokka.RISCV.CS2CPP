@@ -111,11 +111,28 @@ namespace Quokka.RISCV.Integration.Generator
             return $"{first.HardwareName}_ready ? {source} : {MemRData(externalData.Skip(1).ToList())}";
         }
 
-        public string MemInit(List<uint> words, string memName, int wordsCount)
+        public string MemInit(
+            List<ulong> data, 
+            string memName, 
+            int dataLendth,
+            int dataWidthBytes)
         {
             var init = Enumerable
-                .Range(0, wordsCount)
-                .Select(idx => $"/*{(idx * 4).ToString("X4")}*/{memName}[{idx}] = 32'h{ (idx < words.Count ? words[idx] : 0).ToString("X8")};{Environment.NewLine}");
+                .Range(0, dataLendth)
+                .Select(idx =>
+                {
+                    switch(dataWidthBytes)
+                    {
+                        case 1:
+                        case 2:
+                        case 4:
+                        case 8:
+                            var memBits = (int)Math.Ceiling(Math.Log(dataLendth, 2) / 4);
+                            return $"/*{(idx * dataWidthBytes).ToString($"X{memBits}")}*/{memName}[{idx}] = {(dataWidthBytes * 8)}'h{ (idx < data.Count ? data[idx] : 0).ToString($"X{(dataWidthBytes * 2)}")};{Environment.NewLine}";
+                        default:
+                            throw new Exception($"Unsupported size");
+                    }
+                });
 
             return string.Join("", init);
         }
