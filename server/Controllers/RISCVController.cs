@@ -19,23 +19,7 @@ namespace server.Controllers
                 switch (request)
                 {
                     case InvokeRequest invoke:
-                    {
-                        var response = new InvokeResponse()
-                        {
-                            CorrelationId = invoke.CorrelationId
-                        };
-
-                        using (var toolchain = new Toolchain(invoke.CorrelationId))
-                        {
-                            toolchain.SaveSnapshot(invoke.Source);
-                            toolchain.SetupRules(invoke.ResultRules);
-                            toolchain.Invoke(invoke.Operations);
-
-                            response.Result = toolchain.LoadSnapshot(invoke.ExtensionClasses);
-                        }
-
-                        return Ok(response);
-                    }
+                        return Ok(Toolchain.Invoke(invoke));
                     default:
                         return BadRequest($"Unsupported request type: {request.GetType()}");
                 }

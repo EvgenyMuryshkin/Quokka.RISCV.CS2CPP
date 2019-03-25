@@ -19,6 +19,9 @@ namespace Quokka.RISCV.Integration.Engine
 
         public Toolchain(Guid correlationId)
         {
+            Console.WriteLine($"======================================================");
+            Console.WriteLine($"Toolchain request {correlationId}");
+
             _correlationId = correlationId;
             RootPath = Path.Combine(Path.GetTempPath(), _correlationId.ToString());
             Directory.CreateDirectory(RootPath);
@@ -137,5 +140,24 @@ namespace Quokka.RISCV.Integration.Engine
             Dispose(true);
         }
         #endregion
+
+        public static InvokeResponse Invoke(InvokeRequest request)
+        {
+            var response = new InvokeResponse()
+            {
+                CorrelationId = request.CorrelationId
+            };
+
+            using (var toolchain = new Toolchain(request.CorrelationId))
+            {
+                toolchain.SaveSnapshot(request.Source);
+                toolchain.SetupRules(request.ResultRules);
+                toolchain.Invoke(request.Operations);
+
+                response.Result = toolchain.LoadSnapshot(request.ExtensionClasses);
+            }
+
+            return response;
+        }
     }
 }
