@@ -95,6 +95,7 @@ namespace Quokka.RISCV.Integration {
         ///
         ///#include &quot;plumbing.h&quot;
         ///#include &quot;dma.h&quot;
+        ///{FIRMWARE_INCLUDES}
         ///
         ///extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss,_heap_start;
         ///
@@ -106,9 +107,8 @@ namespace Quokka.RISCV.Integration {
         ///        *dest++ = 0;
         ///    }
         ///
-        ///	{MAIN_CODE}
-        ///}
-        ///.
+        ///	{FIRMWARE_CODE}
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string firmware_template {
             get {
@@ -165,15 +165,15 @@ namespace Quokka.RISCV.Integration {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///firmware.elf: sections.lds start.S irq.c firmware.cpp BasicTest.cpp
-        ///	riscv32-unknown-elf-gcc -march=rv32im -nostartfiles -Wl,-Bstatic,-T,sections.lds,--strip-debug,-Map=firmware.map,--cref  -ffreestanding -nostdlib -o firmware.elf start.S irq.c firmware.cpp BasicTest.cpp
+        ///firmware.elf: sections.lds start.S irq.c firmware.cpp {SOURCES_LIST}
+        ///	riscv32-unknown-elf-gcc -march=rv32im -nostartfiles -Wl,-Bstatic,-T,sections.lds,--strip-debug,-Map=firmware.map,--cref  -ffreestanding -nostdlib -o firmware.elf start.S irq.c firmware.cpp {SOURCES_LIST}
         ///
         ///firmware.bin: firmware.elf
         ///	riscv32-unknown-elf-objcopy -O binary firmware.elf /dev/stdout &gt; firmware.bin
         ///
         ///clean:
         ///	rm -f firmware.elf firmware.hex firmware.bin firmware.o firmware.map \
-        ///	      hardware.blif hardware.log hardware. [rest of string was truncated]&quot;;.
+        ///	      hardware.blif hardware.log hardwar [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Makefile {
             get {
@@ -219,11 +219,11 @@ namespace Quokka.RISCV.Integration {
         ///	reg  [1:0] 		{NAME}_write_state = 2&apos;b0;
         ///	wire 			{NAME}_address_valid;
         ///
-        ///	assign {NAME}_address_valid = cpu_mem_addr[31:24] == 8&apos;h{SEG};
+        ///	assign {NAME}_address_valid = cpu_mem_addr[31:{SEG_END}] == {SEG_WIDTH}&apos;h{SEG};
         ///	assign {NAME}_ready = {NAME}_read_ready || {NAME}_write_ready;
         ///	
         ///	assign {NAME}_wdata = {
-        ///		cpu_mem_wstrb[3] ? cpu_mem_ [rest of string was truncated]&quot;;.
+        ///		cpu_mem_ws [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string memory32_template {
             get {
@@ -282,10 +282,8 @@ namespace Quokka.RISCV.Integration {
         ///		{be_0}cpu_mem_wstrb[0] ? cpu_mem_wdata[7:0]   : {NAME}[7:0]
         ///	};
         ///	
-        ///	assign {NAME}_ready = cpu_mem_addr[31:24] == 8&apos;h{SEG};
-        ///	assign {NAME}_we = {NAME}_ready &amp;&amp; !cpu_mem_instr;
-        ///	
-        ///	//  [rest of string was truncated]&quot;;.
+        ///	assign {NAME}_ready = cpu_mem_addr[31:{SEG_END}] == {SEG_WIDTH}&apos;h{SEG};
+        ///	assign {NAME}_we = {NAME}_ready &amp;&amp; !cpu_me [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string register_template {
             get {
