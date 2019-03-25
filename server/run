@@ -1,3 +1,0 @@
-export PATH=$PATH:/opt/riscv32imc/bin
-cd /opt/qrv
-dotnet server.dll
