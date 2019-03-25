@@ -339,3 +339,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database 
 healthchecksdb
+/Quokka.RISCV.Integration.Tests/Intermediate/*
