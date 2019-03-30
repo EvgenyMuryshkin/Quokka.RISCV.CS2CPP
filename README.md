@@ -58,7 +58,7 @@ Intermediate data is stored under `Quokka.RISCV.CS2CPP.Tests\Intermediate`
 There are 3 parts
 * FirmwareSource - all source files that will be send to compilation with RISCV.
 * FirmwareOutput - everything that was produced by compilation (bin, elf, map etc)
-* HardwareSource - verilog output, where PicoRV32 is integrated with external registers and memory block on a bus.
+* HardwareSource - verilog output, where PicoRV32 is integrated with external registers and memory blocks on a bus.
 
 There are [default integration templates](https://github.com/EvgenyMuryshkin/Quokka.RISCV.Docker.Server/tree/master/Quokka.RISCV.Integration/Resources). You can override them if required.
 
@@ -71,7 +71,7 @@ It should run successfully if everything was properly configured.
 Result of the test is `hardware.v` in `Intermediate\HardwareSource` folder.
 This file is self contained, has application binary embedded into memory init section.
 
-*NOTE! There is 512 bytes limit on applicatiion, so there is a good change that you would not be able to run anything except blinker on current version :) But you can change that in `TranslateSourceFiles` method ny simply increasing size of `firmware` memory block*
+*NOTE! There is 512 bytes limit on applicatiion, so there is a good change that you would not be able to run anything except blinker on current version :) But you can change that in `TranslateSourceFiles` method by simply increasing size of `firmware` memory block*
 
 Hardware output was built using default diagnostics template and has bunch of signal on top module.
 
@@ -84,10 +84,15 @@ In order to run blinker, please clean up module interface. Something like this w
 
 `module RVTest (
 	input clk,
+	
 	input resetn,
+	
 	output LED1,
+	
 	output LED2,
+	
 	output LED3
+	
 );
 `
 
@@ -95,8 +100,11 @@ CPU blinks about every 25 clock cycles. If you run 50MHz board, you can get visi
 
 `
 	assign LED1 = BlinkerSource_DMA_Counter[19];
+	
 	assign LED2 = BlinkerSource_DMA_Counter[21];
+	
 	assign LED3 = BlinkerSource_DMA_Counter[23];
+	
 `
 Clean up all debug output assignments in order to compile you project.
 Configure all pins for your board.
