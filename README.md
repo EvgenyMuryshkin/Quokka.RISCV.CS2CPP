@@ -82,30 +82,24 @@ Copy `hardware.v` to this project.
 
 In order to run blinker, please clean up module interface. Something like this will do
 
-`module RVTest (
-	input clk,
-	
-	input resetn,
-	
-	output LED1,
-	
-	output LED2,
-	
-	output LED3
-	
+`
+module RVTest (
+  input clk,
+  input resetn,
+  output LED1,
+  output LED2,	
+ output LED3
 );
 `
 
 CPU blinks about every 25 clock cycles. If you run 50MHz board, you can get visible LED flash using bits from 18-22 bits range.
 
 `
-	assign LED1 = BlinkerSource_DMA_Counter[19];
-	
-	assign LED2 = BlinkerSource_DMA_Counter[21];
-	
-	assign LED3 = BlinkerSource_DMA_Counter[23];
-	
+assign LED1 = BlinkerSource_DMA_Counter[19];
+assign LED2 = BlinkerSource_DMA_Counter[21];
+assign LED3 = BlinkerSource_DMA_Counter[23];
 `
+
 Clean up all debug output assignments in order to compile you project.
 Configure all pins for your board.
 Run synthesis and progrma your board.
