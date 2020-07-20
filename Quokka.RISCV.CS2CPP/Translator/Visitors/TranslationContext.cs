@@ -45,6 +45,6 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
             return Disposable.Create(() => MembersContainers.Pop());
         }
 
-        public List<DMACPPModel> DMAModels { get; set; } = new List<DMACPPModel>();
+        public List<SOCResourceCPPModel> SOCResources { get; set; } = new List<SOCResourceCPPModel>();
     }
 }

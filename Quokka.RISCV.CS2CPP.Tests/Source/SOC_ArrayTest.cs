@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DMA_ArrayTestSource
+namespace SOC_ArrayTestSource
 {
-    public class DMA
+    public class SOC
     {
-        public static DMA Instance { get; set; } = new DMA();
+        public static SOC Instance { get; set; } = new SOC();
 
         public virtual int Result { get; set; }
 
@@ -19,16 +19,16 @@ namespace DMA_ArrayTestSource
         {
             for (byte i = 0; i < 16; i++)
             {
-                DMA.Instance.Array[i] = i;
+                SOC.Instance.Array[i] = i;
             }
 
             int result = 0;
             for (byte i = 0; i < 16; i++)
             {
-                result += DMA.Instance.Array[i];
+                result += SOC.Instance.Array[i];
             }
 
-            DMA.Instance.Result = result;
+            SOC.Instance.Result = result;
         }
     }
 }

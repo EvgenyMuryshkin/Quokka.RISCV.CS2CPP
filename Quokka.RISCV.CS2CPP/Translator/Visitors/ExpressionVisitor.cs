@@ -41,6 +41,8 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
             { "-",  BinaryExpressionTypeCPPModel.Sub },
             { "*",  BinaryExpressionTypeCPPModel.Mult },
             { "/",  BinaryExpressionTypeCPPModel.Div },
+            { ">>",  BinaryExpressionTypeCPPModel.RightShift },
+            { "<<",  BinaryExpressionTypeCPPModel.LeftShift },
         };
 
         BinaryExpressionTypeCPPModel ToBinaryExpressionType(SyntaxNode node, string op)
@@ -117,7 +119,7 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
             // check if access to DMA property
             var identifiers = node.RecursiveFlatIdentifiers();
 
-            if (identifiers.Any() && identifiers[0].ToString() == "DMA")
+            if (identifiers.Any() && identifiers[0].ToString() == "SOC")
             {
                 var dmaType = TypeResolver.ResolveType(identifiers[0]);
                 Expression = new IdentifierExpressionCPPModel()

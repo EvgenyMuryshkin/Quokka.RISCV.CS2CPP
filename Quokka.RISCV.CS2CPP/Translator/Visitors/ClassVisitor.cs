@@ -8,9 +8,9 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
     {
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            if (node.Identifier.ToString() == "DMA")
+            if (node.Identifier.ToString() == "SOC")
             {
-                Invoke<DMAClassVisitor>(node);
+                Invoke<SOCClassVisitor>(node);
                 return;
             }
 

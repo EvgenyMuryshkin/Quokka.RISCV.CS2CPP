@@ -44,6 +44,12 @@ namespace Quokka.RISCV.CS2CPP.Tests.Tools
             m.SaveSnapshot(snapshot);
         }
 
+        public static void SaveToMake(FSSnapshot snapshot)
+        {
+            var m = new FSManager(TestPath.MakeFolder);
+            m.SaveSnapshot(snapshot);
+        }
+
         public static void SaveHardwareSource(FSSnapshot snapshot)
         {
             Clean(TestPath.HardwareSourceFolder);

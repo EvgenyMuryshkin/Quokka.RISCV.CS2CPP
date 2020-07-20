@@ -1,0 +1,81 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x0000000000000000 0x0000000000008000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.text           0x0000000000000000      0x144
+                0x0000000000000000                . = ALIGN (0x4)
+ *(.text)
+ .text          0x0000000000000000       0x80 /tmp/ccIegeec.o
+ .text          0x0000000000000080       0x28 /tmp/cc1yRO4F.o
+                0x0000000000000080                main
+ .text          0x00000000000000a8       0x34 /tmp/ccupu709.o
+                0x00000000000000a8                SOCBlinker::Firmware::EntryPoint()
+ *(.text*)
+ *(.rodata)
+ *(.rodata*)
+ *(.srodata)
+ *(.srodata*)
+ *(.eh_frame)
+ .eh_frame      0x00000000000000dc       0x38 /tmp/cc1yRO4F.o
+ .eh_frame      0x0000000000000114       0x30 /tmp/ccupu709.o
+ *(.eh_frame*)
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _etext = .
+                0x0000000000000144                _sidata = _etext
+
+.data           0x0000000000000144        0x0
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _sdata = .
+                0x0000000000000144                _ram_start = .
+ *(.data)
+ .data          0x0000000000000144        0x0 /tmp/ccIegeec.o
+ .data          0x0000000000000144        0x0 /tmp/cc1yRO4F.o
+ .data          0x0000000000000144        0x0 /tmp/ccupu709.o
+ *(.data*)
+ *(.sdata)
+ *(.sdata*)
+ *(.init_array)
+ *(.init_array*)
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _edata = .
+
+.bss            0x0000000000000144        0x0
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _sbss = .
+ *(.bss)
+ .bss           0x0000000000000144        0x0 /tmp/ccIegeec.o
+ .bss           0x0000000000000144        0x0 /tmp/cc1yRO4F.o
+ .bss           0x0000000000000144        0x0 /tmp/ccupu709.o
+ *(.bss*)
+ *(.sbss)
+ *(.sbss*)
+ *(COMMON)
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _ebss = .
+
+.heap           0x0000000000000144        0x0
+                0x0000000000000144                . = ALIGN (0x4)
+                0x0000000000000144                _heap_start = .
+LOAD /tmp/ccIegeec.o
+LOAD /tmp/cc1yRO4F.o
+LOAD /tmp/ccupu709.o
+OUTPUT(firmware.elf elf32-littleriscv)
+
+.comment        0x0000000000000000       0x11
+ .comment       0x0000000000000000       0x11 /tmp/cc1yRO4F.o
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000011       0x12 /tmp/ccupu709.o
+
+Cross Reference Table
+
+Symbol                                            File
+SOCBlinker::Firmware::EntryPoint()                /tmp/ccupu709.o
+                                                  /tmp/cc1yRO4F.o
+main                                              /tmp/cc1yRO4F.o
+                                                  /tmp/ccIegeec.o

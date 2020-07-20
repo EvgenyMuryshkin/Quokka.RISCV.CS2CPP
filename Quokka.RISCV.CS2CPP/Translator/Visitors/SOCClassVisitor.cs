@@ -5,7 +5,7 @@ using System;
 
 namespace Quokka.RISCV.CS2CPP.Translator.Visitors
 {
-    class DMAClassVisitor : CSharp2CVisitor
+    class SOCClassVisitor : CSharp2CVisitor
     {
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
@@ -22,13 +22,13 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
                     {
                         var value = prop.GetValue(classInstance) as Array;
                         if (value == null)
-                            throw new Exception($"DMA Arrays must be initialized to a value of known size");
+                            throw new Exception($"SOC Arrays must be initialized to a value of known size");
 
                         length = value.Length;
                         type = type.GetElementType();
                     }
 
-                    Context.DMAModels.Add(new DMACPPModel()
+                    Context.SOCResources.Add(new SOCResourceCPPModel()
                     {
                         Name = $"{classType.Namespace}_{classType.Name}_{prop.Name}",
                         Type = type,

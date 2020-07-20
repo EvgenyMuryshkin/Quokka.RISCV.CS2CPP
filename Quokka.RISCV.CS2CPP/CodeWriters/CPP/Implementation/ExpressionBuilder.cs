@@ -32,6 +32,8 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Implementation
             { BinaryExpressionTypeCPPModel.Sub, "-" },
             { BinaryExpressionTypeCPPModel.Mult, "*" },
             { BinaryExpressionTypeCPPModel.Div, "/" },
+            { BinaryExpressionTypeCPPModel.RightShift, ">>" },
+            { BinaryExpressionTypeCPPModel.LeftShift, "<<" },
         };
 
         string ToBinaryExpressionType(BinaryExpressionTypeCPPModel op)

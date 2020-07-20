@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DMA_RegisterTestSource
+namespace SOC_RegisterTestSource
 {
-    public class DMA
+    public class SOC
     {
-        public static DMA Instance { get; set; } = new DMA();
+        public static SOC Instance { get; set; } = new SOC();
 
         public virtual int Counter { get; set; }
     }
@@ -17,7 +17,7 @@ namespace DMA_RegisterTestSource
         {
             while(true)
             {
-                DMA.Instance.Counter++;
+                SOC.Instance.Counter++;
             }
         }
     }

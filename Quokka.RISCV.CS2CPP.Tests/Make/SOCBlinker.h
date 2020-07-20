@@ -1,9 +1,9 @@
-#ifndef DMA_RegisterTest_H
-#define DMA_RegisterTest_H
+#ifndef SOCBlinker_H
+#define SOCBlinker_H
 #include <stdint.h>
 #include <stdbool.h>
-#include "dma.h"
-namespace DMA_RegisterTestSource
+#include "soc.h"
+namespace SOCBlinker
 {
 	class Firmware
 	{

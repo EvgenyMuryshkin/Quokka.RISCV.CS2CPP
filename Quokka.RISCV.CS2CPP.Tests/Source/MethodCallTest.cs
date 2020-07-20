@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MethodCallTestSource
 {
-    public class DMA
+    public class SOC
     {
-        public static DMA Instance { get; set; } = new DMA();
+        public static SOC Instance { get; set; } = new SOC();
 
         public virtual int Value { get; set; }
 
@@ -33,7 +33,7 @@ namespace MethodCallTestSource
             {
                 counter = increment(counter);
                 incrementByRef(ref counter);
-                DMA.Instance.Value = counter;
+                SOC.Instance.Value = counter;
             }
         }
     }

@@ -14,8 +14,10 @@ namespace CPPModelGenerator
 
     class Program
     {
-        static string SolutionFolder(string start)
+        static string SolutionFolder(string start = null)
         {
+            start = start ?? Directory.GetCurrentDirectory();
+
             if (!Directory.Exists(start))
                 return null;
 
@@ -81,7 +83,7 @@ namespace CPPModelGenerator
             };
 
             var visitor = Visitor(context);
-            var path = Path.GetFullPath(@"..\Quokka.RISCV.CS2CPP\CodeModels\CPP\CPPModel.cs");
+            var path = Path.Combine(SolutionFolder(), @"Quokka.RISCV.CS2CPP\CodeModels\CPP\CPPModel.cs");
             Console.WriteLine($"Writing {path}");
 
             File.WriteAllText(path, visitor);

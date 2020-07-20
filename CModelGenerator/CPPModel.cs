@@ -97,7 +97,9 @@ namespace metadata
         Add,
         Sub,
         Mult,
-        Div
+        Div,
+        RightShift,
+        LeftShift
     }
 
     public class BinaryExpressionCPPModel : ExpressionCPPModel
@@ -244,7 +246,7 @@ namespace metadata
         public ExpressionCPPModel Expression { get; set; }
     }
 
-    public class DMACPPModel : CPPModel
+    public class SOCResourceCPPModel : CPPModel
     {
         public uint Address { get; set; }
         public string Name { get; set; }

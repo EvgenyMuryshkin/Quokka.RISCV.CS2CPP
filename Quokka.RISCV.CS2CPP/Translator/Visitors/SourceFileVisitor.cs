@@ -56,7 +56,7 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
 
                 var userIncludes = new[]
                 {
-                    "dma"
+                    "soc"
                 };
                 Context.Models.AddRange(userIncludes.Select(i => new IncludeCPPModel() { Name = i, Type = IncludeTypeCPPModel.User }));
 

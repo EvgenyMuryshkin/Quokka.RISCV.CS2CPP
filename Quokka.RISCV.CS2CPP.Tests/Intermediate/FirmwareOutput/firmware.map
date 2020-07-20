@@ -8,88 +8,88 @@ RAM              0x0000000000000000 0x0000000000008000 xrw
 Linker script and memory map
 
 
-.text           0x0000000000000000      0x2e8
+.text           0x0000000000000000      0x344
                 0x0000000000000000                . = ALIGN (0x4)
  *(.text)
- .text          0x0000000000000000      0x1fc /tmp/ccilexsj.o
- .text          0x00000000000001fc        0x8 /tmp/cc7XBkGE.o
+ .text          0x0000000000000000      0x1fc /tmp/ccHcXy21.o
+ .text          0x00000000000001fc        0x8 /tmp/ccItTQSI.o
                 0x00000000000001fc                set_irq_mask
- .text          0x0000000000000204       0x58 /tmp/ccQzv7VZ.o
+ .text          0x0000000000000204       0x58 /tmp/ccwWHC7p.o
                 0x0000000000000204                main
- .text          0x000000000000025c       0x20 /tmp/ccP0hLdl.o
-                0x000000000000025c                DMA_RegisterTestSource::Firmware::EntryPoint()
+ .text          0x000000000000025c       0x74 /tmp/ccFzJAu7.o
+                0x000000000000025c                DataDeclarationTestSource::Firmware::EntryPoint()
  *(.text*)
  *(.rodata)
  *(.rodata*)
  *(.srodata)
  *(.srodata*)
  *(.eh_frame)
- .eh_frame      0x000000000000027c       0x3c /tmp/ccQzv7VZ.o
- .eh_frame      0x00000000000002b8       0x30 /tmp/ccP0hLdl.o
+ .eh_frame      0x00000000000002d0       0x3c /tmp/ccwWHC7p.o
+ .eh_frame      0x000000000000030c       0x38 /tmp/ccFzJAu7.o
  *(.eh_frame*)
-                0x00000000000002e8                . = ALIGN (0x4)
-                0x00000000000002e8                _etext = .
-                0x00000000000002e8                _sidata = _etext
+                0x0000000000000344                . = ALIGN (0x4)
+                0x0000000000000344                _etext = .
+                0x0000000000000344                _sidata = _etext
 
-.rela.dyn       0x00000000000002e8        0x0
- .rela.text     0x00000000000002e8        0x0 /tmp/ccilexsj.o
+.rela.dyn       0x0000000000000344        0x0
+ .rela.text     0x0000000000000344        0x0 /tmp/ccHcXy21.o
 
-.data           0x00000000000002e8       0x14
-                0x00000000000002e8                . = ALIGN (0x4)
-                0x00000000000002e8                _sdata = .
-                0x00000000000002e8                _ram_start = .
+.data           0x0000000000000344       0x14
+                0x0000000000000344                . = ALIGN (0x4)
+                0x0000000000000344                _sdata = .
+                0x0000000000000344                _ram_start = .
  *(.data)
- .data          0x00000000000002e8       0x14 /tmp/ccilexsj.o
- .data          0x00000000000002fc        0x0 /tmp/cc7XBkGE.o
- .data          0x00000000000002fc        0x0 /tmp/ccQzv7VZ.o
- .data          0x00000000000002fc        0x0 /tmp/ccP0hLdl.o
+ .data          0x0000000000000344       0x14 /tmp/ccHcXy21.o
+ .data          0x0000000000000358        0x0 /tmp/ccItTQSI.o
+ .data          0x0000000000000358        0x0 /tmp/ccwWHC7p.o
+ .data          0x0000000000000358        0x0 /tmp/ccFzJAu7.o
  *(.data*)
  *(.sdata)
  *(.sdata*)
  *(.init_array)
  *(.init_array*)
-                0x00000000000002fc                . = ALIGN (0x4)
-                0x00000000000002fc                _edata = .
+                0x0000000000000358                . = ALIGN (0x4)
+                0x0000000000000358                _edata = .
 
-.bss            0x00000000000002fc        0x0
-                0x00000000000002fc                . = ALIGN (0x4)
-                0x00000000000002fc                _sbss = .
+.bss            0x0000000000000358        0x0
+                0x0000000000000358                . = ALIGN (0x4)
+                0x0000000000000358                _sbss = .
  *(.bss)
- .bss           0x00000000000002fc        0x0 /tmp/ccilexsj.o
- .bss           0x00000000000002fc        0x0 /tmp/cc7XBkGE.o
- .bss           0x00000000000002fc        0x0 /tmp/ccQzv7VZ.o
- .bss           0x00000000000002fc        0x0 /tmp/ccP0hLdl.o
+ .bss           0x0000000000000358        0x0 /tmp/ccHcXy21.o
+ .bss           0x0000000000000358        0x0 /tmp/ccItTQSI.o
+ .bss           0x0000000000000358        0x0 /tmp/ccwWHC7p.o
+ .bss           0x0000000000000358        0x0 /tmp/ccFzJAu7.o
  *(.bss*)
  *(.sbss)
  *(.sbss*)
  *(COMMON)
-                0x00000000000002fc                . = ALIGN (0x4)
-                0x00000000000002fc                _ebss = .
+                0x0000000000000358                . = ALIGN (0x4)
+                0x0000000000000358                _ebss = .
 
-.heap           0x00000000000002fc        0x0
-                0x00000000000002fc                . = ALIGN (0x4)
-                0x00000000000002fc                _heap_start = .
-LOAD /tmp/ccilexsj.o
-LOAD /tmp/cc7XBkGE.o
-LOAD /tmp/ccQzv7VZ.o
-LOAD /tmp/ccP0hLdl.o
+.heap           0x0000000000000358        0x0
+                0x0000000000000358                . = ALIGN (0x4)
+                0x0000000000000358                _heap_start = .
+LOAD /tmp/ccHcXy21.o
+LOAD /tmp/ccItTQSI.o
+LOAD /tmp/ccwWHC7p.o
+LOAD /tmp/ccFzJAu7.o
 OUTPUT(firmware.elf elf32-littleriscv)
 
 .comment        0x0000000000000000       0x11
- .comment       0x0000000000000000       0x11 /tmp/cc7XBkGE.o
+ .comment       0x0000000000000000       0x11 /tmp/ccItTQSI.o
                                          0x12 (size before relaxing)
- .comment       0x0000000000000011       0x12 /tmp/ccQzv7VZ.o
- .comment       0x0000000000000011       0x12 /tmp/ccP0hLdl.o
+ .comment       0x0000000000000011       0x12 /tmp/ccwWHC7p.o
+ .comment       0x0000000000000011       0x12 /tmp/ccFzJAu7.o
 
 Cross Reference Table
 
 Symbol                                            File
-DMA_RegisterTestSource::Firmware::EntryPoint()    /tmp/ccP0hLdl.o
-                                                  /tmp/ccQzv7VZ.o
-_ebss                                             /tmp/ccQzv7VZ.o
-_sbss                                             /tmp/ccQzv7VZ.o
-debug                                             /tmp/ccilexsj.o
-main                                              /tmp/ccQzv7VZ.o
-                                                  /tmp/ccilexsj.o
-set_irq_mask                                      /tmp/cc7XBkGE.o
-                                                  /tmp/ccQzv7VZ.o
+DataDeclarationTestSource::Firmware::EntryPoint() /tmp/ccFzJAu7.o
+                                                  /tmp/ccwWHC7p.o
+_ebss                                             /tmp/ccwWHC7p.o
+_sbss                                             /tmp/ccwWHC7p.o
+debug                                             /tmp/ccHcXy21.o
+main                                              /tmp/ccwWHC7p.o
+                                                  /tmp/ccHcXy21.o
+set_irq_mask                                      /tmp/ccItTQSI.o
+                                                  /tmp/ccwWHC7p.o

@@ -127,6 +127,8 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		Sub = 7,
 		Mult = 8,
 		Div = 9,
+		RightShift = 10,
+		LeftShift = 11,
 	}
 	// generated class, do not modify
 	public partial class BinaryExpressionCPPModel : ExpressionCPPModel
@@ -377,9 +379,9 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
-	public partial class DMACPPModel : CPPModel
+	public partial class SOCResourceCPPModel : CPPModel
 	{
-		public DMACPPModel(UInt32 Address = 0, String Name = "", Type Type = null, Int32 Length = 0)
+		public SOCResourceCPPModel(UInt32 Address = 0, String Name = "", Type Type = null, Int32 Length = 0)
 		{
 			this.Address = Address;
 			this.Name = Name ?? "";
@@ -418,7 +420,7 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public virtual void VisitElementAccessCPPModel(ElementAccessCPPModel model) => DefaultVisit(model);
 		public virtual void VisitCastCPPModel(CastCPPModel model) => DefaultVisit(model);
 		public virtual void VisitParenthesizedExpressionCPPModel(ParenthesizedExpressionCPPModel model) => DefaultVisit(model);
-		public virtual void VisitDMACPPModel(DMACPPModel model) => DefaultVisit(model);
+		public virtual void VisitSOCResourceCPPModel(SOCResourceCPPModel model) => DefaultVisit(model);
 		public virtual void Visit(CPPModel model)
 		{
 			switch(model)
@@ -448,7 +450,7 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 				case ElementAccessCPPModel m: VisitElementAccessCPPModel(m); break;
 				case CastCPPModel m: VisitCastCPPModel(m); break;
 				case ParenthesizedExpressionCPPModel m: VisitParenthesizedExpressionCPPModel(m); break;
-				case DMACPPModel m: VisitDMACPPModel(m); break;
+				case SOCResourceCPPModel m: VisitSOCResourceCPPModel(m); break;
 			}
 		}
 	}

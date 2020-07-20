@@ -1,14 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.0.1</Version>
+    <Description>C# to CPP translation tools, part of Quokka FPGA toolkit</Description>
+    <Copyright>Evgeny Muryshkin, 2019-2020</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/EvgenyMuryshkin/Quokka.RISCV.CS2CPP</PackageProjectUrl>
+    <PackageTags>FPGA, RISC-V</PackageTags>
+    <Authors>Evgeny Muryshkin</Authors>
+    <Company>Quokka Robotics</Company>
+    <RepositoryUrl>https://github.com/EvgenyMuryshkin/Quokka.RISCV.CS2CPP</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Quokka.RISCV.Integration" Version="1.0.0.4" />
+    <PackageReference Include="Quokka.RISCV.Integration" Version="1.0.0.11" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tools\" />
   </ItemGroup>
   
 </Project>

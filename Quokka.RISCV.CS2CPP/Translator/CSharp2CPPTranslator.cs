@@ -12,7 +12,7 @@ namespace Quokka.RISCV.CS2CPP.Translator
     public class CSharp2CPPTranslator
     {
         public FSSnapshot Result = new FSSnapshot();
-        public List<DMACPPModel> DMA = new List<DMACPPModel>();
+        public List<SOCResourceCPPModel> SOCResources = new List<SOCResourceCPPModel>();
 
         public void Run(FSSnapshot source)
         {
@@ -44,7 +44,7 @@ namespace Quokka.RISCV.CS2CPP.Translator
                 Result.Files.Add(new FSTextFile() { Name = $"{fileName}.h", Content = content["h"] });
                 Result.Files.Add(new FSTextFile() { Name = $"{fileName}.cpp", Content = content["cpp"] });
 
-                DMA.AddRange(context.DMAModels);
+                SOCResources.AddRange(context.SOCResources);
             }
         }
     }

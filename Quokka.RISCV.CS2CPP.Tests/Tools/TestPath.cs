@@ -25,6 +25,9 @@ namespace Quokka.RISCV.CS2CPP.Tests.Tools
         public static string IntegrationTestsFolder => Path.Combine(
             SolutionFolder(Environment.CurrentDirectory),
             "Quokka.RISCV.CS2CPP.Tests");
+        public static string MakeFolder => Path.Combine(
+            IntegrationTestsFolder,
+            "Make");
 
         public static string IntermediateFolder => Path.Combine(
             IntegrationTestsFolder,

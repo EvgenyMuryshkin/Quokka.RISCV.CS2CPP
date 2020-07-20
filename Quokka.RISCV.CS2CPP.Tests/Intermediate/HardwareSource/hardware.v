@@ -46,7 +46,7 @@ module RVTest (
 
 // BEGIN DATA_DECL
 reg [31 : 0] firmware[0 : 511];
-reg [31 : 0] DMA_RegisterTestSource_DMA_Counter;
+reg [31 : 0] DataDeclarationTestSource_SOC_Result;
 
 // END DATA_DECL
 
@@ -109,34 +109,34 @@ reg [31 : 0] DMA_RegisterTestSource_DMA_Counter;
 		firmware_rdata <= firmware[firmware_address];
 	end
 
-	wire 		DMA_RegisterTestSource_DMA_Counter_ready;
-	wire 		DMA_RegisterTestSource_DMA_Counter_we;
-	wire [31:0] DMA_RegisterTestSource_DMA_Counter_wdata;	
+	wire 		DataDeclarationTestSource_SOC_Result_ready;
+	wire 		DataDeclarationTestSource_SOC_Result_we;
+	wire [31:0] DataDeclarationTestSource_SOC_Result_wdata;	
 
 	// byteenabled write
-	assign DMA_RegisterTestSource_DMA_Counter_wdata = {
-		cpu_mem_wstrb[3] ? cpu_mem_wdata[31:24] : DMA_RegisterTestSource_DMA_Counter[31:24],
-		cpu_mem_wstrb[2] ? cpu_mem_wdata[23:16] : DMA_RegisterTestSource_DMA_Counter[23:16],
-		cpu_mem_wstrb[1] ? cpu_mem_wdata[15:8]  : DMA_RegisterTestSource_DMA_Counter[15:8],
-		cpu_mem_wstrb[0] ? cpu_mem_wdata[7:0]   : DMA_RegisterTestSource_DMA_Counter[7:0]
+	assign DataDeclarationTestSource_SOC_Result_wdata = {
+		cpu_mem_wstrb[3] ? cpu_mem_wdata[31:24] : DataDeclarationTestSource_SOC_Result[31:24],
+		cpu_mem_wstrb[2] ? cpu_mem_wdata[23:16] : DataDeclarationTestSource_SOC_Result[23:16],
+		cpu_mem_wstrb[1] ? cpu_mem_wdata[15:8]  : DataDeclarationTestSource_SOC_Result[15:8],
+		cpu_mem_wstrb[0] ? cpu_mem_wdata[7:0]   : DataDeclarationTestSource_SOC_Result[7:0]
 	};
 	
-	assign DMA_RegisterTestSource_DMA_Counter_ready = cpu_mem_addr[31:20] == 12'h800;
-	assign DMA_RegisterTestSource_DMA_Counter_we = DMA_RegisterTestSource_DMA_Counter_ready && !cpu_mem_instr;
+	assign DataDeclarationTestSource_SOC_Result_ready = cpu_mem_addr[31:20] == 12'h800;
+	assign DataDeclarationTestSource_SOC_Result_we = DataDeclarationTestSource_SOC_Result_ready && !cpu_mem_instr;
 	
 	// memory logic
 	always @(posedge clk)
 	begin
 		if (resetn)
 			begin
-				if (DMA_RegisterTestSource_DMA_Counter_we)
+				if (DataDeclarationTestSource_SOC_Result_we)
 					begin
-						DMA_RegisterTestSource_DMA_Counter <= DMA_RegisterTestSource_DMA_Counter_wdata;
+						DataDeclarationTestSource_SOC_Result <= DataDeclarationTestSource_SOC_Result_wdata;
 					end
 			end
 		else
 			begin
-				DMA_RegisterTestSource_DMA_Counter <= 32'b0;
+				DataDeclarationTestSource_SOC_Result <= 32'b0;
 			end
 	end
 	
@@ -145,8 +145,8 @@ reg [31 : 0] DMA_RegisterTestSource_DMA_Counter;
 // END DATA_CTRL
 
 	// feedback to cpu
-	assign cpu_mem_ready = firmware_ready || DMA_RegisterTestSource_DMA_Counter_ready;
-	assign cpu_mem_rdata = firmware_ready ? firmware_rdata : DMA_RegisterTestSource_DMA_Counter_ready ? DMA_RegisterTestSource_DMA_Counter : 32'b0;
+	assign cpu_mem_ready = firmware_ready || DataDeclarationTestSource_SOC_Result_ready;
+	assign cpu_mem_rdata = firmware_ready ? firmware_rdata : DataDeclarationTestSource_SOC_Result_ready ? DataDeclarationTestSource_SOC_Result : 32'b0;
 		
 	assign o_mem_valid = 	cpu_mem_valid;
 	assign o_mem_instr = 	cpu_mem_instr;
@@ -331,10 +331,10 @@ reg [31 : 0] DMA_RegisterTestSource_DMA_Counter;
 /*210*/firmware[132] = 32'h02010413;
 /*214*/firmware[133] = 32'h0FF00513;
 /*218*/firmware[134] = 32'hFE5FF0EF;
-/*21C*/firmware[135] = 32'h2FC00793;
+/*21C*/firmware[135] = 32'h35800793;
 /*220*/firmware[136] = 32'hFEF42623;
 /*224*/firmware[137] = 32'hFEC42703;
-/*228*/firmware[138] = 32'h2FC00793;
+/*228*/firmware[138] = 32'h35800793;
 /*22C*/firmware[139] = 32'h00F77C63;
 /*230*/firmware[140] = 32'hFEC42783;
 /*234*/firmware[141] = 32'h00478713;
@@ -347,64 +347,64 @@ reg [31 : 0] DMA_RegisterTestSource_DMA_Counter;
 /*250*/firmware[148] = 32'h01812403;
 /*254*/firmware[149] = 32'h02010113;
 /*258*/firmware[150] = 32'h00008067;
-/*25C*/firmware[151] = 32'hFF010113;
-/*260*/firmware[152] = 32'h00812623;
-/*264*/firmware[153] = 32'h01010413;
-/*268*/firmware[154] = 32'h800007B7;
-/*26C*/firmware[155] = 32'h0007A703;
-/*270*/firmware[156] = 32'h00170713;
-/*274*/firmware[157] = 32'h00E7A023;
-/*278*/firmware[158] = 32'hFF1FF06F;
-/*27C*/firmware[159] = 32'h00000010;
-/*280*/firmware[160] = 32'h00000000;
-/*284*/firmware[161] = 32'h00527A01;
-/*288*/firmware[162] = 32'h01017C01;
-/*28C*/firmware[163] = 32'h00020D1B;
-/*290*/firmware[164] = 32'h00000024;
-/*294*/firmware[165] = 32'h00000018;
-/*298*/firmware[166] = 32'hFFFFFF6C;
-/*29C*/firmware[167] = 32'h00000058;
-/*2A0*/firmware[168] = 32'h200E4400;
-/*2A4*/firmware[169] = 32'h88018148;
-/*2A8*/firmware[170] = 32'h080C4402;
-/*2AC*/firmware[171] = 32'hC13C0200;
-/*2B0*/firmware[172] = 32'h0D44C844;
-/*2B4*/firmware[173] = 32'h00000002;
-/*2B8*/firmware[174] = 32'h00000010;
-/*2BC*/firmware[175] = 32'h00000000;
-/*2C0*/firmware[176] = 32'h00527A01;
-/*2C4*/firmware[177] = 32'h01017C01;
-/*2C8*/firmware[178] = 32'h00020D1B;
-/*2CC*/firmware[179] = 32'h00000018;
-/*2D0*/firmware[180] = 32'h00000018;
-/*2D4*/firmware[181] = 32'hFFFFFF88;
-/*2D8*/firmware[182] = 32'h00000020;
-/*2DC*/firmware[183] = 32'h100E4400;
-/*2E0*/firmware[184] = 32'h44018844;
-/*2E4*/firmware[185] = 32'h0000080C;
-/*2E8*/firmware[186] = 32'h00000000;
-/*2EC*/firmware[187] = 32'h00000000;
-/*2F0*/firmware[188] = 32'h00000000;
-/*2F4*/firmware[189] = 32'h00000000;
-/*2F8*/firmware[190] = 32'h00000000;
-/*2FC*/firmware[191] = 32'h00000000;
-/*300*/firmware[192] = 32'h00000000;
-/*304*/firmware[193] = 32'h00000000;
-/*308*/firmware[194] = 32'h00000000;
-/*30C*/firmware[195] = 32'h00000000;
+/*25C*/firmware[151] = 32'hFE010113;
+/*260*/firmware[152] = 32'h00812E23;
+/*264*/firmware[153] = 32'h02010413;
+/*268*/firmware[154] = 32'h00A00793;
+/*26C*/firmware[155] = 32'hFEF407A3;
+/*270*/firmware[156] = 32'h01400793;
+/*274*/firmware[157] = 32'hFEF40723;
+/*278*/firmware[158] = 32'hFE042423;
+/*27C*/firmware[159] = 32'h06400793;
+/*280*/firmware[160] = 32'hFEF42223;
+/*284*/firmware[161] = 32'h000027B7;
+/*288*/firmware[162] = 32'h71078793;
+/*28C*/firmware[163] = 32'hFEF42023;
+/*290*/firmware[164] = 32'hFEF44703;
+/*294*/firmware[165] = 32'hFEE44783;
+/*298*/firmware[166] = 32'h00F70733;
+/*29C*/firmware[167] = 32'hFE842683;
+/*2A0*/firmware[168] = 32'hFE442783;
+/*2A4*/firmware[169] = 32'h40F687B3;
+/*2A8*/firmware[170] = 32'h02F707B3;
+/*2AC*/firmware[171] = 32'h00078713;
+/*2B0*/firmware[172] = 32'hFE042783;
+/*2B4*/firmware[173] = 32'h00F70733;
+/*2B8*/firmware[174] = 32'h800007B7;
+/*2BC*/firmware[175] = 32'h00E7A023;
+/*2C0*/firmware[176] = 32'h00000013;
+/*2C4*/firmware[177] = 32'h01C12403;
+/*2C8*/firmware[178] = 32'h02010113;
+/*2CC*/firmware[179] = 32'h00008067;
+/*2D0*/firmware[180] = 32'h00000010;
+/*2D4*/firmware[181] = 32'h00000000;
+/*2D8*/firmware[182] = 32'h00527A01;
+/*2DC*/firmware[183] = 32'h01017C01;
+/*2E0*/firmware[184] = 32'h00020D1B;
+/*2E4*/firmware[185] = 32'h00000024;
+/*2E8*/firmware[186] = 32'h00000018;
+/*2EC*/firmware[187] = 32'hFFFFFF18;
+/*2F0*/firmware[188] = 32'h00000058;
+/*2F4*/firmware[189] = 32'h200E4400;
+/*2F8*/firmware[190] = 32'h88018148;
+/*2FC*/firmware[191] = 32'h080C4402;
+/*300*/firmware[192] = 32'hC13C0200;
+/*304*/firmware[193] = 32'h0D44C844;
+/*308*/firmware[194] = 32'h00000002;
+/*30C*/firmware[195] = 32'h00000010;
 /*310*/firmware[196] = 32'h00000000;
-/*314*/firmware[197] = 32'h00000000;
-/*318*/firmware[198] = 32'h00000000;
-/*31C*/firmware[199] = 32'h00000000;
-/*320*/firmware[200] = 32'h00000000;
-/*324*/firmware[201] = 32'h00000000;
-/*328*/firmware[202] = 32'h00000000;
-/*32C*/firmware[203] = 32'h00000000;
-/*330*/firmware[204] = 32'h00000000;
-/*334*/firmware[205] = 32'h00000000;
-/*338*/firmware[206] = 32'h00000000;
-/*33C*/firmware[207] = 32'h00000000;
-/*340*/firmware[208] = 32'h00000000;
+/*314*/firmware[197] = 32'h00527A01;
+/*318*/firmware[198] = 32'h01017C01;
+/*31C*/firmware[199] = 32'h00020D1B;
+/*320*/firmware[200] = 32'h00000020;
+/*324*/firmware[201] = 32'h00000018;
+/*328*/firmware[202] = 32'hFFFFFF34;
+/*32C*/firmware[203] = 32'h00000074;
+/*330*/firmware[204] = 32'h200E4400;
+/*334*/firmware[205] = 32'h44018844;
+/*338*/firmware[206] = 32'h0200080C;
+/*33C*/firmware[207] = 32'h0D44C860;
+/*340*/firmware[208] = 32'h00000002;
 /*344*/firmware[209] = 32'h00000000;
 /*348*/firmware[210] = 32'h00000000;
 /*34C*/firmware[211] = 32'h00000000;

@@ -6,9 +6,9 @@
 extern uint32_t sram;
 
 #include "plumbing.h"
-#include "dma.h"
-#include "DMA_RegisterTest.h"
-#include "dma.h"
+#include "soc.h"
+#include "DataDeclarationTest.h"
+#include "soc.h"
 
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss,_heap_start;
 
@@ -20,5 +20,5 @@ void main() {
         *dest++ = 0;
     }
 
-	DMA_RegisterTestSource::Firmware::EntryPoint();
+	DataDeclarationTestSource::Firmware::EntryPoint();
 }
