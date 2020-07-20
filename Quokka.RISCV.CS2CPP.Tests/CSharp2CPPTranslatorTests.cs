@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quokka.RISCV.CS2CPP.CodeModels.CPP;
 using Quokka.RISCV.CS2CPP.Tests.Tools;
+using Quokka.RISCV.CS2CPP.Tools;
 using Quokka.RISCV.CS2CPP.Translator;
 using Quokka.RISCV.Integration.Client;
 using Quokka.RISCV.Integration.DTO;
@@ -62,53 +63,6 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             return sizeOfMap[t];
         }
 
-        List<SOCRecord> ToSOCRecords(uint seg, IEnumerable<SOCResourceCPPModel> source)
-        {
-            var socRecords = new List<SOCRecord>();
-
-            foreach (var d in source)
-            {
-                var segment = d.Address;
-                if (segment == 0)
-                {
-                    segment = seg;
-                    seg++;
-                }
-
-                var templatesMap = new Dictionary<Type, string>()
-                {
-                    { typeof(byte), "memory8" },
-                    { typeof(sbyte), "memory8" },
-                    { typeof(ushort), "memory16" },
-                    { typeof(short), "memory16" },
-                    { typeof(int), "memory32" },
-                    { typeof(uint), "memory32" },
-                };
-
-                if (d.Length > 0 && !templatesMap.ContainsKey(d.Type))
-                {
-                    throw new Exception($"No template found for {d.Type}");
-                }
-
-                var template = d.Length > 0 ? templatesMap[d.Type] : "register";
-
-                var rec = new SOCRecord()
-                {
-                    SegmentBits = 12,
-                    SoftwareName = d.Name,
-                    HardwareName = d.Name,
-                    DataType = d.Type,
-                    Depth = (uint)d.Length,
-                    Segment = segment,
-                    Template = template,
-                };
-
-                socRecords.Add(rec);
-            }
-
-            return socRecords;
-        }
-
         async Task TranslateSourceFiles(
             IEnumerable<FSTextFile> files,
             Action entryPoint
@@ -130,6 +84,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
 
             var socGenerator = new SOCGenerator();
             var socRecords = new List<SOCRecord>();
+            var socRecordsBuilder = new SOCRecordsBuilder();
 
             // default code block
             socRecords.Add(new SOCRecord()
@@ -143,7 +98,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
                 Template = "memory32"
             });
 
-            socRecords.AddRange(ToSOCRecords(0x800, tx.SOCResources));
+            socRecords.AddRange(socRecordsBuilder.ToSOCRecords(0x800, tx.SOCResources));
             firmwareSource.Add(socGenerator.SOCImport(socRecords));
 
             var generatedSourceFiles = firmwareSource.Files.Where(f => Path.GetExtension(f.Name).ToLower() == ".cpp").ToList();
@@ -289,7 +244,8 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
 
             // create soc resource records
             var socGenerator = new SOCGenerator();
-            var socRecords = ToSOCRecords(0x800, tx.SOCResources);
+            var socRecordsBuilder = new SOCRecordsBuilder();
+            var socRecords = socRecordsBuilder.ToSOCRecords(0x800, tx.SOCResources);
             firmwareSource.Add(socGenerator.SOCImport(socRecords));
             IntermediateData.SaveToMake(firmwareSource);
 
