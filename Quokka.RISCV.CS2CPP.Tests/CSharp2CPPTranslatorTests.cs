@@ -280,19 +280,23 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
         [TestMethod]
         public async Task MakeTest()
         {
-            var context = RISCVIntegration
-                .DefaultContext(TestPath.MakeFolder)
-                .WithMakeTarget("bin");
-
+            // translate source files
             var tx = new CSharp2CPPTranslator();
             var source = new FSSnapshot();
             source.Files.Add(LoadSource("SOCBlinker.cs"));
             tx.Run(source);
             var firmwareSource = tx.Result;
+
+            // create soc resource records
             var socGenerator = new SOCGenerator();
             var socRecords = ToSOCRecords(0x800, tx.SOCResources);
             firmwareSource.Add(socGenerator.SOCImport(socRecords));
             IntermediateData.SaveToMake(firmwareSource);
+
+            // run makefile
+            var context = RISCVIntegration
+                .DefaultContext(TestPath.MakeFolder)
+                .WithMakeTarget("bin");
 
             await RISCVIntegrationClient.Make(context);
         }
