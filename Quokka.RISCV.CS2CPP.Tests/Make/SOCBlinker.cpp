@@ -6,11 +6,11 @@ namespace SOCBlinker
 {
 	void Firmware::EntryPoint()
 	{
-		unsigned int counter = 0;
 		while(true)
 		{
+			unsigned int counter = SOCBlinker_SOC_Counter;
 			(counter++);
-			SOCBlinker_SOC_Blinker = (unsigned char)((counter >> 24));
+			SOCBlinker_SOC_Counter = counter;
 		}
 	}
 }

@@ -11,10 +11,10 @@ Linker script and memory map
 .text           0x0000000000000000      0x144
                 0x0000000000000000                . = ALIGN (0x4)
  *(.text)
- .text          0x0000000000000000       0x80 /tmp/ccIegeec.o
- .text          0x0000000000000080       0x28 /tmp/cc1yRO4F.o
+ .text          0x0000000000000000       0x80 /tmp/ccbCGasv.o
+ .text          0x0000000000000080       0x28 /tmp/cc5SROnR.o
                 0x0000000000000080                main
- .text          0x00000000000000a8       0x34 /tmp/ccupu709.o
+ .text          0x00000000000000a8       0x34 /tmp/cc58N1td.o
                 0x00000000000000a8                SOCBlinker::Firmware::EntryPoint()
  *(.text*)
  *(.rodata)
@@ -22,8 +22,8 @@ Linker script and memory map
  *(.srodata)
  *(.srodata*)
  *(.eh_frame)
- .eh_frame      0x00000000000000dc       0x38 /tmp/cc1yRO4F.o
- .eh_frame      0x0000000000000114       0x30 /tmp/ccupu709.o
+ .eh_frame      0x00000000000000dc       0x38 /tmp/cc5SROnR.o
+ .eh_frame      0x0000000000000114       0x30 /tmp/cc58N1td.o
  *(.eh_frame*)
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _etext = .
@@ -34,9 +34,9 @@ Linker script and memory map
                 0x0000000000000144                _sdata = .
                 0x0000000000000144                _ram_start = .
  *(.data)
- .data          0x0000000000000144        0x0 /tmp/ccIegeec.o
- .data          0x0000000000000144        0x0 /tmp/cc1yRO4F.o
- .data          0x0000000000000144        0x0 /tmp/ccupu709.o
+ .data          0x0000000000000144        0x0 /tmp/ccbCGasv.o
+ .data          0x0000000000000144        0x0 /tmp/cc5SROnR.o
+ .data          0x0000000000000144        0x0 /tmp/cc58N1td.o
  *(.data*)
  *(.sdata)
  *(.sdata*)
@@ -49,9 +49,9 @@ Linker script and memory map
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _sbss = .
  *(.bss)
- .bss           0x0000000000000144        0x0 /tmp/ccIegeec.o
- .bss           0x0000000000000144        0x0 /tmp/cc1yRO4F.o
- .bss           0x0000000000000144        0x0 /tmp/ccupu709.o
+ .bss           0x0000000000000144        0x0 /tmp/ccbCGasv.o
+ .bss           0x0000000000000144        0x0 /tmp/cc5SROnR.o
+ .bss           0x0000000000000144        0x0 /tmp/cc58N1td.o
  *(.bss*)
  *(.sbss)
  *(.sbss*)
@@ -62,20 +62,20 @@ Linker script and memory map
 .heap           0x0000000000000144        0x0
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _heap_start = .
-LOAD /tmp/ccIegeec.o
-LOAD /tmp/cc1yRO4F.o
-LOAD /tmp/ccupu709.o
+LOAD /tmp/ccbCGasv.o
+LOAD /tmp/cc5SROnR.o
+LOAD /tmp/cc58N1td.o
 OUTPUT(firmware.elf elf32-littleriscv)
 
 .comment        0x0000000000000000       0x11
- .comment       0x0000000000000000       0x11 /tmp/cc1yRO4F.o
+ .comment       0x0000000000000000       0x11 /tmp/cc5SROnR.o
                                          0x12 (size before relaxing)
- .comment       0x0000000000000011       0x12 /tmp/ccupu709.o
+ .comment       0x0000000000000011       0x12 /tmp/cc58N1td.o
 
 Cross Reference Table
 
 Symbol                                            File
-SOCBlinker::Firmware::EntryPoint()                /tmp/ccupu709.o
-                                                  /tmp/cc1yRO4F.o
-main                                              /tmp/cc1yRO4F.o
-                                                  /tmp/ccIegeec.o
+SOCBlinker::Firmware::EntryPoint()                /tmp/cc58N1td.o
+                                                  /tmp/cc5SROnR.o
+main                                              /tmp/cc5SROnR.o
+                                                  /tmp/ccbCGasv.o

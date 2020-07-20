@@ -8,18 +8,18 @@ namespace SOCBlinker
     {
         public static SOC Instance { get; set; } = new SOC();
 
-        public virtual byte Blinker { get; set; }
+        public virtual uint Counter { get; set; }
     }
 
     public static class Firmware
     {
         public static void EntryPoint()
         {
-            uint counter = 0;
             while(true)
             {
+                uint counter = SOC.Instance.Counter;
                 counter++;
-                SOC.Instance.Blinker = (byte)(counter >> 24);
+                SOC.Instance.Counter = counter;
             }
         }
     }

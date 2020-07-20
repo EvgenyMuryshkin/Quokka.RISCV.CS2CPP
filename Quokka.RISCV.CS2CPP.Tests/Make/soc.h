@@ -1,1 +1,1 @@
-#define SOCBlinker_SOC_Blinker (*(volatile unsigned char*)0x80000000)
+#define SOCBlinker_SOC_Counter (*(volatile unsigned int*)0x80000000)
