@@ -7,7 +7,7 @@ extern uint32_t sram;
 
 #include "plumbing.h"
 #include "soc.h"
-#include "DataDeclarationTest.h"
+#include "LanguageConstructsTest.h"
 #include "soc.h"
 
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss,_heap_start;
@@ -20,5 +20,5 @@ void main() {
         *dest++ = 0;
     }
 
-	DataDeclarationTestSource::Firmware::EntryPoint();
+	LanguageConstructsTestSource::Firmware::EntryPoint();
 }

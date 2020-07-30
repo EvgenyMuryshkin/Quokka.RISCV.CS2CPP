@@ -1,5 +1,6 @@
 ﻿using Quokka.RISCV.CS2CPP.CodeModels.CPP;
 using Quokka.RISCV.CS2CPP.CodeWriters.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,7 +45,20 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Implementation
         {
             var left = Invoke<ExpressionBuilder>(model.Left).Expression;
             var right = Invoke<ExpressionBuilder>(model.Right).Expression;
-            AppendLine($"{left} = {right};");
+
+            var assignType = new Dictionary<AssignType, string>()
+            {
+                { AssignType.Equals, "=" },
+                { AssignType.PlusEquals, "+=" },
+                { AssignType.MinusEquals, "-=" },
+                { AssignType.MultEquals, "*=" },
+                { AssignType.DivEquals, "/=" },
+            };
+
+            if (!assignType.ContainsKey(model.Type))
+                throw new Exception($"Assign type {model.Type} is not supported");
+
+            AppendLine($"{left} {assignType[model.Type]} {right};");
         }
 
         public override void VisitWhileLoopCPPModel(WhileLoopCPPModel model)
@@ -54,6 +68,16 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Implementation
             OpenBlock();
             VisitChildren(model.Members);
             CloseBlock();
+        }
+
+        public override void VisitDoLoopCPPModel(DoLoopCPPModel model)
+        {
+            var condition = Invoke<ExpressionBuilder>(model.Condition).Expression;
+            AppendLine($"do");
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+            AppendLine($"while({condition});");
         }
 
         public override void VisitForLoopCPPModel(ForLoopCPPModel model)
@@ -102,6 +126,56 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Implementation
         {
             var expression = Invoke<ExpressionBuilder>(model).Expression;
             AppendLine($"{expression};");
+        }
+
+        public override void VisitIfCPPModel(IfCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model.Condition).Expression;
+            AppendLine($"if ({expression})");
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+        }
+
+        public override void VisitElseCPPModel(ElseCPPModel model)
+        {
+            AppendLine($"else");
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+        }
+
+        public override void VisitSwitchCPPModel(SwitchCPPModel model)
+        {
+            var expression = Invoke<ExpressionBuilder>(model.Expression).Expression;
+            AppendLine($"switch ({expression})");
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+        }
+
+        public override void VisitCaseCPPModel(CaseCPPModel model)
+        {
+            VisitChildren(model.Labels);
+            OpenBlock();
+            VisitChildren(model.Members);
+            CloseBlock();
+        }
+
+        public override void VisitDefaultSwitchLabelCPPModel(DefaultSwitchLabelCPPModel model)
+        {
+            AppendLine($"default:");
+        }
+
+        public override void VisitBreakCPPModel(BreakCPPModel model)
+        {
+            AppendLine($"break;");
+        }
+
+        public override void VisitCaseSwitchLabelCPPModel(CaseSwitchLabelCPPModel model)
+        {
+            var condition = Invoke<ExpressionBuilder>(model.Condition).Expression;
+            AppendLine($"case {condition}:");
         }
     }
 }

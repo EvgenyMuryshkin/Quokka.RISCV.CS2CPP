@@ -197,6 +197,18 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
         }
 
         [TestMethod]
+        public async Task LanguageConstructsTest()
+        {
+            await TranslateSourceFiles(
+                new[]
+                {
+                    LoadSource("LanguageConstructsTest.cs")
+                },
+                LanguageConstructsTestSource.Firmware.EntryPoint
+                );
+        }
+
+        [TestMethod]
         public async Task MethodCallTest()
         {
             await TranslateSourceFiles(

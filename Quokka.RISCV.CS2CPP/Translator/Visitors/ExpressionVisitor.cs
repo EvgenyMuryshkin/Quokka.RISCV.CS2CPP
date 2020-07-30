@@ -29,6 +29,11 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
             };
         }
 
+        public override void VisitCaseSwitchLabel(CaseSwitchLabelSyntax node)
+        {
+            Visit(node.Value);
+        }
+
         static Dictionary<string, BinaryExpressionTypeCPPModel> _binaryExpressionLookup = new Dictionary<string, BinaryExpressionTypeCPPModel>()
         {
             { "==",  BinaryExpressionTypeCPPModel.Equal },

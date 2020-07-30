@@ -53,6 +53,15 @@ namespace metadata
         Virtual
     }
 
+    public enum AssignType
+    {
+        Equals,
+        PlusEquals,
+        MinusEquals,
+        MultEquals,
+        DivEquals
+    }
+
     public class ModifiersCPPModel : CPPModel
     {
         public AccessTypeCPPModel AccessType { get; set; }
@@ -82,6 +91,7 @@ namespace metadata
 
     public class AssignmentExpressionCPPModel : ExpressionCPPModel
     {
+        public AssignType Type { get; set; }
         public ExpressionCPPModel Left { get; set; }
         public ExpressionCPPModel Right { get; set; }
     }
@@ -194,6 +204,48 @@ namespace metadata
     public class WhileLoopCPPModel : LoopCPPModel
     {
         public ExpressionCPPModel Condition { get; set; }
+    }
+
+    public class IfCPPModel : CPPModel, IMembersContainerCPPModel
+    {
+        public ExpressionCPPModel Condition { get; set; }
+        public List<CPPModel> Members { get; set; }
+    }
+
+    public class ElseCPPModel : CPPModel, IMembersContainerCPPModel
+    {
+        public List<CPPModel> Members { get; set; }
+    }
+
+    public class SwitchCPPModel : CPPModel, IMembersContainerCPPModel
+    {
+        public ExpressionCPPModel Expression { get; set; }
+        public List<CPPModel> Members { get; set; }
+    }
+
+    public class CaseCPPModel : CPPModel, IMembersContainerCPPModel
+    {
+        public List<CaseLabelCPPModel> Labels { get; set; }
+        public List<CPPModel> Members { get; set; }
+    }
+
+    public abstract class CaseLabelCPPModel : CPPModel
+    {
+
+    }
+
+    public class CaseSwitchLabelCPPModel : CaseLabelCPPModel
+    {
+        public ExpressionCPPModel Condition { get; set; }
+    }
+
+    public class DefaultSwitchLabelCPPModel : CaseLabelCPPModel
+    {
+
+    }
+
+    public class BreakCPPModel : CPPModel
+    { 
     }
 
     public class DoLoopCPPModel : LoopCPPModel

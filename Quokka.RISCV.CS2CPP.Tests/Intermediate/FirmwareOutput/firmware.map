@@ -8,88 +8,94 @@ RAM              0x0000000000000000 0x0000000000008000 xrw
 Linker script and memory map
 
 
-.text           0x0000000000000000      0x344
+.text           0x0000000000000000      0x588
                 0x0000000000000000                . = ALIGN (0x4)
  *(.text)
- .text          0x0000000000000000      0x1fc /tmp/ccHcXy21.o
- .text          0x00000000000001fc        0x8 /tmp/ccItTQSI.o
+ .text          0x0000000000000000      0x1fc /tmp/ccsiCeSQ.o
+ .text          0x00000000000001fc        0x8 /tmp/ccReQR1M.o
                 0x00000000000001fc                set_irq_mask
- .text          0x0000000000000204       0x58 /tmp/ccwWHC7p.o
+ .text          0x0000000000000204       0x58 /tmp/ccLOVRSP.o
                 0x0000000000000204                main
- .text          0x000000000000025c       0x74 /tmp/ccFzJAu7.o
-                0x000000000000025c                DataDeclarationTestSource::Firmware::EntryPoint()
+ .text          0x000000000000025c      0x248 /tmp/cccOgtUO.o
+                0x000000000000025c                LanguageConstructsTestSource::Firmware::IfStatement(int)
+                0x00000000000002c0                LanguageConstructsTestSource::Firmware::SwitchStatement(int)
+                0x0000000000000358                LanguageConstructsTestSource::Firmware::LoopStatements(int)
+                0x0000000000000454                LanguageConstructsTestSource::Firmware::EntryPoint()
  *(.text*)
  *(.rodata)
  *(.rodata*)
  *(.srodata)
  *(.srodata*)
  *(.eh_frame)
- .eh_frame      0x00000000000002d0       0x3c /tmp/ccwWHC7p.o
- .eh_frame      0x000000000000030c       0x38 /tmp/ccFzJAu7.o
+ .eh_frame      0x00000000000004a4       0x3c /tmp/ccLOVRSP.o
+ .eh_frame      0x00000000000004e0       0xa8 /tmp/cccOgtUO.o
  *(.eh_frame*)
-                0x0000000000000344                . = ALIGN (0x4)
-                0x0000000000000344                _etext = .
-                0x0000000000000344                _sidata = _etext
+                0x0000000000000588                . = ALIGN (0x4)
+                0x0000000000000588                _etext = .
+                0x0000000000000588                _sidata = _etext
 
-.rela.dyn       0x0000000000000344        0x0
- .rela.text     0x0000000000000344        0x0 /tmp/ccHcXy21.o
+.rela.dyn       0x0000000000000588        0x0
+ .rela.text     0x0000000000000588        0x0 /tmp/ccsiCeSQ.o
 
-.data           0x0000000000000344       0x14
-                0x0000000000000344                . = ALIGN (0x4)
-                0x0000000000000344                _sdata = .
-                0x0000000000000344                _ram_start = .
+.data           0x0000000000000588       0x14
+                0x0000000000000588                . = ALIGN (0x4)
+                0x0000000000000588                _sdata = .
+                0x0000000000000588                _ram_start = .
  *(.data)
- .data          0x0000000000000344       0x14 /tmp/ccHcXy21.o
- .data          0x0000000000000358        0x0 /tmp/ccItTQSI.o
- .data          0x0000000000000358        0x0 /tmp/ccwWHC7p.o
- .data          0x0000000000000358        0x0 /tmp/ccFzJAu7.o
+ .data          0x0000000000000588       0x14 /tmp/ccsiCeSQ.o
+ .data          0x000000000000059c        0x0 /tmp/ccReQR1M.o
+ .data          0x000000000000059c        0x0 /tmp/ccLOVRSP.o
+ .data          0x000000000000059c        0x0 /tmp/cccOgtUO.o
  *(.data*)
  *(.sdata)
  *(.sdata*)
  *(.init_array)
  *(.init_array*)
-                0x0000000000000358                . = ALIGN (0x4)
-                0x0000000000000358                _edata = .
+                0x000000000000059c                . = ALIGN (0x4)
+                0x000000000000059c                _edata = .
 
-.bss            0x0000000000000358        0x0
-                0x0000000000000358                . = ALIGN (0x4)
-                0x0000000000000358                _sbss = .
+.bss            0x000000000000059c        0x0
+                0x000000000000059c                . = ALIGN (0x4)
+                0x000000000000059c                _sbss = .
  *(.bss)
- .bss           0x0000000000000358        0x0 /tmp/ccHcXy21.o
- .bss           0x0000000000000358        0x0 /tmp/ccItTQSI.o
- .bss           0x0000000000000358        0x0 /tmp/ccwWHC7p.o
- .bss           0x0000000000000358        0x0 /tmp/ccFzJAu7.o
+ .bss           0x000000000000059c        0x0 /tmp/ccsiCeSQ.o
+ .bss           0x000000000000059c        0x0 /tmp/ccReQR1M.o
+ .bss           0x000000000000059c        0x0 /tmp/ccLOVRSP.o
+ .bss           0x000000000000059c        0x0 /tmp/cccOgtUO.o
  *(.bss*)
  *(.sbss)
  *(.sbss*)
  *(COMMON)
-                0x0000000000000358                . = ALIGN (0x4)
-                0x0000000000000358                _ebss = .
+                0x000000000000059c                . = ALIGN (0x4)
+                0x000000000000059c                _ebss = .
 
-.heap           0x0000000000000358        0x0
-                0x0000000000000358                . = ALIGN (0x4)
-                0x0000000000000358                _heap_start = .
-LOAD /tmp/ccHcXy21.o
-LOAD /tmp/ccItTQSI.o
-LOAD /tmp/ccwWHC7p.o
-LOAD /tmp/ccFzJAu7.o
+.heap           0x000000000000059c        0x0
+                0x000000000000059c                . = ALIGN (0x4)
+                0x000000000000059c                _heap_start = .
+LOAD /tmp/ccsiCeSQ.o
+LOAD /tmp/ccReQR1M.o
+LOAD /tmp/ccLOVRSP.o
+LOAD /tmp/cccOgtUO.o
 OUTPUT(firmware.elf elf32-littleriscv)
 
 .comment        0x0000000000000000       0x11
- .comment       0x0000000000000000       0x11 /tmp/ccItTQSI.o
+ .comment       0x0000000000000000       0x11 /tmp/ccReQR1M.o
                                          0x12 (size before relaxing)
- .comment       0x0000000000000011       0x12 /tmp/ccwWHC7p.o
- .comment       0x0000000000000011       0x12 /tmp/ccFzJAu7.o
+ .comment       0x0000000000000011       0x12 /tmp/ccLOVRSP.o
+ .comment       0x0000000000000011       0x12 /tmp/cccOgtUO.o
 
 Cross Reference Table
 
 Symbol                                            File
-DataDeclarationTestSource::Firmware::EntryPoint() /tmp/ccFzJAu7.o
-                                                  /tmp/ccwWHC7p.o
-_ebss                                             /tmp/ccwWHC7p.o
-_sbss                                             /tmp/ccwWHC7p.o
-debug                                             /tmp/ccHcXy21.o
-main                                              /tmp/ccwWHC7p.o
-                                                  /tmp/ccHcXy21.o
-set_irq_mask                                      /tmp/ccItTQSI.o
-                                                  /tmp/ccwWHC7p.o
+LanguageConstructsTestSource::Firmware::EntryPoint() /tmp/cccOgtUO.o
+                                                  /tmp/ccLOVRSP.o
+LanguageConstructsTestSource::Firmware::IfStatement(int) /tmp/cccOgtUO.o
+LanguageConstructsTestSource::Firmware::LoopStatements(int) /tmp/cccOgtUO.o
+LanguageConstructsTestSource::Firmware::SwitchStatement(int) /tmp/cccOgtUO.o
+_ebss                                             /tmp/ccLOVRSP.o
+_sbss                                             /tmp/ccLOVRSP.o
+debug                                             /tmp/ccsiCeSQ.o
+main                                              /tmp/ccLOVRSP.o
+                                                  /tmp/ccsiCeSQ.o
+set_irq_mask                                      /tmp/ccReQR1M.o
+                                                  /tmp/ccLOVRSP.o

@@ -57,6 +57,14 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		Abstract = 1,
 		Virtual = 2,
 	}
+	public enum AssignType
+	{
+		Equals = 0,
+		PlusEquals = 1,
+		MinusEquals = 2,
+		MultEquals = 3,
+		DivEquals = 4,
+	}
 	// generated class, do not modify
 	public partial class ModifiersCPPModel : CPPModel
 	{
@@ -107,11 +115,13 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 	// generated class, do not modify
 	public partial class AssignmentExpressionCPPModel : ExpressionCPPModel
 	{
-		public AssignmentExpressionCPPModel(ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
+		public AssignmentExpressionCPPModel(AssignType Type = 0, ExpressionCPPModel Left = null, ExpressionCPPModel Right = null)
 		{
+			this.Type = Type;
 			this.Left = Left ?? default(ExpressionCPPModel);
 			this.Right = Right ?? default(ExpressionCPPModel);
 		}
+		public AssignType Type { get; set; } = 0;
 		public ExpressionCPPModel Left { get; set; } = default(ExpressionCPPModel);
 		public ExpressionCPPModel Right { get; set; } = default(ExpressionCPPModel);
 	}
@@ -288,6 +298,78 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
 	}
 	// generated class, do not modify
+	public partial class IfCPPModel : CPPModel, IMembersContainerCPPModel
+	{
+		public IfCPPModel(ExpressionCPPModel Condition = null, List<CPPModel> Members = null)
+		{
+			this.Condition = Condition ?? default(ExpressionCPPModel);
+			this.Members = Members ?? new List<CPPModel>();
+		}
+		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
+		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
+	}
+	// generated class, do not modify
+	public partial class ElseCPPModel : CPPModel, IMembersContainerCPPModel
+	{
+		public ElseCPPModel(List<CPPModel> Members = null)
+		{
+			this.Members = Members ?? new List<CPPModel>();
+		}
+		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
+	}
+	// generated class, do not modify
+	public partial class SwitchCPPModel : CPPModel, IMembersContainerCPPModel
+	{
+		public SwitchCPPModel(ExpressionCPPModel Expression = null, List<CPPModel> Members = null)
+		{
+			this.Expression = Expression ?? default(ExpressionCPPModel);
+			this.Members = Members ?? new List<CPPModel>();
+		}
+		public ExpressionCPPModel Expression { get; set; } = default(ExpressionCPPModel);
+		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
+	}
+	// generated class, do not modify
+	public partial class CaseCPPModel : CPPModel, IMembersContainerCPPModel
+	{
+		public CaseCPPModel(List<CaseLabelCPPModel> Labels = null, List<CPPModel> Members = null)
+		{
+			this.Labels = Labels ?? new List<CaseLabelCPPModel>();
+			this.Members = Members ?? new List<CPPModel>();
+		}
+		public List<CaseLabelCPPModel> Labels { get; set; } = new List<CaseLabelCPPModel>();
+		public List<CPPModel> Members { get; set; } = new List<CPPModel>();
+	}
+	// generated class, do not modify
+	public abstract partial class CaseLabelCPPModel : CPPModel
+	{
+		public CaseLabelCPPModel()
+		{
+		}
+	}
+	// generated class, do not modify
+	public partial class CaseSwitchLabelCPPModel : CaseLabelCPPModel
+	{
+		public CaseSwitchLabelCPPModel(ExpressionCPPModel Condition = null)
+		{
+			this.Condition = Condition ?? default(ExpressionCPPModel);
+		}
+		public ExpressionCPPModel Condition { get; set; } = default(ExpressionCPPModel);
+	}
+	// generated class, do not modify
+	public partial class DefaultSwitchLabelCPPModel : CaseLabelCPPModel
+	{
+		public DefaultSwitchLabelCPPModel()
+		{
+		}
+	}
+	// generated class, do not modify
+	public partial class BreakCPPModel : CPPModel
+	{
+		public BreakCPPModel()
+		{
+		}
+	}
+	// generated class, do not modify
 	public partial class DoLoopCPPModel : LoopCPPModel, IMembersContainerCPPModel
 	{
 		public DoLoopCPPModel(ExpressionCPPModel Condition = null)
@@ -412,6 +494,13 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public virtual void VisitClassCPPModel(ClassCPPModel model) => DefaultVisit(model);
 		public virtual void VisitNamespaceCPPModel(NamespaceCPPModel model) => DefaultVisit(model);
 		public virtual void VisitWhileLoopCPPModel(WhileLoopCPPModel model) => DefaultVisit(model);
+		public virtual void VisitIfCPPModel(IfCPPModel model) => DefaultVisit(model);
+		public virtual void VisitElseCPPModel(ElseCPPModel model) => DefaultVisit(model);
+		public virtual void VisitSwitchCPPModel(SwitchCPPModel model) => DefaultVisit(model);
+		public virtual void VisitCaseCPPModel(CaseCPPModel model) => DefaultVisit(model);
+		public virtual void VisitCaseSwitchLabelCPPModel(CaseSwitchLabelCPPModel model) => DefaultVisit(model);
+		public virtual void VisitDefaultSwitchLabelCPPModel(DefaultSwitchLabelCPPModel model) => DefaultVisit(model);
+		public virtual void VisitBreakCPPModel(BreakCPPModel model) => DefaultVisit(model);
 		public virtual void VisitDoLoopCPPModel(DoLoopCPPModel model) => DefaultVisit(model);
 		public virtual void VisitForLoopCPPModel(ForLoopCPPModel model) => DefaultVisit(model);
 		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
@@ -442,6 +531,13 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 				case ClassCPPModel m: VisitClassCPPModel(m); break;
 				case NamespaceCPPModel m: VisitNamespaceCPPModel(m); break;
 				case WhileLoopCPPModel m: VisitWhileLoopCPPModel(m); break;
+				case IfCPPModel m: VisitIfCPPModel(m); break;
+				case ElseCPPModel m: VisitElseCPPModel(m); break;
+				case SwitchCPPModel m: VisitSwitchCPPModel(m); break;
+				case CaseCPPModel m: VisitCaseCPPModel(m); break;
+				case CaseSwitchLabelCPPModel m: VisitCaseSwitchLabelCPPModel(m); break;
+				case DefaultSwitchLabelCPPModel m: VisitDefaultSwitchLabelCPPModel(m); break;
+				case BreakCPPModel m: VisitBreakCPPModel(m); break;
 				case DoLoopCPPModel m: VisitDoLoopCPPModel(m); break;
 				case ForLoopCPPModel m: VisitForLoopCPPModel(m); break;
 				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;

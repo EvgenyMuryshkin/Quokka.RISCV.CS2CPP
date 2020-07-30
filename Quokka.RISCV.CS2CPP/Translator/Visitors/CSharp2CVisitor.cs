@@ -51,7 +51,7 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
         {
             var exceptionMessage = $"{message ?? ""}{Environment.NewLine}{node.CallerStackDump()}";
 
-            throw new Exception($"{GetType().Name}: Unsupported node: {exceptionMessage}");
+            throw new Exception($"{GetType().Name}: Unsupported node: {exceptionMessage}. Node: {node.ToString()}");
         }
 
         protected void VisitChildren(IEnumerable<SyntaxNode> children)
