@@ -12,5 +12,10 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
         {
             Invoke<MethodVisitor>(node);
         }
+
+        public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
+        {
+            Invoke<FieldVisitor>(node);
+        }
     }
 }

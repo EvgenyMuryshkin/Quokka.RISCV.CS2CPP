@@ -164,8 +164,11 @@ namespace Microsoft.CodeAnalysis
                     }
                 case IdentifierNameSyntax ins:
                     return new List<IdentifierNameSyntax>() { ins };
+                case PredefinedTypeSyntax pds:
+                    return new List<IdentifierNameSyntax>();
                 default:
-                    throw new Exception("Unsupported node type in flat identifiers: {node}");
+                    
+                    throw new Exception($"Unsupported node type in flat identifiers: {node}");
             }
         }
     }

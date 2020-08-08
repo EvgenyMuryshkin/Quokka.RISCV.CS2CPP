@@ -13,18 +13,39 @@ namespace Quokka.RISCV.CS2CPP.Translator.Resolvers
     public class TypeResolver
     {
         public TranslationContext Context { get; set; }
+        BindingFlags AllBindings = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         public Type ResolveType(ExpressionSyntax node)
         {
             var symbolInfo = Context.SemanticModel.GetSymbolInfo(node);
-            var fullName = $"{symbolInfo.Symbol.ContainingNamespace}.{symbolInfo.Symbol.Name}";
-            var type = Type.GetType(fullName);
 
-            if (type == null)
+            switch (symbolInfo.Symbol)
             {
-                type = Context.Library.ProjectAssembly.ExportedTypes.SingleOrDefault(t => t.FullName == fullName);
+                case IFieldSymbol ifs:
+                {
+                    var fullName = $"{symbolInfo.Symbol.ContainingNamespace}.{ifs.Type.Name}";
+                    var type = Type.GetType(fullName);
+
+                    if (type == null)
+                    {
+                        type = Context.Library.ProjectAssembly.ExportedTypes.SingleOrDefault(t => t.FullName == fullName);
+                    }
+
+                    return type;
+                }
+                default:
+                {
+                    var fullName = $"{symbolInfo.Symbol.ContainingNamespace}.{symbolInfo.Symbol.Name}";
+                    var type = Type.GetType(fullName);
+
+                    if (type == null)
+                    {
+                        type = Context.Library.ProjectAssembly.ExportedTypes.SingleOrDefault(t => t.FullName == fullName);
+                    }
+
+                    return type;
+                }
             }
-            return type;
         }
 
         public Type ResolveType(TypeDeclarationSyntax node)
@@ -45,6 +66,14 @@ namespace Quokka.RISCV.CS2CPP.Translator.Resolvers
             return result;
         }
 
+        public FieldInfo ResolveFieldInfo(VariableDeclaratorSyntax node)
+        {
+            if (!TryResolveFieldInfo(node, out FieldInfo result))
+                throw new Exception($"Failed to resolve FieldInfo: {node.ToString()}");
+
+            return result;
+        }
+
         public MethodInfo ResolveMethodInfo(InvocationExpressionSyntax node)
         {
             if (!TryResolveMethodInfo(node, out MethodInfo result))
@@ -60,7 +89,20 @@ namespace Quokka.RISCV.CS2CPP.Translator.Resolvers
             var classNode = node.RecursizeParent<ClassDeclarationSyntax>();
             var classType = ResolveType(classNode);
 
-            result = classType.GetProperties().FirstOrDefault(p => p.Name == node.Identifier.ToString());
+            result = classType.GetProperties(AllBindings).FirstOrDefault(p => p.Name == node.Identifier.ToString());
+
+            return result != null;
+        }
+
+
+        public bool TryResolveFieldInfo(
+            VariableDeclaratorSyntax node,
+            out FieldInfo result)
+        {
+            var classNode = node.RecursizeParent<ClassDeclarationSyntax>();
+            var classType = ResolveType(classNode);
+
+            result = classType.GetFields(AllBindings).FirstOrDefault(p => p.Name == node.Identifier.ToString());
 
             return result != null;
         }

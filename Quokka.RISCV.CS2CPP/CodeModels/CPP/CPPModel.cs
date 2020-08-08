@@ -157,6 +157,7 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 	{
 		Inclement = 0,
 		Decrement = 1,
+		Minus = 2,
 	}
 	// generated class, do not modify
 	public abstract partial class UnaryExpressionCPPModel : ExpressionCPPModel
@@ -421,6 +422,17 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public String Method { get; set; } = "";
 	}
 	// generated class, do not modify
+	public partial class ArrayCreationExpressionCPPModel : ExpressionCPPModel
+	{
+		public ArrayCreationExpressionCPPModel(Type Type = null, ExpressionCPPModel Rank = null)
+		{
+			this.Type = Type ?? default(Type);
+			this.Rank = Rank ?? default(ExpressionCPPModel);
+		}
+		public Type Type { get; set; } = default(Type);
+		public ExpressionCPPModel Rank { get; set; } = default(ExpressionCPPModel);
+	}
+	// generated class, do not modify
 	public partial class FileCPPModel : CPPModel, IMembersContainerCPPModel
 	{
 		public FileCPPModel(List<CPPModel> Members = null)
@@ -505,6 +517,7 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 		public virtual void VisitForLoopCPPModel(ForLoopCPPModel model) => DefaultVisit(model);
 		public virtual void VisitArgumentCPPModel(ArgumentCPPModel model) => DefaultVisit(model);
 		public virtual void VisitLocalInvocationCPPModel(LocalInvocationCPPModel model) => DefaultVisit(model);
+		public virtual void VisitArrayCreationExpressionCPPModel(ArrayCreationExpressionCPPModel model) => DefaultVisit(model);
 		public virtual void VisitFileCPPModel(FileCPPModel model) => DefaultVisit(model);
 		public virtual void VisitElementAccessCPPModel(ElementAccessCPPModel model) => DefaultVisit(model);
 		public virtual void VisitCastCPPModel(CastCPPModel model) => DefaultVisit(model);
@@ -542,6 +555,7 @@ namespace Quokka.RISCV.CS2CPP.CodeModels.CPP
 				case ForLoopCPPModel m: VisitForLoopCPPModel(m); break;
 				case ArgumentCPPModel m: VisitArgumentCPPModel(m); break;
 				case LocalInvocationCPPModel m: VisitLocalInvocationCPPModel(m); break;
+				case ArrayCreationExpressionCPPModel m: VisitArrayCreationExpressionCPPModel(m); break;
 				case FileCPPModel m: VisitFileCPPModel(m); break;
 				case ElementAccessCPPModel m: VisitElementAccessCPPModel(m); break;
 				case CastCPPModel m: VisitCastCPPModel(m); break;

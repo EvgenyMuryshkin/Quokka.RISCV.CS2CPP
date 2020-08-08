@@ -9,14 +9,17 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.Tools
         static Dictionary<Type, string> nativeTypes = new Dictionary<Type, string>()
         {
             { typeof(void), "void" },
-            { typeof(int), "int" },
-            { typeof(uint), "unsigned int" },
+            { typeof(int), "int32_t" },
+            { typeof(uint), "uint32_t" },
             { typeof(float), "float" },
             { typeof(double), "double" },
-            { typeof(short), "short" },
-            { typeof(ushort), "unsigned short" },
-            { typeof(char), "char" },
-            { typeof(byte), "unsigned char" },
+            { typeof(short), "int16_t" },
+            { typeof(ushort), "uint16_t" },
+            { typeof(char), "wchar_t" },
+            { typeof(sbyte), "int8_t" },
+            { typeof(byte), "uint8_t" },
+            { typeof(long), "int64_t" },
+            { typeof(ulong), "uint64_t" },
         };
 
         public static string LookupCPPTypeName(Type type)

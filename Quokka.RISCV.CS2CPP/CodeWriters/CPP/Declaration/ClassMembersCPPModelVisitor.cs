@@ -9,5 +9,10 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Declaration
         {
             Invoke<ClassMethodCModelVisitor>(model);
         }
+
+        public override void VisitFieldCPPModel(FieldCPPModel model)
+        {
+            Invoke<ClassFieldCModelVisitor>(model);
+        }
     }
 }

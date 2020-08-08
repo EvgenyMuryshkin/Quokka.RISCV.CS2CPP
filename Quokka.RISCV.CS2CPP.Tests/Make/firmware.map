@@ -11,10 +11,10 @@ Linker script and memory map
 .text           0x0000000000000000      0x144
                 0x0000000000000000                . = ALIGN (0x4)
  *(.text)
- .text          0x0000000000000000       0x80 /tmp/ccbCGasv.o
- .text          0x0000000000000080       0x28 /tmp/cc5SROnR.o
+ .text          0x0000000000000000       0x80 /tmp/ccTas0VP.o
+ .text          0x0000000000000080       0x28 /tmp/cc4GT81R.o
                 0x0000000000000080                main
- .text          0x00000000000000a8       0x34 /tmp/cc58N1td.o
+ .text          0x00000000000000a8       0x34 /tmp/ccLiHX9Q.o
                 0x00000000000000a8                SOCBlinker::Firmware::EntryPoint()
  *(.text*)
  *(.rodata)
@@ -22,8 +22,8 @@ Linker script and memory map
  *(.srodata)
  *(.srodata*)
  *(.eh_frame)
- .eh_frame      0x00000000000000dc       0x38 /tmp/cc5SROnR.o
- .eh_frame      0x0000000000000114       0x30 /tmp/cc58N1td.o
+ .eh_frame      0x00000000000000dc       0x38 /tmp/cc4GT81R.o
+ .eh_frame      0x0000000000000114       0x30 /tmp/ccLiHX9Q.o
  *(.eh_frame*)
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _etext = .
@@ -34,9 +34,9 @@ Linker script and memory map
                 0x0000000000000144                _sdata = .
                 0x0000000000000144                _ram_start = .
  *(.data)
- .data          0x0000000000000144        0x0 /tmp/ccbCGasv.o
- .data          0x0000000000000144        0x0 /tmp/cc5SROnR.o
- .data          0x0000000000000144        0x0 /tmp/cc58N1td.o
+ .data          0x0000000000000144        0x0 /tmp/ccTas0VP.o
+ .data          0x0000000000000144        0x0 /tmp/cc4GT81R.o
+ .data          0x0000000000000144        0x0 /tmp/ccLiHX9Q.o
  *(.data*)
  *(.sdata)
  *(.sdata*)
@@ -45,37 +45,42 @@ Linker script and memory map
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _edata = .
 
-.bss            0x0000000000000144        0x0
+.bss            0x0000000000000144       0x2c
                 0x0000000000000144                . = ALIGN (0x4)
                 0x0000000000000144                _sbss = .
  *(.bss)
- .bss           0x0000000000000144        0x0 /tmp/ccbCGasv.o
- .bss           0x0000000000000144        0x0 /tmp/cc5SROnR.o
- .bss           0x0000000000000144        0x0 /tmp/cc58N1td.o
+ .bss           0x0000000000000144        0x0 /tmp/ccTas0VP.o
+ .bss           0x0000000000000144        0x0 /tmp/cc4GT81R.o
+ .bss           0x0000000000000144       0x28 /tmp/ccLiHX9Q.o
+                0x0000000000000144                SOCBlinker::Firmware::buff
  *(.bss*)
  *(.sbss)
+ .sbss          0x000000000000016c        0x4 /tmp/ccLiHX9Q.o
+                0x000000000000016c                SOCBlinker::Firmware::result
  *(.sbss*)
  *(COMMON)
-                0x0000000000000144                . = ALIGN (0x4)
-                0x0000000000000144                _ebss = .
+                0x0000000000000170                . = ALIGN (0x4)
+                0x0000000000000170                _ebss = .
 
-.heap           0x0000000000000144        0x0
-                0x0000000000000144                . = ALIGN (0x4)
-                0x0000000000000144                _heap_start = .
-LOAD /tmp/ccbCGasv.o
-LOAD /tmp/cc5SROnR.o
-LOAD /tmp/cc58N1td.o
+.heap           0x0000000000000170        0x0
+                0x0000000000000170                . = ALIGN (0x4)
+                0x0000000000000170                _heap_start = .
+LOAD /tmp/ccTas0VP.o
+LOAD /tmp/cc4GT81R.o
+LOAD /tmp/ccLiHX9Q.o
 OUTPUT(firmware.elf elf32-littleriscv)
 
 .comment        0x0000000000000000       0x11
- .comment       0x0000000000000000       0x11 /tmp/cc5SROnR.o
+ .comment       0x0000000000000000       0x11 /tmp/cc4GT81R.o
                                          0x12 (size before relaxing)
- .comment       0x0000000000000011       0x12 /tmp/cc58N1td.o
+ .comment       0x0000000000000011       0x12 /tmp/ccLiHX9Q.o
 
 Cross Reference Table
 
 Symbol                                            File
-SOCBlinker::Firmware::EntryPoint()                /tmp/cc58N1td.o
-                                                  /tmp/cc5SROnR.o
-main                                              /tmp/cc5SROnR.o
-                                                  /tmp/ccbCGasv.o
+SOCBlinker::Firmware::EntryPoint()                /tmp/ccLiHX9Q.o
+                                                  /tmp/cc4GT81R.o
+SOCBlinker::Firmware::buff                        /tmp/ccLiHX9Q.o
+SOCBlinker::Firmware::result                      /tmp/ccLiHX9Q.o
+main                                              /tmp/cc4GT81R.o
+                                                  /tmp/ccTas0VP.o

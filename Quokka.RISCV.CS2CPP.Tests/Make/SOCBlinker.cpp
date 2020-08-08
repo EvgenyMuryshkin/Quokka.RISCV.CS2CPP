@@ -13,4 +13,7 @@ namespace SOCBlinker
 			SOCBlinker_SOC_Counter = counter;
 		}
 	}
+
+	unsigned int Firmware::result = 0;
+	unsigned int Firmware::buff[10] = {0};
 }

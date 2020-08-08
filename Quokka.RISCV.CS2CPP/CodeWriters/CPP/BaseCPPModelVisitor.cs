@@ -22,9 +22,14 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP
 
         // Base boilerplate 
 
+        protected void Unsupported(CPPModel model, string message)
+        {
+            throw new Exception($"[{GetType().Name}] {model.GetType().Name} ({model}): {message}");
+        }
+
         public override void DefaultVisit(CPPModel model)
         {
-            throw new Exception($"{GetType().Name}: Unsupported node type: {model.GetType().Name}: {model.ToString()}");
+            Unsupported(model, $"Unsupported node type");
         }
 
         protected void VisitChildren(IEnumerable<CPPModel> children)

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quokka.RISCV.CS2CPP.CodeModels.CPP;
 using Quokka.RISCV.CS2CPP.Tests.Tools;
 using Quokka.RISCV.CS2CPP.Tools;
@@ -13,6 +14,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +52,7 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
         {
             var sizeOfMap = new Dictionary<Type, int>()
                 {
+                    { typeof(char), sizeof(char) },
                     { typeof(byte), sizeof(byte) },
                     { typeof(sbyte), sizeof(sbyte) },
                     { typeof(ushort), sizeof(ushort) },
@@ -209,6 +213,18 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
         }
 
         [TestMethod]
+        public async Task ArrayDeclarationTest()
+        {
+            await TranslateSourceFiles(
+                new[]
+                {
+                    LoadSource("ArrayDeclarationTest.cs")
+                },
+                ArrayDeclarationTestSource.Firmware.EntryPoint
+                );
+        }
+
+        [TestMethod]
         public async Task MethodCallTest()
         {
             await TranslateSourceFiles(
@@ -265,6 +281,26 @@ namespace Quokka.RISCV.Integration.Tests.CSharp2CTranslatorTests
             var context = RISCVIntegration
                 .DefaultContext(TestPath.MakeFolder)
                 .WithMakeTarget("bin");
+
+            await RISCVIntegrationClient.Make(context);
+        }
+
+        [TestMethod]
+        public async Task MakeTest_MakeFolder()
+        {
+            var context = RISCVIntegration
+                .DefaultContext(TestPath.MakeFolder)
+                .WithMakeTarget("bin");
+
+            await RISCVIntegrationClient.Make(context);
+        }
+
+        [TestMethod]
+        public async Task MakeTest_FirmwareFolder()
+        {
+            var context = RISCVIntegration
+                .DefaultContext(TestPath.FirmwareSourceFolder)
+                .WithMakeTarget("firmware.bin");
 
             await RISCVIntegrationClient.Make(context);
         }

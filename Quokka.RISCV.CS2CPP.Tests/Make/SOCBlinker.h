@@ -7,6 +7,8 @@ namespace SOCBlinker
 {
 	class Firmware
 	{
+		public: static unsigned int result;
+		public: static unsigned int buff[];
 		public: static void EntryPoint();
 	};
 }

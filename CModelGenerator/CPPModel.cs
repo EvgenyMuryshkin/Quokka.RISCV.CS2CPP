@@ -122,7 +122,8 @@ namespace metadata
     public enum UnaryExpressionTypeCPPModel
     {
         Inclement,
-        Decrement
+        Decrement,
+        Minus
     }
 
     public abstract class UnaryExpressionCPPModel : ExpressionCPPModel
@@ -274,6 +275,12 @@ namespace metadata
     public class LocalInvocationCPPModel : InvocationCPPModel
     {
         public string Method { get; set; }
+    }
+
+    public class ArrayCreationExpressionCPPModel : ExpressionCPPModel
+    {
+        public Type Type { get; set; }
+        public ExpressionCPPModel Rank { get; set; }
     }
 
     public class FileCPPModel : CPPModel, IMembersContainerCPPModel

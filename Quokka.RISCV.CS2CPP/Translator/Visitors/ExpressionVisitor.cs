@@ -62,6 +62,7 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
         {
             { "++",  UnaryExpressionTypeCPPModel.Inclement },
             { "--",  UnaryExpressionTypeCPPModel.Decrement },
+            { "-",   UnaryExpressionTypeCPPModel.Minus }
         };
 
         UnaryExpressionTypeCPPModel ToUnaryExpressionType(SyntaxNode node, string op)
@@ -135,6 +136,27 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
                 return;
             }
 
+            if (BuiltInValues.IsBuiltInValue(node.ToString()))
+            {
+                var type = TypeResolver.ResolveType(node);
+                if (type == typeof(char))
+                {
+                    Expression = new LiteralExpressionCPPModel()
+                    {
+                        Value = $"'{BuiltInValues.BuiltInValue(node.ToString())}'"
+                    };
+                }
+                else
+                {
+                    Expression = new LiteralExpressionCPPModel()
+                    {
+                        Value = BuiltInValues.BuiltInValue(node.ToString()).ToString()
+                    };
+                }
+
+                return;
+            }
+
             Unsupported(node, "Unsupported member access expression");
         }
 
@@ -165,6 +187,11 @@ namespace Quokka.RISCV.CS2CPP.Translator.Visitors
             {
                 Expression = Invoke<ExpressionVisitor>(node.Expression).Expression,
             };
+        }
+
+        public override void VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
+        {
+            Expression = Invoke<ObjectCreationVisitor>(node).Expression;
         }
     }  
 }

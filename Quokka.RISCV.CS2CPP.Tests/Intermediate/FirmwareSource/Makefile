@@ -1,6 +1,6 @@
 
-firmware.elf: sections.lds start.S irq.c firmware.cpp LanguageConstructsTest.cpp
-	riscv32-unknown-elf-gcc -march=rv32im -nostartfiles -Wl,-Bstatic,-T,sections.lds,--strip-debug,-Map=firmware.map,--cref  -ffreestanding -nostdlib -o firmware.elf start.S irq.c firmware.cpp LanguageConstructsTest.cpp
+firmware.elf: sections.lds start.S irq.c firmware.cpp ArrayDeclarationTest.cpp
+	riscv32-unknown-elf-gcc -march=rv32im -nostartfiles -Wl,-Bstatic,-T,sections.lds,--strip-debug,-Map=firmware.map,--cref  -ffreestanding -nostdlib -o firmware.elf start.S irq.c firmware.cpp ArrayDeclarationTest.cpp
 
 firmware.bin: firmware.elf
 	riscv32-unknown-elf-objcopy -O binary firmware.elf /dev/stdout > firmware.bin

@@ -49,6 +49,7 @@ namespace Quokka.RISCV.CS2CPP.CodeWriters.CPP.Implementation
         {
             { UnaryExpressionTypeCPPModel.Inclement, "++" },
             { UnaryExpressionTypeCPPModel.Decrement, "--" },
+            { UnaryExpressionTypeCPPModel.Minus, "-" },
         };
 
         string ToUnaryExpressionType(UnaryExpressionTypeCPPModel op)
